@@ -1,0 +1,22 @@
+{
+  "name": "{{name}}",
+  "description": "{{description}}",
+  "id" : "{{id}}",
+  "publish_url" : "{{publishUrl}}",
+  "dev_url" : "{{devUrl}}",
+  "check_items":{
+    "lint": "{{checkLint}}",
+    "page_speed": "{{checkPageSpeed}}"
+  },
+  "lint": {
+    "js": {
+      "engine": "eslint",
+      "config": ".eslintrc"
+    },
+    "css": {
+      "engine": "csslint",
+      "config": ".csslintrc"
+    }
+  },
+  "test": {}
+}
