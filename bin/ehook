@@ -1,5 +1,0 @@
-#!/usr/bin/env node
-
-process.title = 'ehook';
-
-require('../lib/client/ehook')();

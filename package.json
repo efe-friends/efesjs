@@ -1,10 +1,10 @@
 {
-  "name": "ehook",
+  "name": "efes",
   "version": "0.1.0",
   "description": "edaijia fe dev tools",
-  "main": "lib/client/ehook",
+  "main": "lib/client/efes",
   "bin": {
-    "ehook": "bin/ehook"
+    "efes": "bin/efes"
   },
   "engines": {
     "node": ">= 0.12.0"
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/edaijia-fe/ehook.git"
+    "url": "git+https://github.com/edaijia-fe/efes.git"
   },
   "dependencies": {
     "async": "^0.2.10",
@@ -59,7 +59,7 @@
   "author": "hbxeagle",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/edaijia-fe/ehook/issues"
+    "url": "https://github.com/edaijia-fe/efes/issues"
   },
-  "homepage": "https://github.com/edaijia-fe/ehook#readme"
+  "homepage": "https://github.com/edaijia-fe/efes#readme"
 }
