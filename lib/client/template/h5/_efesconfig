@@ -6,7 +6,7 @@
   "dev_url" : "{{devUrl}}",
   "check_items":{
     "lint": "{{checkLint}}",
-    "page_speed": "{{checkPageSpeed}}"
+    "version_string": "{{checkVersionString}}"
   },
   "lint": {
     "js": {
