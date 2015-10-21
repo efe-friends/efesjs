@@ -2,4 +2,4 @@
 
 process.title = 'efes';
 
-require('../lib/client/efes')();
+require('../lib/client/cli');

@@ -4,10 +4,6 @@
   "id" : "{{id}}",
   "publish_url" : "{{publishUrl}}",
   "dev_url" : "{{devUrl}}",
-  "check_items":{
-    "lint": "{{checkLint}}",
-    "version_string": "{{checkVersionString}}"
-  },
   "lint": {
     "js": {
       "engine": "eslint",

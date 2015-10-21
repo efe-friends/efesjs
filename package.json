@@ -1,6 +1,6 @@
 {
   "name": "efes",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "edaijia fe dev tools",
   "main": "lib/client/efes",
   "bin": {
@@ -17,10 +17,12 @@
     "url": "git+https://github.com/edaijia-fe/efes.git"
   },
   "dependencies": {
+    "art-template": "^3.0.3",
     "async": "^0.2.10",
     "chalk": "^0.5.1",
-    "chokidar": "^0.8.4",
+    "commander": "^2.9.0",
     "csslint": "^0.10.0",
+    "dot": "^1.0.3",
     "eslint": "^0.24.1",
     "forever": "^0.11.1",
     "glob": "^3.2.11",
