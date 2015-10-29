@@ -1,6 +1,6 @@
 {
   "name": "efes",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "edaijia fe assistant",
   "main": "lib/client/efes",
   "bin": {
@@ -28,7 +28,7 @@
     "glob": "^3.2.11",
     "inquirer": "^0.9.0",
     "jquery": "^2.1.4",
-    "jsdom": "^6.5.1",
+    "jsdom": "2.0.0",
     "mime": "^1.3.4",
     "minimatch": "^0.2.14",
     "mkdirp": "^0.5.1",
