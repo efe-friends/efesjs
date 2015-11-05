@@ -1,13 +1,13 @@
 {
   "name": "efes",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "edaijia fe assistant",
   "main": "lib/client/efes",
   "bin": {
     "efes": "bin/efes"
   },
   "engines": {
-    "node": ">= 0.12.0"
+    "node": ">= 4.1.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -28,7 +28,7 @@
     "glob": "^3.2.11",
     "inquirer": "^0.9.0",
     "jquery": "^2.1.4",
-    "jsdom": "2.0.0",
+    "jsdom": "^7.0.2",
     "mime": "^1.3.4",
     "minimatch": "^0.2.14",
     "mkdirp": "^0.5.1",
