@@ -1,7 +1,10 @@
 node_modules/
 .DS_Store
 .*.swp
-workspance_default_root
 .grunt
+.project
+.svn
+.tmp
+.sass-cache
+.idea
 Thumbs.db
-.gsproxy/

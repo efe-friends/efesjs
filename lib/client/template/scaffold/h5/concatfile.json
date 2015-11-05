@@ -1,0 +1,32 @@
+{
+    "pkg": {
+        "scripts/js.js": [
+            "src/js/a.js",
+            "src/js/b.js",
+            "src/js/c/c1.js",
+            "src/js/c/c2.js",
+            "src/js/d/d1.js",
+            "src/es6/a.js",
+            "src/es6/b.js",
+            "src/es6/c/c1.js",
+            "src/es6/c/c2.js",
+            "src/es6/d/d1.js",
+            "src/coffee/a.coffee",
+            "src/coffee/b.coffee",
+            "src/coffee/c/c1.coffee",
+            "src/coffee/c/c2.coffee",
+            "src/coffee/d/d1.coffee"
+        ],
+        "styles/css.css": [
+            "src/less/publish/less.less",
+            "src/css/a.css",
+            "src/css/b.css",
+            "src/css/c/c1.css",
+            "src/css/c/c2.css",
+            "src/css/d/d1.css"
+        ],
+        "styles/reset.css": [
+            "src/css/reset.css"
+        ]
+    }
+}
