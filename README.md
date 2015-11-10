@@ -8,7 +8,7 @@ node要求4.1.0+<br>
 下载地址：http://npm.taobao.org/mirrors/node<br>
 python要求2.x版本<br>
 
-## 安装/跟新
+## 安装/更新
 
 <code>
 npm install -g efes
@@ -19,7 +19,9 @@ npm install -g efes
 cnpm install -g efes
 </code>
 
-## 初始化git commit提交验证
+## hook 
+初始化git commit提交验证<br>
+<br>
 git根目录下运行下面的命令<br>
 <code>
 efes hook
@@ -27,7 +29,9 @@ efes hook
 <br>
 此命令会在.git/hooks目录下添加pre-commit文件，在git commit时，会触发此文件中的操作，进行lint和version字符串检查（只针对新添加或修改的文件）。
 
-## 初始化项目验证规则/脚手架
+## init
+初始化项目验证规则/脚手架<br>
+<br>
 在开发的项目根目录下运行下面的命令<br>
 PS：为了避免错误，efes init在windows下请在cmd下运行。<br>
 <code>
@@ -39,7 +43,7 @@ efes init
 .csslintrc：csslint监测规则\<br>
 .efesconfig：efes配置文件<br>
 选择脚手架为：yes时，此命令会在项目根目录创建完整的目录结构，和gulp配置：<br>
-生成后，请先运行下面的命令安装npm插件：
+生成后，请先运行下面的命令安装npm插件：<br>
 <code>
     npm install
 </code>
@@ -47,6 +51,7 @@ efes init
 <code>
     cnpm install
 </code>
+<br>
 然后运行，下面命令启动gulp任务：<br>
 <code>
     gulp
