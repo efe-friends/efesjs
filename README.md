@@ -23,9 +23,11 @@ cnpm install -g efes
 初始化git commit提交验证<br>
 <br>
 git根目录下运行下面的命令<br>
+<br>
 <code>
 efes hook
 </code>
+<br>
 <br>
 此命令会在.git/hooks目录下添加pre-commit文件，在git commit时，会触发此文件中的操作，进行lint和version字符串检查（只针对新添加或修改的文件）。
 
@@ -34,16 +36,20 @@ efes hook
 <br>
 在开发的项目根目录下运行下面的命令<br>
 PS：为了避免错误，efes init在windows下请在cmd下运行。<br>
+<br>
 <code>
 efes init
 </code>
 <br>
-选择脚手架为：no时，此命令会在项目根目录下创建如下三个文件：<br>
+<br>
+选择脚手架为：no，此命令会在项目根目录下创建如下三个文件：<br>
 .eslintrc：eslint监测规则(此文件同时也是Sublime的插件Sublime-contrib-eslint配置文件)<br>
 .csslintrc：csslint监测规则\<br>
 .efesconfig：efes配置文件<br>
-选择脚手架为：yes时，此命令会在项目根目录创建完整的目录结构，和gulp配置：<br>
+<br>
+选择脚手架为：yes，此命令会在项目根目录创建完整的目录结构，和gulp配置：<br>
 生成后，请先运行下面的命令安装npm插件：<br>
+<br>
 <code>
     npm install
 </code>
@@ -52,40 +58,43 @@ efes init
     cnpm install
 </code>
 <br>
+<br>
 然后运行，下面命令启动gulp任务：<br>
+<br>
 <code>
     gulp
 </code>
 <br>
-### a 生成文件目录结构
-    |— fonts                字体<br>
-    |— images               图片<br>
-    |— styles               样式<br>
-    |— scripts              脚本<br>
-    |— concatfile.json      合并配置文件<br>
-    |— gulpfile.js gulp     任务配置文件<br>
-    |— package.json         npm配置文件<br>
-    |— .eslintrc            eslint规则文件<br>
-    |— .csslintrc           csslint规则文件<br>
-    |— .efesconfig          efes项目配置文件<br>
-    |— index.html           首页<br>
-    |— src                  开发目录<br>
-        |— coffee           coffee文件开发目录<br>
-        |— es6              es6文件开发目录<br>
-        |— js               js文件开发目录<br>
-        |— less             less文件开发目录<br>
-            |— includes     less引用文件目录，如：header.less等。<br>
-            |— publishs     less发布文件目录，如：index.less等。concatfile.json中只能配置合并此目录下的文件。<br>
-        |— css              css文件开发目录<br>
-        |— jade             jade文件开发目录，jade不需要在concatfile.json中配置合并。<br>
-            |— includes     jade引用文件目录，如：header.jade等。<br>
-            |— publishs     jade发布目录文件。<br>
+<br>
+#### a 生成文件目录结构
+|— fonts                字体<br>
+|— images               图片<br>
+|— styles               样式<br>
+|— scripts              脚本<br>
+|— concatfile.json      合并配置文件<br>
+|— gulpfile.js gulp     任务配置文件<br>
+|— package.json         npm配置文件<br>
+|— .eslintrc            eslint规则文件<br>
+|— .csslintrc           csslint规则文件<br>
+|— .efesconfig          efes项目配置文件<br>
+|— index.html           首页<br>
+|— src                  开发目录<br>
+    |— coffee           coffee文件开发目录<br>
+    |— es6              es6文件开发目录<br>
+    |— js               js文件开发目录<br>
+    |— less             less文件开发目录<br>
+        |— includes     less引用文件目录，如：header.less等。<br>
+        |— publishs     less发布文件目录，如：index.less等。concatfile.json中只能配置合并此目录下的文件。<br>
+    |— css              css文件开发目录<br>
+    |— jade             jade文件开发目录，jade不需要在concatfile.json中配置合并。<br>
+        |— includes     jade引用文件目录，如：header.jade等。<br>
+        |— publishs     jade发布目录文件。<br>
 
-### b gulp自动化功能：
-    1)、自动编译coffee、es6、less、jade<br>
-    2)、根据concatfile.json配置的内容，自动合并js(coffee、es6)、css(less)<br>
-    3)、支持sourcemap功能。
-    4)、文件有改变时自动刷新页面。<br>
+#### b gulp自动化功能：
+1)、自动编译coffee、es6、less、jade<br>
+2)、根据concatfile.json配置的内容，自动合并js(coffee、es6)、css(less)<br>
+3)、支持sourcemap功能。<br>
+4)、文件有改变时自动刷新页面。<br>
 
 ## Sublime 配套插件(建议安装Sublime3)
 
