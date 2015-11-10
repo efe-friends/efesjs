@@ -5,6 +5,8 @@ node_modules/
 .project
 .svn
 .tmp
+.maps
+.map
 .sass-cache
 .idea
 Thumbs.db
