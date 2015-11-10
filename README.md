@@ -1,22 +1,28 @@
 # efes 
 e代驾前端助手 edaijia fe assistant<br>
+<br>
 PS：efes的git commit检测规则中，eslint、csslint，和图片必须add提交为强制检测，error将导致提交失败。version字符串检测只做提示，供开发人员参考。
 
 ## node 版本要求
 
 node要求4.1.0+<br>
 下载地址：http://npm.taobao.org/mirrors/node<br>
+<br>
 python要求2.x版本<br>
 
 ## 安装/更新
 
 <code>
+
 npm install -g efes
+
 </code>
 <br>
 或<br>
 <code>
+
 cnpm install -g efes
+
 </code>
 
 ## hook 
@@ -25,11 +31,13 @@ cnpm install -g efes
 git根目录下运行下面的命令<br>
 <br>
 <code>
+
 efes hook
+
 </code>
 <br>
 <br>
-此命令会在.git/hooks目录下添加pre-commit文件，在git commit时，会触发此文件中的操作，进行lint和version字符串检查（只针对新添加或修改的文件）。
+此命令会在.git/hooks目录下添加pre-commit文件，在git commit时，会触发此文件中的操作，进行lint、图片Add提交、version字符串检查（只针对新添加或修改的文件）。
 
 ## init
 初始化项目验证规则/脚手架<br>
@@ -38,7 +46,9 @@ efes hook
 PS：为了避免错误，efes init在windows下请在cmd下运行。<br>
 <br>
 <code>
+
 efes init
+
 </code>
 <br>
 <br>
@@ -51,18 +61,24 @@ efes init
 生成后，请先运行下面的命令安装npm插件：<br>
 <br>
 <code>
+
     npm install
+
 </code>
 <br>
 <code>
+
     cnpm install
+
 </code>
 <br>
 <br>
 然后运行，下面命令启动gulp任务：<br>
 <br>
 <code>
+
     gulp
+    
 </code>
 <br>
 <br>
