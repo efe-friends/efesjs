@@ -13,16 +13,12 @@ python要求2.x版本<br>
 ## 安装/更新
 
 <code>
-
 npm install -g efes
-
 </code>
 <br>
 或<br>
 <code>
-
 cnpm install -g efes
-
 </code>
 
 ## hook 
@@ -31,9 +27,7 @@ cnpm install -g efes
 git根目录下运行下面的命令<br>
 <br>
 <code>
-
 efes hook
-
 </code>
 <br>
 <br>
@@ -46,9 +40,7 @@ efes hook
 PS：为了避免错误，efes init在windows下请在cmd下运行。<br>
 <br>
 <code>
-
 efes init
-
 </code>
 <br>
 <br>
@@ -61,50 +53,44 @@ efes init
 生成后，请先运行下面的命令安装npm插件：<br>
 <br>
 <code>
-
-    npm install
-
+npm install
 </code>
 <br>
 <code>
-
-    cnpm install
-
+cnpm install
 </code>
 <br>
 <br>
 然后运行，下面命令启动gulp任务：<br>
 <br>
 <code>
-
-    gulp
-    
+gulp
 </code>
 <br>
 <br>
 #### a 生成文件目录结构
-|— fonts                字体<br>
-|— images               图片<br>
-|— styles               样式<br>
-|— scripts              脚本<br>
-|— concatfile.json      合并配置文件<br>
-|— gulpfile.js gulp     任务配置文件<br>
-|— package.json         npm配置文件<br>
-|— .eslintrc            eslint规则文件<br>
-|— .csslintrc           csslint规则文件<br>
-|— .efesconfig          efes项目配置文件<br>
-|— index.html           首页<br>
-|— src                  开发目录<br>
-    |— coffee           coffee文件开发目录<br>
-    |— es6              es6文件开发目录<br>
-    |— js               js文件开发目录<br>
-    |— less             less文件开发目录<br>
-        |— includes     less引用文件目录，如：header.less等。<br>
-        |— publishs     less发布文件目录，如：index.less等。concatfile.json中只能配置合并此目录下的文件。<br>
-    |— css              css文件开发目录<br>
-    |— jade             jade文件开发目录，jade不需要在concatfile.json中配置合并。<br>
-        |— includes     jade引用文件目录，如：header.jade等。<br>
-        |— publishs     jade发布目录文件。<br>
+    |— fonts                字体<br>
+    |— images               图片<br>
+    |— styles               样式<br>
+    |— scripts              脚本<br>
+    |— concatfile.json      合并配置文件<br>
+    |— gulpfile.js gulp     任务配置文件<br>
+    |— package.json         npm配置文件<br>
+    |— .eslintrc            eslint规则文件<br>
+    |— .csslintrc           csslint规则文件<br>
+    |— .efesconfig          efes项目配置文件<br>
+    |— index.html           首页<br>
+    |— src                  开发目录<br>
+        |— coffee           coffee文件开发目录<br>
+        |— es6              es6文件开发目录<br>
+        |— js               js文件开发目录<br>
+        |— less             less文件开发目录<br>
+            |— includes     less引用文件目录，如：header.less等。<br>
+            |— publishs     less发布文件目录，如：index.less等。concatfile.json中只能配置合并此目录下的文件。<br>
+        |— css              css文件开发目录<br>
+        |— jade             jade文件开发目录，jade不需要在concatfile.json中配置合并。<br>
+            |— includes     jade引用文件目录，如：header.jade等。<br>
+            |— publishs     jade发布目录文件。<br>
 
 #### b gulp自动化功能：
 1)、自动编译coffee、es6、less、jade<br>
