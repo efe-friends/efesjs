@@ -12,23 +12,28 @@ python要求2.x版本<br>
 
 <code>
 npm install -g efes
-或
+</code>
+<br>
+或<br>
+<code>
 cnpm install -g efes
 </code>
 
 ## 初始化git commit提交验证
-git根目录下运行下面的命令
+git根目录下运行下面的命令<br>
 <code>
 efes hook
 </code>
+<br>
 此命令会在.git/hooks目录下添加pre-commit文件，在git commit时，会触发此文件中的操作，进行lint和version字符串检查（只针对新添加或修改的文件）。
 
 ## 初始化项目验证规则/脚手架
 在开发的项目根目录下运行下面的命令<br>
-PS：为了避免错误，efes init在windows下请在cmd下运行。
+PS：为了避免错误，efes init在windows下请在cmd下运行。<br>
 <code>
 efes init
 </code>
+<br>
 选择脚手架为：no时，此命令会在项目根目录下创建如下三个文件：<br>
 .eslintrc：eslint监测规则(此文件同时也是Sublime的插件Sublime-contrib-eslint配置文件)<br>
 .csslintrc：csslint监测规则\<br>
@@ -37,13 +42,16 @@ efes init
 生成后，请先运行下面的命令安装npm插件：
 <code>
     npm install
-    或
+</code>
+<br>
+<code>
     cnpm install
 </code>
-然后运行，下面命令启动gulp任务：
+然后运行，下面命令启动gulp任务：<br>
 <code>
     gulp
 </code>
+<br>
 ### a 生成文件目录结构
     |— fonts                字体<br>
     |— images               图片<br>
