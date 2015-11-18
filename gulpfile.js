@@ -1,22 +1,38 @@
-/*jsHint: global -$  require */
 'use strict';
 
-// generated on 2015-06-05 using generator-gulp-webapp 0.3.0
 var gulp = require('gulp');
+
+// Load plugins
 var $ = require('gulp-load-plugins')();
 
-gulp.task('jshint', function() {
-  return gulp.src('lib/**/*.js')
-    .pipe($.jshint())
-    .pipe($.jshint.reporter('jshint-stylish'));
+gulp.task('clean', require('del').bind(null, ['lib']));
+
+/* es6 */
+gulp.task('es6', function() {
+  return gulp.src(['src/**/*.js','!src/client/template/**/*.js', '!src/libs/**/*.js'])
+    .pipe($.plumber())
+    .pipe($.babel({
+      presets: ['es2015']
+    }))
+    .on('error', $.util.log)
+    .pipe(gulp.dest('lib'));
 });
 
-gulp.task('dev', ['jshint'], function() {
+gulp.task('copy', function(){
+  return gulp.src(['src/client/template/**/*', 'src/libs/**/*'])
+    .pipe(gulp.dest('lib/client/template'));
+});
 
-  gulp.watch('lib/**/*.js', ['jshint']);
+gulp.task('watch', ['es6', 'copy'], function() {
+
+  gulp.watch(['src/**/*.*'], ['es6', 'copy']);
 
 });
 
-gulp.task('default', [''], function() {
-  gulp.start('dev');
+gulp.task('build',['es6', 'copy']);
+
+gulp.task('default',['clean'], function() {
+
+  gulp.start('watch');
+
 });

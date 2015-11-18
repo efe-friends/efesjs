@@ -7,7 +7,8 @@
   "lint": {
     "js": {
       "engine": "eslint",
-      "config": ".eslintrc"
+      "config": ".eslintrc",
+      "ignore": ".eslintignore"
     },
     "css": {
       "engine": "csslint",

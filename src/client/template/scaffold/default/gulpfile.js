@@ -12,6 +12,49 @@ var efes = JSON.parse(fs.readFileSync('./.efesconfig'));
 var $ = require('gulp-load-plugins')();
 var ccDeps = [];
 
+/* imagemin */
+gulp.task('imagemin', function() {
+  var srcs = ['src/images/**/*'];
+  if (concatfile.imgMinIgnore.length > 0) { //获取不需要压缩的图片列表，从压缩目录中排除。
+    for (var i = 0; i < concatfile.imgMinIgnore.length; i++) {
+      srcs.push("!" + concatfile.imgMinIgnore[i]);
+    }
+
+    //将不需要压缩的图片copy到images目录
+    gulp.src(concatfile.imgMinIgnore)
+      .pipe(gulp.dest('images'))
+      .pipe(browserSync.reload({
+        stream: true
+      }));
+  }
+
+  return gulp.src(srcs)
+    .pipe($.imagemin({
+      progressive: true,
+      svgoPlugins: [{
+        removeViewBox: false
+      }],
+      use: [pngquant()]
+    }))
+    .pipe(gulp.dest('images'))
+    .pipe(browserSync.reload({
+      stream: true
+    }));
+});
+ccDeps.push('imagemin');
+
+
+/*html*/
+gulp.task('html', function() {
+  return gulp.src('src/html/**/*.html')
+    .pipe(gulp.dest('.'))
+    .pipe(browserSync.reload({
+      stream: true
+    }));
+});
+ccDeps.push('html');
+
+
 {{if exLess}}
 /* less */
 gulp.task('less', function() {
@@ -22,6 +65,7 @@ gulp.task('less', function() {
     'Opera 12.1'
   ];
   return gulp.src('./src/less/publishs/**/*.less')
+    .pipe($.plumber())
     .pipe($.sourcemaps.init())
     .pipe($.less())
     .on('error', $.util.log)
@@ -45,6 +89,7 @@ ccDeps.push('less');
 gulp.task('coffee', function() {
 
   return gulp.src('./src/coffee/**/*.coffee')
+    .pipe($.plumber())
     .pipe($.sourcemaps.init())
     .pipe($.coffee({
       bare: true
@@ -63,8 +108,11 @@ ccDeps.push('coffee');
 /* es6 */
 gulp.task('es6', function() {
   return gulp.src('src/es6/**/*.js')
+    .pipe($.plumber())
     .pipe($.sourcemaps.init())
-    .pipe($.babel())
+    .pipe($.babel({
+      presets: ['es2015']
+    }))
     .pipe($.sourcemaps.write({includeContent: false, sourceRoot: '/es6'}))
     .pipe(gulp.dest('.tmp/es6'))
     .pipe(browserSync.reload({
@@ -78,6 +126,7 @@ ccDeps.push('es6');
 /* jade */
 gulp.task('jade', function() {
   return gulp.src('src/jade/publishs/**/*.jade')
+    .pipe($.plumber())
     .pipe($.jade({
       pretty: true
     }))

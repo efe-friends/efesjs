@@ -4,16 +4,13 @@
     "env": {
         "browser": true,
         "node": true,
-        "amd": true
+        "amd": true,
+        "es6": true,
     },
 
     "extends": "eslint:recommended",
 
-    "globals": {
-        "edj": true,
-        "jQuery": true,
-        "console": true
-    },
+    "globals": {},
 
     "rules": {
         "no-console": 0,

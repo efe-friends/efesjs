@@ -4,7 +4,7 @@
     var async = require('async');
     var chalk = require('chalk');
     var fs = require('fs');
-    var path = require('../util/path.js');
+    var path = require('../utils/path.js');
     var prompt = require('prompt');
     var getDirName = require('path').dirname;
     var mkdirp = require('mkdirp');
