@@ -1,8 +1,6 @@
 "use strict";
 /*
-1、搜索有修改的目录中是否包含 .efesconfig 文件。
-2、对 .efesconfig文件当前目录下，和子目录下的文件进行检索
-3、找到.html、.htm文件，检索这些文件中引用的js、css的url 是否添加了 ‘?VERSION’ 字符串
+ * 针对.html、.htm文件，检索这些文件中引用的js、css的url 是否添加了 ‘?VERSION’ 字符串
  */
 (() => {
   const chalk = require('chalk');
@@ -14,13 +12,16 @@
 
   const stReg = /('(\\.|[^\\'])*'|"(\\.|[^\\"])*")/ig;
 
-  const verString = "VERSION";
-
   const trim = function(str) {
     return str.replace(/^"/, '').replace(/^'/, '').replace(/"$/, '').replace(/'$/, '');
   };
 
-  class CheckVersion {
+  class VersionString {
+
+    constructor() {
+      this.illSource = [];
+      this.verString = 'VERSION';
+    }
 
     _reporter(messages, file) {
 
@@ -49,15 +50,20 @@
       console.log(chalk.red.bold('\n\u2716 ' + messages.length + ' ill version string'));
     }
 
-    checkVer(file) {
-      this.scanHtml(file);
+    checkVer(repo, dirname, options) {
+
+      if (options && options.string) {
+        this.verString = options.string
+      }
+
+      this.scanHtml(repo, dirname);
     }
 
     _isIllVersion(uri) {
       let _url = url.parse(uri);
 
       if (_url.host === null || _url.host.indexOf('h5.edaijia.cn') !== -1 || _url.host.indexOf('h5.d.edaijia.cn') !== -1) {
-        if (_url.query && _url.query.indexOf(verString) !== -1) {
+        if (_url.search && _url.search == `?${this.verString}`) {
           return false;
         }
         return true;
@@ -66,27 +72,34 @@
       return false;
     }
 
+    _pushIllSource(uri, type) {
+      let _this = this;
+
+      if (_this._isIllVersion(uri)) {
+
+        _this.illSource.push({
+          type: 'js',
+          uri: uri
+        });
+
+      }
+
+    }
+
     _domAnalyse(window, res) {
 
       let _this = this;
 
       let $ = require('jquery')(window);
 
-      let source = [];
+      //let source = [];
+      _this.illSource = [];
 
       $("script").each(function() {
         if ($(this).attr('src')) {
 
-          let uri = $(this).attr('src')
+          _this._pushIllSource($(this).attr('src'), 'js');
 
-          if (_this._isIllVersion(uri)) {
-
-            source.push({
-              type: 'js',
-              uri: uri
-            });
-
-          }
         } else {
 
           var script = $(this).text();
@@ -97,53 +110,32 @@
             let _url = url.parse(trim(str));
 
             if (/\.js$/i.test(_url.pathname)) {
-              let uri = trim(str);
 
-              if (_this._isIllVersion(uri)) {
-
-                source.push({
-                  type: 'js',
-                  uri: uri
-                });
-
-              }
+              _this._pushIllSource(trim(str), 'js');
 
             } else if (/\.css$/i.test(_url.pathname)) {
 
-              let uri = trim(str);
+              _this._pushIllSource(trim(str), 'css');
 
-              if (_this._isIllVersion(uri)) {
-
-                source.push({
-                  type: 'css',
-                  uri: uri
-                });
-
-              }
             }
           });
         }
       });
 
       $("[rel=stylesheet]").each(function() {
-        let uri = $(this).attr('href');
 
-        if (_this._isIllVersion(uri)) {
-
-          source.push({
-            type: 'css',
-            uri: uri
-          });
-        }
+        _this._pushIllSource($(this).attr('href'), 'css');
 
       });
 
-      return source;
+      return _this.illSource;
     }
 
-    scanHtml(file, dirname) {
+    scanHtml(repo, dirname) {
 
       let _this = this;
+
+      let file = path.join(dirname, repo);
 
       let errorLen = 0;
 
@@ -154,20 +146,24 @@
       jsdom.env(html, function(error, window) {
         let $ = require('jquery')(window);
 
-        let source = _this._domAnalyse(window, file);
+        _this._domAnalyse(window, file);
 
-        if (source.length > 0) {
-          _this._reporter(source, file);
+        if (_this.illSource.length > 0) {
+          _this._reporter(_this.illSource, repo);
         }
       });
     }
 
 
-    upVersion(repo, dirname) {
-
-      let file = path.join(dirname, repo);
+    upVersion(repo, dirname, options, callback) {
 
       let _this = this;
+
+      if (options && options.string) {
+        _this.verString = options.string
+      }
+
+      let file = path.join(dirname, repo);
 
       let html = fs.readFileSync(file, {
         encoding: 'utf8'
@@ -175,15 +171,15 @@
 
       jsdom.env(html, function(error, window) {
 
-        let source = _this._domAnalyse(window, file);
+        _this._domAnalyse(window, file);
 
-        if (source.length > 0) {
+        if (_this.illSource.length > 0) {
 
-          console.log(chalk.yellow(`更新文件『${repo}』中js、css的 VERSION 字符串...`));
+          console.log(chalk.yellow(`更新文件『${repo}』中js、css的VERSION String...`));
 
-          source.map(function(res) {
+          _this.illSource.map(function(res) {
             let _uri = url.parse(res.uri)
-            _uri.search = `?${verString}`;
+            _uri.search = `?${_this.verString}`;
             let _url = url.format(_uri);
             console.log(chalk.green(`${res.uri} to ${_url}`));
             html = html.replace(res.uri, url.format(_url));
@@ -196,10 +192,12 @@
         window.close();
 
       });
+
+      callback(null, _this.illSource);
     }
 
   }
 
-  module.exports = new CheckVersion();
+  module.exports = new VersionString();
 
 })();

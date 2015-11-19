@@ -2,27 +2,19 @@
 /**
  * 1、检索当前目录下的所有文件（src, node_modules除外）。
  * 2、找到.html、.htm等文件，给这样文件中引用的js、css的url后添加 ‘?VERSION’ 字符串
- * 3、为图片增加版本号。
  */
 (() => {
 
   const async = require('async');
   const chalk = require('chalk');
-  const jsdom = require('jsdom');
-  const url = require('url');
-  const childProcess = require('child_process');
-  const fs = require('fs');
-  const fsp = require('../utils/fs');
   const path = require('../utils/path.js');
-  const table = require('text-table');
-  //const glob = require('glob-all');
   const walk = require('../utils/walk.js');
 
-  const ckver = require('./model/version/ckver.js');
+  const verString = require('./model/version/VersionString.js');
 
   exports.ver = function(options) {
 
-    console.log('Adding VERSION string...');
+    console.log('添加/替换VERSION String...');
 
     let dirname = process.cwd();
 
@@ -31,7 +23,7 @@
     //  '!**/node_modules/**/*'
     //]);
 
-    let regIncludes = [/\.(x|s|d)?html$/i];
+    let regIncludes = [/\.(x|s|d)?html?$/i];
 
     let regExcludes = [/node_modules/, /\.git/, /\.tmp/];
 
@@ -40,6 +32,8 @@
       if (err) {
         throw err;
       }
+
+      let illLength = 0;
 
       async.each(results, function(repo, callback) {
 
@@ -50,13 +44,17 @@
           console.log('jade');
 
         } else {
-          ckver.upVersion(repo, dirname);
+          verString.upVersion(repo, dirname, options, (error, illSource) => {
+            illLength += illSource ? illSource.length : 0;
+          });
         }
 
         callback();
 
       }, function() {
-
+        if (illLength == 0) {
+          console.log(chalk.green('虽然不想承认，但是真没找到需要添加/替换VERSION String的文件...'))
+        }
       });
 
     });

@@ -1,10 +1,10 @@
 "use strict";
 
-(function() {
-  var program = require('commander');
-  var pkg = require('../../package.json');
+(() => {
+  const program = require('commander');
+  const pkg = require('../../package.json');
 
-  var run = function(command) {
+  const run = function(command) {
     require('./' + command.name())[command.name()](command.opts());
   };
 
@@ -46,8 +46,8 @@
 
   program
     .command('ver')
-    .description('为引用的js、css、图片增加版本号')
-    .option('-t, --type', '限定需要增加版本号的类型，默认：js css img')
+    .description('为引用的js、css增加版本号')
+    .option('-s, --string [value]', '设定需要增加版本号字符串，默认：VERSION')
     .action(run);
 
   /*
@@ -72,8 +72,8 @@
   program
     .command('scaffold')
     .description('自动生成前端代码脚手架')
-    .option('-t, --type', '')
-    .option('-f, --force', 'force run on a non empty directory')
+    .option('-t, --type [value]', '脚手架类型')
+    .option('-f, --force', '在非空目录强制执行')
     .action(run);
 
   /*program

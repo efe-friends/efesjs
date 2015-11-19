@@ -11,7 +11,7 @@
   //var glob = require('glob');
 
   var linters = require('./model/linters/lint.js');
-  var ckver = require('./model/version/ckver.js');
+  var verString = require('./model/version/VersionString.js');
   //var ckphoto = require('./model/version/ckphoto.js');
 
   var rFileStatus = /^([A-Z])\s+(.+)$/;
@@ -140,7 +140,7 @@
         }
 
         if (/^(x|d|s)?html?$/i.test(suffix)) {
-          ckver.checkVer(filename);
+          verString.checkVer(filename.replace(dirname+path.sep,''), dirname);
         }
 
         if (/^(png|jpg|jpeg|gif)$/i.test(suffix)) {
@@ -184,20 +184,6 @@
       if (!lintErrors && imgErrors.length === 0) {
         console.log("\n" + chalk.white.bgGreen.bold('OKAY'));
       }
-
-      //console.log('\n' + 'Check JS/CSS VERSION string...');
-
-      /*async.each(changedDir, function(dirname, callback) {
-          async.each(fs.readdirSync(dirname), function(repo, subcallback) {
-              if (path.extname(repo).slice(1) === 'html') {
-                  ckver.checkVer(path.join(dirname, repo));
-              }
-              subcallback();
-          }, function() {
-              callback();
-          });
-      }, function() {
-      });*/
 
       return lintErrors;
     });

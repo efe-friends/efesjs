@@ -2,6 +2,7 @@
 
 var gulp = require('gulp'),
   browserSync = require('browser-sync'),
+  pngquant = require('imagemin-pngquant'),
   merge = require('merge-stream'),
   fs = require('fs');
 
