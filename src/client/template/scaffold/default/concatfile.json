@@ -7,5 +7,6 @@
     "styles/index.css": [
       "src/css/index.css"
     ]
-  }
+  },
+  "imgMinIgnore":[]
 }

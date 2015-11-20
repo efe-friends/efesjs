@@ -16,7 +16,7 @@ var ccDeps = [];
 /* imagemin */
 gulp.task('imagemin', function() {
   var srcs = ['src/images/**/*'];
-  if (concatfile.imgMinIgnore.length > 0) { //获取不需要压缩的图片列表，从压缩目录中排除。
+  if (concatfile.imgMinIgnore&&concatfile.imgMinIgnore.length > 0) { //获取不需要压缩的图片列表，从压缩目录中排除。
     for (var i = 0; i < concatfile.imgMinIgnore.length; i++) {
       srcs.push("!" + concatfile.imgMinIgnore[i]);
     }

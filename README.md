@@ -1,7 +1,8 @@
 # efes 
 e代驾前端助手 edaijia fe assistant<br>
 <br>
-PS：efes的git commit检测规则中，eslint、csslint，和图片必须add提交为强制检测，error将导致提交失败。version字符串检测只做提示，供开发人员参考。
+PS：efes的git commit检测规则中，eslint、csslint，和图片必须add提交为强制检测，error将导致提交失败。version字符串检测只做提示，供开发人员参考。<br>
+PS：本助手是在前端自动化工具 [gsp](https://github.com/viclm/gsp) 的基础上做的定制开发。在此感谢 gsp 的开发者 [viclm](https://github.com/viclm)
 
 ## node 版本要求
 
@@ -32,6 +33,18 @@ efes hook
 <br>
 <br>
 此命令会在.git/hooks目录下添加pre-commit文件，在git commit时，会触发此文件中的操作，进行lint、图片Add提交、version字符串检查（只针对新添加或修改的文件）。
+
+## ver 
+为引用的js、css增加版本号字符串，默认：VERSION<br>
+<br>
+<br>
+<code>
+efes ver [-s versionstring]
+// -s 自定义版本字符串。
+</code>
+<br>
+<br>
+此命令会在会遍历当前目录和子目录下所有的html文件，监测使用相对路径的js和css为其添加/替换版本号字符串。
 
 ## init
 初始化项目验证规则/脚手架<br>
@@ -84,10 +97,12 @@ gulp
         |— coffee           coffee文件开发目录
         |— es6              es6文件开发目录
         |— js               js文件开发目录
+        |- image            图片文件（将自动压缩至根目录下的images文件夹中。对不需要压缩的文件在concatfile.json中配置）
         |— less             less文件开发目录
             |— includes     less引用文件目录，如：header.less等。
             |— publishs     less发布文件目录，如：index.less等。concatfile.json中只能配置合并此目录下的文件
         |— css              css文件开发目录
+        |- html             html文件开发目录，将自动复制至根目录。
         |— jade             jade文件开发目录，jade不需要在concatfile.json中配置合并
             |— includes     jade引用文件目录，如：header.jade等
             |— publishs     jade发布目录文件
@@ -119,6 +134,18 @@ Js​Format：https://packagecontrol.io/packages/JsFormat<br>
   只需要<br>
   git config core.quotepath false<br>
   core.quotepath设为false的话，就不会对0x80以上的字符进行quote。中文显示正常<br>
+
+## v0.1.10更新
+1、新增替换版本号字符串命令『efes ver』。<br>
+2、gulp提供图片压缩支持（使用pngquant压缩引擎）。<br>
+3、src目录中增加html，方便自动刷新。<br>
+bugs fixed<br>
+1、修复gulp编译es6时的错误。<br>
+2、优化commit的速度。
+
+## v0.1.9更新
+bugs fixed<br>
+1、修复windows下不能init不能生成文件、目录的bug。
 
 
 ## v0.1.8更新

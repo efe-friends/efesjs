@@ -69,7 +69,7 @@
       .description('clone/update all the git repositories')
       .action(run);*/
 
-  program
+  /*program
     .command('scaffold')
     .description('自动生成前端代码脚手架')
     .option('-t, --type [value]', '脚手架类型')
@@ -89,12 +89,12 @@
       .description('run test specs against chaned files')
       .action(run);*/
 
-  program
+  /*program
     .command('watch')
     .description('run tasks whenever watched files are added, changed or deleted')
     .option('--cwd <dir>', 'set the working directory, default is process.cwd()')
     .option('--livereload', 'enable LiveReload')
-    .action(run);
+    .action(run);*/
 
   program.parse(process.argv);
 

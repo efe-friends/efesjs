@@ -110,6 +110,12 @@
         }, {
           'name': '唤起客户端',
           checked: true
+        }, {
+          'name': '重力感应',
+          checked: true
+        }, {
+          'name': '横屏提示',
+          checked: true
         }],
         'default': true,
         'required': true
@@ -173,6 +179,10 @@
         _this.info.modScroll = answersMobile.check.indexOf('滑屏') !== -1;
 
         _this.info.modCallClient = answersMobile.check.indexOf('唤起客户端') !== -1;
+
+        _this.info.modWeight = answersMobile.check.indexOf('重力感应') !== -1;
+
+        _this.info.modLandscape = answersMobile.check.indexOf('横屏提示') !== -1;
 
         _this._writeExLanguage();
 
