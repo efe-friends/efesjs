@@ -1,0 +1,23 @@
+{
+  "name": "ver",
+  "version": "0.1",
+  "author": "eagle.h",
+  "description": "检查或替换(-r)html中引用的js、css增加版本号。",
+  "options": [{
+    "flags":"-s, --string [value]",
+    "description": "自定义VERSION字符串。"
+  }, {
+    "flags":"-r, --replace",
+    "description": "替换不规范的VERSION字符串。"
+  }, {
+    "flags":"-d, --dir [value]",
+    "description": "需要处理的目录。"
+  }, {
+    "flags":"-f, --file [value]",
+    "description": "需要处理的文件。"
+  }, {
+    "flags":"--color"
+  }],
+  "requires": [],
+  "packages": []
+}

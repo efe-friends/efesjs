@@ -1,0 +1,13 @@
+{
+  "name": "webp",
+  "alias": "wp",
+  "version": "0.1",
+  "author": "eagle.h",
+  "description": "将图片转换为webp格式。",
+  "options": [{
+    "flags": "-c, --color"
+  }],
+  "requires": [],
+  "packages": ["imagemin", "imagemin-webp"],
+  "installed": false
+}

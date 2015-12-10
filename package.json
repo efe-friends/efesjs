@@ -1,8 +1,8 @@
 {
   "name": "efes",
-  "version": "0.1.10",
+  "version": "0.1.12",
   "description": "edaijia fe assistant",
-  "main": "lib/client/efes",
+  "main": "dist/efes.js",
   "bin": {
     "efes": "bin/efes"
   },
@@ -10,7 +10,7 @@
     "node": ">= 4.1.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prepublish": "gulp build"
   },
   "repository": {
     "type": "git",
@@ -25,9 +25,9 @@
     "dot": "^1.0.3",
     "eslint": "^0.24.1",
     "forever": "^0.11.1",
-    "glob": "^3.2.11",
     "imagemin": "^4.0.0",
     "imagemin-pngquant": "^4.2.0",
+    "imagemin-webp": "^3.1.0",
     "inquirer": "^0.9.0",
     "jquery": "^2.1.4",
     "jsdom": "^7.0.2",
@@ -38,6 +38,7 @@
     "nopt": "^2.2.1",
     "prompt": "~0.2.13",
     "psi": "^1.0.6",
+    "spritesmith": "^3.0.0",
     "text-table": "^0.2.0",
     "tiny-lr": "^0.1.5",
     "xml2js": "^0.4.6"

@@ -1,0 +1,12 @@
+{
+  "name": "tinypng",
+  "alias": "tp",
+  "version": "0.1",
+  "author": "eagle.h",
+  "description": "压缩图片。",
+  "options": [{
+    "flags":"-c, --color"
+  }],
+  "requires": [],
+  "packages": []
+}

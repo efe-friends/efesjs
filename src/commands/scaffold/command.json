@@ -1,0 +1,18 @@
+{
+  "name": "scaffold",
+  "alias": "sc",
+  "version": "0.1",
+  "author": "eagle.h",
+  "description": "自动生成前端代码脚手架。",
+  "options": [{
+    "flags": "-f, --force",
+    "description": "在非空目录强制执行"
+  }, {
+    "flags": "-t, --type [value]",
+    "description": "脚手架类型"
+  }, {
+    "flags": "-c, --color"
+  }],
+  "requires": [],
+  "packages": []
+}

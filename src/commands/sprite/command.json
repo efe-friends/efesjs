@@ -1,0 +1,12 @@
+{
+  "name": "sprite",
+  "alias": "sp",
+  "version": "0.1",
+  "author": "eagle.h",
+  "description": "将图片合并为精灵图。",
+  "options": [{
+    "flags":"-c, --color"
+  }],
+  "requires": [],
+  "packages": []
+}

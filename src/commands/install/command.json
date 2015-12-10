@@ -1,0 +1,14 @@
+{
+  "name": "install",
+  "version": "0.1",
+  "author": "eagle.h",
+  "description": "『git commit』时，触发相应检查。",
+  "options": [{
+    "flags": "-f, --force",
+    "description": "强制重新安装。"
+  }, {
+    "flags": "--cmd [value]"
+  }],
+  "requires": [],
+  "packages": []
+}

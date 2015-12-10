@@ -5,22 +5,27 @@ var gulp = require('gulp');
 // Load plugins
 var $ = require('gulp-load-plugins')();
 
-gulp.task('clean', require('del').bind(null, ['lib']));
+gulp.task('clean', require('del').bind(null, ['dist']));
 
 /* es6 */
 gulp.task('es6', function() {
-  return gulp.src(['src/**/*.js','!src/client/template/**/*.js', '!src/libs/**/*.js'])
+  return gulp.src(['src/**/*.js','!src/commands/scaffold/template/**/*.js', '!src/libs/**/*.js'])
     .pipe($.plumber())
     .pipe($.babel({
       presets: ['es2015']
     }))
     .on('error', $.util.log)
-    .pipe(gulp.dest('lib'));
+    .pipe(gulp.dest('dist'));
 });
 
 gulp.task('copy', function(){
-  return gulp.src(['src/client/template/**/*', 'src/libs/**/*'])
-    .pipe(gulp.dest('lib/client/template'));
+
+  gulp.src(['!src/**/*.js','src/**/*'])
+    .pipe(gulp.dest('dist'));
+
+  gulp.src(['src/client/template/**/*'])
+    .pipe(gulp.dest('dist/client/template'));
+
 });
 
 gulp.task('watch', ['es6', 'copy'], function() {

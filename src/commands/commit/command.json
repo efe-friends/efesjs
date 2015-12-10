@@ -1,0 +1,12 @@
+{
+  "name": "commit",
+  "alias": "cm",
+  "version": "0.1",
+  "author": "eagle.h",
+  "description": "『git commit』时，触发相应检查。",
+  "options": [{
+    "flags": "-c, --color"
+  }],
+  "requires": ["eslint", "csslint", "ver"],
+  "packages": []
+}

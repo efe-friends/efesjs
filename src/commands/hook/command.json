@@ -1,0 +1,10 @@
+{
+  "name": "hook",
+  "alias": "hk",
+  "version": "0.1",
+  "author": "eagle.h",
+  "description": "为git添加pre commit操作",
+  "options": [],
+  "requires": [],
+  "packages": []
+}

@@ -76,7 +76,7 @@
 
           for (; i < len; i++) {
             if (file.match(regIncludes[i])) {
-              results.push(file.replace(process.cwd() + path.sep, ''));
+              results.push(file.replace(dir + path.sep, ''));
             }
           }
 
