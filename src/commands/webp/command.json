@@ -6,6 +6,9 @@
   "description": "将图片转换为webp格式。",
   "options": [{
     "flags": "-c, --color"
+  }, {
+    "flags":"-f, --file [value]",
+    "description": "需要处理的文件。"
   }],
   "requires": [],
   "packages": ["imagemin", "imagemin-webp"],
