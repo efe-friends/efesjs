@@ -1,0 +1,111 @@
+.page {
+  position: absolute;
+  visibility: hidden;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.pt-page-current {
+  visibility: visible;
+  display: block;
+  z-index: 1;
+}
+.iter-pre, .iter-next {
+  position: absolute;
+  text-align: center;
+  /*background: url(../images/arrow.png) center no-repeat;*/
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  line-height: 6rem;
+  padding-top:2.5rem;
+  overflow: hidden;
+  bottom: 2rem;
+  width: 2.5rem;
+  height: 0;
+  left: 50%;
+  -webkit-transform: translate(-50%, 0);
+  -o-transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
+  -webkit-animation: i-next 2s ease-in-out .4s infinite;
+  -o-animation: i-next 2s ease-in-out .4s infinite;
+  animation: i-next 2s ease-in-out .4s infinite;
+  z-index: 200;
+}
+.iter-pre {
+  top: 2rem;
+  -webkit-transform: translate(-50%, 0) rotate(180deg);
+  -o-transform: translate(-50%, 0) rotate(180deg);
+  transform: translate(-50%, 0) rotate(180deg);
+  -webkit-animation: i-pre 2s ease-in-out .4s infinite;
+  -o-animation: i-pre 2s ease-in-out .4s infinite;
+  animation: i-pre 2s ease-in-out .4s infinite;
+}
+@-webkit-keyframes i-next {
+  0% {
+    opacity: 1;
+  }
+  10% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes i-next {
+  0% {
+    opacity: 1;
+  }
+  10% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-webkit-keyframes i-pre {
+  0% {
+    opacity: 1;
+  }
+  10% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes i-pre {
+  0% {
+    opacity: 1;
+  }
+  10% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}

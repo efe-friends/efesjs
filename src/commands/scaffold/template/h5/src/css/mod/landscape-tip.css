@@ -1,0 +1,28 @@
+.mod-landscape-tip{
+  background: #349;
+  width: 100%;
+  height: 100%;
+  display: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1001;
+}
+
+.mod-landscape-tip span {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 3.4rem;
+  color: #fff;
+}
+
+.landscape .mod-landscape-tip{
+  display: table;
+}
+
+.portrait .mod-landscape-tip{
+  display: none;
+}

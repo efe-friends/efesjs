@@ -121,7 +121,7 @@
           var script = $(this).text();
           var strings = script.match(stReg);
 
-          strings.map(function(str) {
+          strings && strings.map(function(str) {
 
             let _url = url.parse(trim(str));
 

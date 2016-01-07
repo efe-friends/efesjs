@@ -23,8 +23,8 @@ gulp.task('copy', function(){
   gulp.src(['!src/**/*.js','src/**/*'])
     .pipe(gulp.dest('dist'));
 
-  gulp.src(['src/client/template/**/*'])
-    .pipe(gulp.dest('dist/client/template'));
+  gulp.src(['src/commands/scaffold/template/**/*'])
+    .pipe(gulp.dest('dist/commands/scaffold/template'));
 
 });
 

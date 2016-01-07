@@ -2,7 +2,7 @@
 e代驾前端助手 edaijia fe assistant<br>
 <br>
 PS：efes的git commit检测规则中，eslint、csslint，和图片必须add提交为强制检测，error将导致提交失败。version字符串检测只做提示，供开发人员参考。<br>
-PS：本助手是在前端自动化工具 [gsp](https://github.com/viclm/gsp) 的基础上做的定制开发。在此感谢 gsp 的开发者 [viclm](https://github.com/viclm)
+PS：本助手是初期是在前端自动化工具 [gsp](https://github.com/viclm/gsp) 的基础上做的定制开发。后期对整个结构做了重构，采用类REST风格，每个命令作为一个独立的模块（放置在commonds目录下，通过load自动加载）。在此感谢 gsp 的开发者 [viclm](https://github.com/viclm)
 
 ## node 版本要求
 
@@ -25,7 +25,7 @@ cnpm install -g efes
 ## hook 
 初始化git commit提交验证<br>
 <br>
-git根目录下运行下面的命令<br>
+git仓库根目录下运行下面的命令<br>
 <br>
 <code>
 efes hook
@@ -84,6 +84,7 @@ gulp
 #### a 生成文件目录结构
     |— fonts                字体
     |— images               图片
+    |- webps                webp图片目录
     |— styles               样式
     |— scripts              脚本
     |— concatfile.json      合并配置文件
@@ -97,7 +98,8 @@ gulp
         |— coffee           coffee文件开发目录
         |— es6              es6文件开发目录
         |— js               js文件开发目录
-        |- image            图片文件（将自动压缩至根目录下的images文件夹中。对不需要压缩的文件在concatfile.json中配置）
+        |- icons            icons精灵图小图片文件目录
+        |- images           图片文件（将自动压缩至根目录下的images文件夹中。对不需要压缩的文件在concatfile.json中配置）
         |— less             less文件开发目录
             |— includes     less引用文件目录，如：header.less等。
             |— publishs     less发布文件目录，如：index.less等。concatfile.json中只能配置合并此目录下的文件
@@ -112,6 +114,7 @@ gulp
 2)、根据concatfile.json配置的内容，自动合并js(coffee、es6)、css(less)<br>
 3)、支持sourcemap功能。<br>
 4)、文件有改变时自动刷新页面。<br>
+5)、图片自动压缩；icons精灵图自动合并；自动转换为webp图片
 
 ## Sublime 配套插件(建议安装Sublime3)
 
@@ -126,6 +129,61 @@ SublimeLinter-csslint：https://sublime.wbond.net/packages/SublimeLinter-csslint
 Sublime​Linter-contrib-eslint：https://packagecontrol.io/packages/SublimeLinter-contrib-eslint<br>
 Js​Format：https://packagecontrol.io/packages/JsFormat<br>
 
+## h5 脚手架包含功能
+1、loading模板<br>
+2、横屏提示模板<br>
+3、重力感应示例<br>
+4、webp监测，自动替换<br>
+5、唤起客户端或跳转到下载<br>
+PS：由于使用的是WebViewJavascriptBridge，作为和客户端通讯的规则，调用时需要和客户端定好WebViewJavascriptBridge接口<br>
+6、客户端内部调用原生功能插件<br>
+PS：经测试，ios9和Android有新的测试，现有代码只能在微信中唤起客户端。
+
+## h5 脚手架目录结构
+    |— fonts                字体
+    |— images               图片
+    |— styles               样式
+    |— scripts              脚本
+    |— concatfile.json      合并配置文件
+    |— gulpfile.js gulp     任务配置文件
+    |— package.json         npm配置文件
+    |— .eslintrc            eslint规则文件
+    |— .csslintrc           csslint规则文件
+    |— .efesconfig          efes项目配置文件
+    |— index.html           首页
+    |— src                  开发目录
+        |— coffee           coffee文件开发目录
+        |— es6              es6文件开发目录
+        |— js               js文件开发目录
+            |- index.js
+            |- mod
+                |- call-client.js       客户端内部调用原生功能
+                |- download.js          唤起客户端或跳转到下载
+                |- landscape-tip.js     横屏提示js
+                |- loading.js           loading
+                |- transation.js        滑屏js
+                |- webp.js              webp监测，手动触发替换
+                |- webp.lazy.js         webp监测，自动触发替换，有lazy效果
+                |- weight.js            重力感应示例
+        |- images            图片文件（将自动压缩至根目录下的images文件夹中。对不需要压缩的文件在concatfile.json中配置）
+        |— less             less文件开发目录
+            |— includes     less引用文件目录，如：header.less等。
+            |— publishs     less发布文件目录，如：index.less等。concatfile.json中只能配置合并此目录下的文件
+        |— css              css文件开发目录
+            |- index.css
+            |- mod
+                |- animations.css       滑屏css
+                |- swipe-page.css       滑屏css
+                |- landscape-tip.css    横屏提示css
+                |- loading.css          loading
+                |- weight.css           重力感应示例
+        |- html             html文件开发目录，将自动复制至根目录。
+        |— jade             jade文件开发目录，jade不需要在concatfile.json中配置合并
+            |— includes     jade引用文件目录，如：header.jade等
+            |— publishs     jade发布目录文件
+
+
+
 ## git commit 中文乱码解决方案
 
   git 中文文件名 乱码 mac<br>
@@ -134,6 +192,16 @@ Js​Format：https://packagecontrol.io/packages/JsFormat<br>
   只需要<br>
   git config core.quotepath false<br>
   core.quotepath设为false的话，就不会对0x80以上的字符进行quote。中文显示正常<br>
+
+## v0.1.14更新
+1、添加 efes scaffold 脚手架h5模块代码
+2、添加图片 webp 自动转换功能
+
+## v0.1.13更新
+脚手架添加icons精灵图自动合并功能。
+
+## v0.1.12更新
+修复init生成项目初始文件时，部分文件不能正确生成bug
 
 ## v0.1.10更新
 1、新增替换版本号字符串命令『efes ver』。<br>

@@ -95,8 +95,20 @@
   exports.pWriteFile = function(filename, retmpl, data) {
     return function(callback) {
 
-      template.config('extname', path.extname(filename));
-      var tmpl = template(retmpl.replace(path.extname(filename), ''), data);
+      var tmpl = null;
+
+      var _extname = path.extname(filename);
+
+      if (/^\.(jpg|png|gif|jpeg)$/i.test(_extname)) {
+        tmpl = fs.readFileSync(retmpl);
+      }
+      else {
+
+        template.config('extname', path.extname(filename));
+
+        tmpl = template(retmpl.replace(path.extname(filename), ''), data);
+
+      }
 
       var dir = getDirName(filename);
       dir = dir.replace(/^\//, ''); //windows下要删掉开头的 / 。

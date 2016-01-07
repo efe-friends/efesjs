@@ -4,7 +4,6 @@
 
   const async = require('async');
   const chalk = require('chalk');
-  const template = require('art-template');
   const fs = require('fs');
 
   const fsp = require('../../../utils/fs.js');
@@ -31,6 +30,28 @@
     }
     if (!data.exJade) {
       regExcludes.push(/jade/);
+    }
+    if (!data.exIcons) {
+      regExcludes.push(/icons/);
+    }
+    if (!data.modCallClient) {
+      regExcludes.push(/call-client/);
+    }
+    if (!data.modDownload) {
+      regExcludes.push(/download/);
+    }
+    if (!data.modLandscape) {
+      regExcludes.push(/landscape-tip/);
+    }
+    if (!data.modScroll) {
+      regExcludes.push(/transation/);
+      regExcludes.push(/animations/);
+    }
+    if (!data.modWebp) {
+      regExcludes.push(/webp/);
+    }
+    if (!data.modWeight) {
+      regExcludes.push(/weight/);
     }
 
     walk(dirname, regIncludes, regExcludes, function(err, results) {

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+  <meta http-equiv="cleartype" content="on">
+  <link rel="stylesheet" href="/core/libs/reset.min.css?VERSION">
+  <link rel="stylesheet" href="styles/index.css?VERSION"></head>
+<body>
+
+  <!-- Add your site or application content here -->
+  <div class="loading" style="display:none;"></div>
+
+  {{if modScroll}}
+  <div class="content" id="main">
+    <div class="page p1">
+      <div class="wraper">
+        page1:loading唤起、影藏
+        <div class="btn-wraper">
+          <span class="btn J-s-loading">s-loading</span>
+          <span class="btn J-h-loading">h-loading</span>
+        </div>
+        <img lsrc="images/p1-bg.png">
+      </div>
+      <a class="iter-next" lsrc="images/arrow.png">next</a>
+    </div>
+    <div class="page p2">
+      page2:重力感应
+      <img lsrc="images/p2-bg.png">
+      {{if modWeight}}
+      <div class="mod-weight">
+        <div class="mod-weight-con">
+          <div class="mod-weight-cube">
+            <div class="front">
+              <span>重力感应</span>
+            </div>
+            <div class="back">
+              <span>后</span>
+            </div>
+            <div class="left">
+              <span>左</span>
+            </div>
+            <div class="right">
+              <span>右</span>
+            </div>
+            <div class="top">
+              <span>上</span>
+            </div>
+            <div class="bottom">
+              <span>下</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{/if}}
+      <a class="iter-next" lsrc="images/arrow.png">next</a>
+    </div>
+    <div class="page p3">
+      page3
+      <img lsrc="images/p3-bg.png">
+      <a class="iter-next" lsrc="images/arrow.png">next</a>
+    </div>
+    <div class="page p4">
+      page4:唤起客户端或跳转到下载
+      <img lsrc="images/p4-bg.png">
+      {{if modDownload}}
+      <div class="btn-wraper">
+        <a class="btn J-download">download</a>
+      </div>
+      {{/if}}
+      <a class="iter-next" lsrc="images/arrow.png">next</a>
+    </div>
+    <div class="page p5">
+      page5:客户端内部调用原生功能
+      <img lsrc="images/p5-bg.png">
+      {{if modCallClient}}
+      <div class="btn-wraper">
+        <a class="btn J-call-client">call client</a>
+      </div>
+      {{/if}}
+      <a class="iter-pre" lsrc="images/arrow.png">pre</a>
+      page5
+    </div>
+  </div>
+  {{else}}
+  <div class="content" id="main">
+    <div class="wraper">
+      <div class="btn-wraper" style="top:35%;height: auto;z-index: 150;">
+        <span class="btn J-s-loading">s-loading</span>
+        <span class="btn J-h-loading">h-loading</span>
+      {{if modDownload}}
+        唤起客户端或跳转到下载
+        <a class="btn J-download">download</a>
+      {{/if}}
+      {{if modCallClient}}
+        客户端内部调用原生功能
+        <a class="btn J-call-client">call client</a>
+      {{/if}}
+      </div>
+      {{if modWeight}}
+      重力感应
+      <div class="mod-weight">
+        <div class="mod-weight-con" style="top:80%">
+          <div class="mod-weight-cube">
+            <div class="front">
+              <span>重力感应</span>
+            </div>
+            <div class="back">
+              <span>后</span>
+            </div>
+            <div class="left">
+              <span>左</span>
+            </div>
+            <div class="right">
+              <span>右</span>
+            </div>
+            <div class="top">
+              <span>上</span>
+            </div>
+            <div class="bottom">
+              <span>下</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{/if}}
+      <img style="width:100%;height: 70rem;" lsrc="images/p1-bg.png">
+      <img style="width:100%;height: 70rem;" lsrc="images/p2-bg.png">
+      <img style="width:100%;height: 70rem;" lsrc="images/p3-bg.png">
+      <img style="width:100%;height: 70rem;" lsrc="images/p4-bg.png">
+      <img style="width:100%;height: 70rem;" lsrc="images/p5-bg.png">
+      <img style="width:100%;height: 70rem;" lsrc="images/p6-bg.png">
+    </div>
+  </div>
+  {{/if}}
+
+  {{if modLandscape}}
+  <div class="mod-landscape-tip">
+    <span>横屏提示</span>
+  </div>
+  {{/if}}
+
+
+<script type="text/javascript" src="/core/libs/zepto.min.js?VERSION"></script>
+{{if modWeixin}}
+<script type="text/javascript" src="/core/libs/jweixin.js?VERSION"></script>
+{{/if}}
+<script type="text/javascript" src="/core/libs/common-1.0.js?VERSION"></script>
+
+{{if modWeixin}}
+<script type="text/javascript">
+  var wxData = {
+    title: '分享标题', // 分享标题 建议为15个汉字
+    link: 'http://'+location.host+location.pathname,// 分享地址
+    desc: '分享描述',// 分享描述 建议为28个汉字
+    imgUrl: 'http://'+location.host+location.pathname+'images/share.jpg', // 分享图标 建议高宽300*300
+    success: function () {
+    },
+    cancel: function () {
+    }
+  };
+</script>
+{{/if}}
+<script type="text/javascript" src="scripts/index.js?VERSION"></script>
+</body>
+</html>

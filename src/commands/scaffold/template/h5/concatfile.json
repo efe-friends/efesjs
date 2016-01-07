@@ -1,0 +1,25 @@
+{
+  "example": "https://github.com/edaijia-fe/efes-scaffold-example",
+  "pkg": {
+    "scripts/index.js": [
+      {{if modWebp&&modScroll}}"src/js/mod/webp.js",{{/if}}
+      {{if modWebp&&!modScroll}}"src/js/mod/webp.lazy.js",{{/if}}
+      {{if modWeight}}"src/js/mod/weight.js",{{/if}}
+      {{if modLandscape}}"src/js/mod/landscape-tip.js",{{/if}}
+      {{if modCallClient}}"src/js/mod/call-client.js",{{/if}}
+      {{if modDownload}}"src/js/mod/download.js",{{/if}}
+      {{if modScroll}}"src/js/mod/transation.js",{{/if}}
+      "src/js/mod/loading.js",
+      "src/js/index.js"
+    ],
+    "styles/index.css": [
+      "src/css/mod/loading.css",
+      {{if modWeight}}"src/css/mod/weight.css",{{/if}}
+      {{if modScroll}}"src/css/mod/swipe-page.css",
+      "src/css/mod/animations.css",{{/if}}
+      {{if modLandscape}}"src/css/mod/landscape-tip.css",{{/if}}
+      "src/css/index.css"
+    ]
+  },
+  "imgMinIgnore":[]
+}

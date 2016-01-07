@@ -43,8 +43,8 @@
       }).join('\n');
       console.log('\n' + file + '\n');
       console.log(output);
-      console.log(chalk.yellow.bold('\n\u2716 ' + warnLen + ' lint warning'));
-      console.log(chalk.red.bold('\n\u2716 ' + errorLen + ' lint problems'));
+      warnLen && console.log(chalk.yellow.bold('\n\u2716 ' + warnLen + ' lint warning'));
+      errorLen && console.log(chalk.red.bold('\n\u2716 ' + errorLen + ' lint problems'));
     }
 
     linter(file, config) {

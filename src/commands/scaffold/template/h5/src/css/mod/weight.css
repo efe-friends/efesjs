@@ -1,0 +1,90 @@
+.mod-weight {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  -webkit-perspective: 800px;
+  -o-perspective: 800px;
+  perspective: 800px;
+  -webkit-perspective-origin: 50% 200px;
+  -o-perspective-origin: 50% 200px;
+  perspective-origin: 50% 200px;
+}
+.mod-weight-con {
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  -webkit-transition: transform 2s linear;
+  -o-transition: transform 2s linear;
+  transition: transform 2s linear;
+}
+.mod-weight-cube {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  -webkit-transform-style: preserve-3d;
+  -o-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -webkit-transform-origin: center;
+  -o-transform-origin: center;
+  transform-origin: center;
+}
+.mod-weight-cube div {
+  background: rgba(155,155,155,0.3);
+  border: 1px solid #555;
+  border-radius: 3px;
+  color: #fff;
+  display: table;
+  position: absolute;
+  width: 160px;
+  height: 160px;
+}
+.mod-weight-cube span {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 68px;
+}
+.mod-weight-cube .front {
+  color: #34a;
+  -webkit-transform: translateZ(80px);
+  -o-transform: translateZ(80px);
+  transform: translateZ(80px);
+}
+.mod-weight-cube .top {
+  color: rgb(254, 67, 101);
+  -webkit-transform: rotateX(90deg) translateZ(80px);
+  -o-transform: rotateX(90deg) translateZ(80px);
+  transform: rotateX(90deg) translateZ(80px);
+}
+.mod-weight-cube .left {
+  color: rgb(252, 157, 154);
+  -webkit-transform: rotateY(90deg) translateZ(80px);
+  -o-transform: rotateY(90deg) translateZ(80px);
+  transform: rotateY(90deg) translateZ(80px);
+}
+.mod-weight-cube .back {
+  color: rgb(249, 205, 173);
+  -webkit-transform: rotateY(180deg) translateZ(80px);
+  -o-transform: rotateY(180deg) translateZ(80px);
+  transform: rotateY(180deg) translateZ(80px);
+}
+.mod-weight-cube .right {
+  color: rgb(200, 200, 169);
+  -webkit-transform: rotateY(-90deg) translateZ(80px);
+  -o-transform: rotateY(-90deg) translateZ(80px);
+  transform: rotateY(-90deg) translateZ(80px);
+}
+.mod-weight-cube .bottom {
+  color: rgb(131, 175, 155);
+  -webkit-transform: rotateX(-90deg) translateZ(80px);
+  -o-transform: rotateX(-90deg) translateZ(80px);
+  transform: rotateX(-90deg) translateZ(80px);
+}

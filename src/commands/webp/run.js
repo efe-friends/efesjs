@@ -2,8 +2,8 @@
 
 (() => {
 
-  var Imagemin = require('imagemin');
-  var imageminWebp = require('imagemin-webp');
+  const Imagemin = require('imagemin');
+  const imageminWebp = require('imagemin-webp');
 
   module.exports = (options) => {
 

@@ -79,7 +79,7 @@
       this.exLanguage = [{
         'type': 'checkbox',
         'name': 'check',
-        'message': '选择需要支持的扩展语言：',
+        'message': '选择需要支持的扩展功能：',
         'choices': [{
           'name': 'es6',
           checked: true
@@ -91,6 +91,12 @@
           checked: true
         }, {
           'name': 'less',
+          checked: true
+        }, {
+          'name': 'icons精灵图',
+          checked: true
+        }, {
+          'name': 'webp',
           checked: true
         }],
         'default': true,
@@ -105,17 +111,23 @@
           'name': '微信',
           checked: true
         }, {
-          'name': '滑屏',
+          'name': 'webp图片优化',
           checked: true
         }, {
-          'name': '唤起客户端',
-          checked: true
+          'name': '滑屏',
+          checked: false
+        }, {
+          'name': '唤起客户端或跳转到下载',
+          checked: false
+        }, {
+          'name': '客户端内部调用原生功能',
+          checked: false
         }, {
           'name': '重力感应',
-          checked: true
+          checked: false
         }, {
           'name': '横屏提示',
-          checked: true
+          checked: false
         }],
         'default': true,
         'required': true
@@ -160,6 +172,8 @@
         _this.info.exLess = answers2.check.indexOf('less') !== -1;
         _this.info.exJade = answers2.check.indexOf('jade') !== -1;
         _this.info.exES6 = answers2.check.indexOf('es6') !== -1;
+        _this.info.exIcons = answers2.check.indexOf('icons精灵图') !== -1;
+        _this.info.exWebp = answers2.check.indexOf('webp') !== -1;
 
         _this._confirmEnd();
 
@@ -175,10 +189,14 @@
       _this.inquirer.prompt(_this.mobileMod, function(answersMobile) {
 
         _this.info.modWeixin = answersMobile.check.indexOf('微信') !== -1;
-        
+
+        _this.info.modWebp = answersMobile.check.indexOf('webp图片优化') !== -1;
+
         _this.info.modScroll = answersMobile.check.indexOf('滑屏') !== -1;
 
-        _this.info.modCallClient = answersMobile.check.indexOf('唤起客户端') !== -1;
+        _this.info.modDownload = answersMobile.check.indexOf('唤起客户端或跳转到下载') !== -1;
+
+        _this.info.modCallClient = answersMobile.check.indexOf('客户端内部调用原生功能') !== -1;
 
         _this.info.modWeight = answersMobile.check.indexOf('重力感应') !== -1;
 
@@ -233,6 +251,8 @@
           _this.info.exLess = false;
           _this.info.exJade = false;
           _this.info.exES6 = false;
+          _this.info.exIcons = false;
+          _this.info.exWebp = false;
 
           _this._confirmEnd();
 
