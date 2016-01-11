@@ -193,6 +193,9 @@ PS：经测试，ios9和Android有新的测试，现有代码只能在微信中�
   git config core.quotepath false<br>
   core.quotepath设为false的话，就不会对0x80以上的字符进行quote。中文显示正常<br>
 
+## v0.1.15更新
+修复init、scaffold命令不能生成脚手架文件bug
+
 ## v0.1.14更新
 1、添加 efes scaffold 脚手架h5模块代码
 2、添加图片 webp 自动转换功能

@@ -17,7 +17,7 @@
 
     let regIncludes = [];
 
-    let regExcludes = [/node_modules/, /\.git/, /\.tmp/, /.DS_Store/];
+    let regExcludes = [/\.git/, /\.tmp/, /.DS_Store/];
 
     if (!data.exCoffee) {
       regExcludes.push(/coffee/);

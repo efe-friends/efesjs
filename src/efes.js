@@ -1,4 +1,4 @@
-"use stack"
+"use strict"
 (() => {
 
   const main = require('./core/load.js');
