@@ -43,9 +43,9 @@
 
   $.fn.webp = function(options) {
 
-    let elements = this;
+    var elements = this;
 
-    let settings = {
+    var settings = {
       origSrc: "lsrc",
       origDir: "images",
       webpDir: "webps"
@@ -56,16 +56,16 @@
      */
     function adjust() {
 
-      let _elements;
+      var _elements;
 
       elements.each(function() {
-        let $this = $(this),
+        var $this = $(this),
           _tmp;
         if (settings.skip_invisible && !$this.is(":visible")) {
           return;
         }
 
-        let original = $this.attr(settings.origSrc);
+        var original = $this.attr(settings.origSrc);
 
         // 如果当前对象没有origSrc属性，同时当前对象不是图片节点，
         // 则查找子节点中有origSrc属性的节点，进行webp处理
@@ -101,8 +101,8 @@
     }
 
     elements.each(function() {
-      let self = this;
-      let $self = $(self);
+      var self = this;
+      var $self = $(self);
 
       self.loaded = false;
 
@@ -111,7 +111,7 @@
 
         if (!this.loaded) {
 
-          let original = $self.attr(settings.origSrc);
+          var original = $self.attr(settings.origSrc);
 
           // 替换webp目录和图片后缀
           if (supportWebp) {

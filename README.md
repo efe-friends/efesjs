@@ -129,7 +129,19 @@ SublimeLinter-csslint：https://sublime.wbond.net/packages/SublimeLinter-csslint
 Sublime​Linter-contrib-eslint：https://packagecontrol.io/packages/SublimeLinter-contrib-eslint<br>
 Js​Format：https://packagecontrol.io/packages/JsFormat<br>
 
-## h5 脚手架包含功能
+## scaffold
+efes 脚手架<br>
+在脚手架中封装了一些常用的功能，让开发者免于复制粘贴文件的烦恼。<br>
+<code>
+efes scaffold
+</code>
+或使用简写
+<code>
+efes sc
+</code>
+
+
+### h5 脚手架包含功能
 1、loading模板<br>
 2、横屏提示模板<br>
 3、重力感应示例<br>
@@ -139,7 +151,7 @@ PS：由于使用的是WebViewJavascriptBridge，作为和客户端通讯的规�
 6、客户端内部调用原生功能插件<br>
 PS：经测试，ios9和Android有新的测试，现有代码只能在微信中唤起客户端。
 
-## h5 脚手架目录结构
+### h5 脚手架目录结构
     |— fonts                字体
     |— images               图片
     |— styles               样式
@@ -193,11 +205,18 @@ PS：经测试，ios9和Android有新的测试，现有代码只能在微信中�
   git config core.quotepath false<br>
   core.quotepath设为false的话，就不会对0x80以上的字符进行quote。中文显示正常<br>
 
+## v0.1.16更新
+1、添加lint ignore配置，分别对应 .eslintignore 和 .csslintignore两个文件。<br>
+注意：.eslintignore sublime的linter插件支持，.csslintignore不支持<br>
+2、优化lint速度。<br>
+3、删除脚手架生产的不必要的文件。<br>
+4、修复h5脚手架中 webp.js的使用'let'关键字的bug.
+
 ## v0.1.15更新
 修复init、scaffold命令不能生成脚手架文件bug
 
 ## v0.1.14更新
-1、添加 efes scaffold 脚手架h5模块代码
+1、添加 efes scaffold 脚手架h5模块代码<br>
 2、添加图片 webp 自动转换功能
 
 ## v0.1.13更新

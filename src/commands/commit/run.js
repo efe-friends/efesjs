@@ -7,6 +7,7 @@
   const childProcess = require('child_process');
   const fs = require('fs');
   const table = require('text-table');
+  const minimatch = require("minimatch");
 
   const fsp = require('../../utils/fs');
   const path = require('../../utils/path.js');
@@ -42,7 +43,6 @@
     let dirname = process.cwd();
 
     let configs = {};
-
     async.each(fs.readdirSync(dirname), function(repo, callback) {
 
       let subdirname = path.join(dirname, repo);
@@ -124,13 +124,39 @@
         }
 
         if (_sublinter) {
-          filesLinted += 1;
+          
+          let isIgnore = false;
 
-          let _cmd = `efes ${_sublinter.engine} --color -f ${filename} -c ${path.join(process.cwd(), config.baseDir, _sublinter.config)}`;
+          // 剔除忽略lint检查的文件。
+          if (_sublinter.ignore) {
+            let _ignores = fsp.readFileSync(path.join(process.cwd(), config.baseDir, _sublinter.ignore));
+            _ignores = _ignores.split('\n');
+            _ignores.every(function(_ignore){
+              if (minimatch(filename, _ignore)) {
+                isIgnore = true;
+                return false;
+              }
+              return true;
+            });
+          }
 
-          let _stdout = childProcess.execSync(_cmd).toString();
-          console.log(_stdout);
-          lintErrors = _stdout.indexOf('problems') !== -1;
+          if (!isIgnore) {
+
+            filesLinted += 1;
+
+            let _cmd = `efes ${_sublinter.engine} --color -f ${filename} -c ${path.join(process.cwd(), config.baseDir, _sublinter.config)}`;
+            //let _stdout = childProcess.execSync(_cmd).toString();// todo childProcess.execSync 比较消耗时间，有待优化
+            //console.log(_stdout);
+            //lintErrors = lintErrors || _stdout.indexOf('problems') !== -1;
+
+            // 使用 childProcess.execSync(_cmd) 形式比较消耗时间，修改为require方式，
+            // 尽管在代码级别产生了耦合，并不是efes设计之初的本意，但性能优先。
+            lintErrors += require(`../${_sublinter.engine}/run`)({
+              file: filename,
+              config: path.join(process.cwd(), config.baseDir, _sublinter.config)
+            });
+
+          }
 
         }
 

@@ -8,7 +8,7 @@
 
     console.log('\nCssLinting...');
 
-    linter(options.file, options.config);
+    return linter(options.file, options.config);
 
   };
 

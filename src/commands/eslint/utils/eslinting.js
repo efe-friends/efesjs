@@ -33,7 +33,13 @@
         out.push(message.message.slice(0, -1));
         out.push(chalk.grey(message.rule.id));
         return out;
+      }).filter(function(v,i){
+        if (i>20) {
+          return false;
+        }
+        return true;
       });
+
       output = table(output, {
         align: ['r', 'l']
       });
@@ -89,7 +95,7 @@
   var linting = new EsLinting();
 
   module.exports = function (file, config) {
-    linting.linter(file, config);
+    return linting.linter(file, config);
   };
 
 })();

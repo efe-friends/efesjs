@@ -12,7 +12,8 @@
     },
     "css": {
       "engine": "csslint",
-      "config": ".csslintrc"
+      "config": ".csslintrc",
+      "ignore": ".csslintignore"
     }
   },
   "test": {}
