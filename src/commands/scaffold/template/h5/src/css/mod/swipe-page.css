@@ -20,8 +20,8 @@
   line-height: 6rem;
   padding-top:2.5rem;
   overflow: hidden;
-  bottom: 2rem;
-  width: 2.5rem;
+  bottom: .5rem;
+  width: .8rem;
   height: 0;
   left: 50%;
   -webkit-transform: translate(-50%, 0);
@@ -33,7 +33,7 @@
   z-index: 200;
 }
 .iter-pre {
-  top: 2rem;
+  top: .5rem;
   -webkit-transform: translate(-50%, 0) rotate(180deg);
   -o-transform: translate(-50%, 0) rotate(180deg);
   transform: translate(-50%, 0) rotate(180deg);

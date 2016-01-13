@@ -123,6 +123,9 @@
           'name': '客户端内部调用原生功能',
           checked: false
         }, {
+          'name': '摇一摇',
+          checked: false
+        }, {
           'name': '重力感应',
           checked: false
         }, {
@@ -197,6 +200,8 @@
         _this.info.modDownload = answersMobile.check.indexOf('唤起客户端或跳转到下载') !== -1;
 
         _this.info.modCallClient = answersMobile.check.indexOf('客户端内部调用原生功能') !== -1;
+
+        _this.info.modShakeHand = answersMobile.check.indexOf('摇一摇') !== -1;
 
         _this.info.modWeight = answersMobile.check.indexOf('重力感应') !== -1;
 

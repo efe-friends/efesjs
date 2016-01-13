@@ -21,25 +21,31 @@
 
 (function(window, $) {
 
-  var supportWebp = (function() {
+  var __supportwebp = false;
 
-    var __supportwebp = false;
+  var __checked = false;
+
+  var supportWebp = function(callback) {
+
+    if (__checked) {
+      callback();
+      return;
+    }
 
     (function() {
       var webp = new Image();
       webp.onload = webp.onerror = function() {
+        __checked = true;
         __supportwebp = webp.height === 2;
         webp.onload = webp.onerror = null;
         webp = null;
+        callback();
       };
       //高度为2的一个webp图片
       webp.src = 'data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA';
     })();
 
-    return function() {
-      return __supportwebp;
-    };
-  })();
+  };
 
   $.fn.webp = function(options) {
 
@@ -57,6 +63,10 @@
     function adjust() {
 
       var _elements;
+
+      if (elements.length === 0 ) {
+        return;
+      }
 
       elements.each(function() {
         var $this = $(this),
@@ -81,7 +91,7 @@
           _elements = _tmp;
         }
 
-      });
+      });  
 
       elements = _elements;
     }
@@ -89,6 +99,10 @@
     adjust();
 
     function update() {
+
+      if (elements.length === 0 ) {
+        return;
+      }
 
       elements.each(function() {
         $(this).trigger("appear");
@@ -98,6 +112,10 @@
 
     if (options) {
       $.extend(settings, options);
+    }
+
+    if (elements.length === 0 ) {
+      return;
     }
 
     elements.each(function() {
@@ -114,7 +132,7 @@
           var original = $self.attr(settings.origSrc);
 
           // 替换webp目录和图片后缀
-          if (supportWebp) {
+          if (__supportwebp) {
             original = original
               .replace(settings.origDir, settings.webpDir)
               .replace(/\.(jpg|png|jpeg|gif)$/ig, '.webp');
@@ -145,7 +163,9 @@
       });
     });
 
-    update();
+    supportWebp(function(){
+      update();
+    });
 
     return this;
   };

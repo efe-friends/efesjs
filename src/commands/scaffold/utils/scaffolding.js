@@ -53,6 +53,9 @@
     if (!data.modWeight) {
       regExcludes.push(/weight/);
     }
+    if (!data.modShakeHand) {
+      regExcludes.push(/shake-hand/);
+    }
 
     walk(dirname, regIncludes, regExcludes, function(err, results) {
 

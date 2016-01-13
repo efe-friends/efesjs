@@ -8,6 +8,7 @@
       {{if modLandscape}}"src/js/mod/landscape-tip.js",{{/if}}
       {{if modCallClient}}"src/js/mod/call-client.js",{{/if}}
       {{if modDownload}}"src/js/mod/download.js",{{/if}}
+      {{if modShakeHand}}"src/js/mod/shake-hand.js",{{/if}}
       {{if modScroll}}"src/js/mod/transation.js",{{/if}}
       "src/js/mod/loading.js",
       "src/js/index.js"
@@ -17,6 +18,7 @@
       {{if modWeight}}"src/css/mod/weight.css",{{/if}}
       {{if modScroll}}"src/css/mod/swipe-page.css",
       "src/css/mod/animations.css",{{/if}}
+      {{if modShakeHand}}"src/css/mod/shake-hand.css",{{/if}}
       {{if modLandscape}}"src/css/mod/landscape-tip.css",{{/if}}
       "src/css/index.css"
     ]

@@ -23,13 +23,13 @@
           <span class="btn J-s-loading">s-loading</span>
           <span class="btn J-h-loading">h-loading</span>
         </div>
-        <img lsrc="images/p1-bg.png">
+        <img lsrc="images/p1-bg.jpg">
       </div>
       <a class="iter-next" lsrc="images/arrow.png">next</a>
     </div>
     <div class="page p2">
       page2:重力感应
-      <img lsrc="images/p2-bg.png">
+      <img lsrc="images/p2-bg.jpg">
       {{if modWeight}}
       <div class="mod-weight">
         <div class="mod-weight-con">
@@ -60,12 +60,17 @@
     </div>
     <div class="page p3">
       page3
-      <img lsrc="images/p3-bg.png">
+      <img lsrc="images/p3-bg.jpg">
+      {{if modShakeHand}}
+      <div class="shake-box">
+        <img class="shake J-shake-hand" lsrc="images/shake.png">
+      </div>
+      {{/if}}
       <a class="iter-next" lsrc="images/arrow.png">next</a>
     </div>
     <div class="page p4">
       page4:唤起客户端或跳转到下载
-      <img lsrc="images/p4-bg.png">
+      <img lsrc="images/p4-bg.jpg">
       {{if modDownload}}
       <div class="btn-wraper">
         <a class="btn J-download">download</a>
@@ -75,7 +80,7 @@
     </div>
     <div class="page p5">
       page5:客户端内部调用原生功能
-      <img lsrc="images/p5-bg.png">
+      <img lsrc="images/p5-bg.jpg">
       {{if modCallClient}}
       <div class="btn-wraper">
         <a class="btn J-call-client">call client</a>
@@ -127,12 +132,12 @@
         </div>
       </div>
       {{/if}}
-      <img style="width:100%;height: 70rem;" lsrc="images/p1-bg.png">
-      <img style="width:100%;height: 70rem;" lsrc="images/p2-bg.png">
-      <img style="width:100%;height: 70rem;" lsrc="images/p3-bg.png">
-      <img style="width:100%;height: 70rem;" lsrc="images/p4-bg.png">
-      <img style="width:100%;height: 70rem;" lsrc="images/p5-bg.png">
-      <img style="width:100%;height: 70rem;" lsrc="images/p6-bg.png">
+      <img style="width:100%;height: 70rem;" lsrc="images/p1-bg.jpg">
+      <img style="width:100%;height: 70rem;" lsrc="images/p2-bg.jpg">
+      <img style="width:100%;height: 70rem;" lsrc="images/p3-bg.jpg">
+      <img style="width:100%;height: 70rem;" lsrc="images/p4-bg.jpg">
+      <img style="width:100%;height: 70rem;" lsrc="images/p5-bg.jpg">
+      <img style="width:100%;height: 70rem;" lsrc="images/p6-bg.jpg">
     </div>
   </div>
   {{/if}}
