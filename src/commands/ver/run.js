@@ -3,7 +3,7 @@
  * 1、检索当前目录下的所有文件（src, node_modules除外）。
  * 2、找到.html、.htm等文件，给这样文件中引用的js、css的url后添加 ‘?VERSION’ 字符串
  */
-(() => {
+(function() {
 
   const async = require('async');
   const chalk = require('chalk');

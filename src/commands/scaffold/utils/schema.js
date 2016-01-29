@@ -1,5 +1,5 @@
 "use strict";
-(() => {
+(function() {
 
   const path = require('../../../utils/path.js');
   const chalk = require('chalk');
@@ -310,7 +310,7 @@
 
       _this.options = options;
 
-      _this.done = done;
+      _this.done = done || _this.done;
 
       this.prompt.message = chalk.green('[?]');
       this.prompt.delimiter = ' ';

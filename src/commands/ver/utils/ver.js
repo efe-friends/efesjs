@@ -2,7 +2,8 @@
 /*
  * 针对.html、.htm文件，检索这些文件中引用的js、css的url 是否添加了 ‘?VERSION’ 字符串
  */
-(() => {
+(function() {
+
   const chalk = require('chalk');
   const fs = require('fs');
   const table = require('text-table');

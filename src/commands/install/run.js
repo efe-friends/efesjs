@@ -1,6 +1,6 @@
 "use strict";
 
-(() => {
+(function() {
 
   const async = require('async');
   const chalk = require('chalk');

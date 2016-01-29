@@ -1,0 +1,3 @@
+(()=>{
+  console.log('pre compile es6');
+})();

@@ -1,6 +1,6 @@
 "use strict";
 
-(() => {
+(function() {
 
   const fs = require('fs');
   const path = require('path');

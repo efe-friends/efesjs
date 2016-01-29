@@ -1,6 +1,6 @@
 "use strict";
 
-(() => {
+(function() {
 
   const async = require('async');
   const chalk = require('chalk');
@@ -15,7 +15,9 @@
 
   const run = function(command) {
 
+
     let repo = command.name();
+    let options = command.opts();
     let dirname = '../commands/';
 
     let _cmd = fsp.readJSONSync(path.join(__dirname, dirname, repo, 'command.json'));
@@ -41,10 +43,10 @@
       }
     }
 
-    require('../commands/' + command.name() + '/run')(command.opts());
+    require('../commands/' + command.name() + '/run')(options);
+
   };
 
-  
 
   program
     .version(pkg.version);

@@ -1,6 +1,6 @@
 "use strict";
 
-(() => {
+(function() {
 
   const Imagemin = require('imagemin');
   const imageminWebp = require('imagemin-webp');

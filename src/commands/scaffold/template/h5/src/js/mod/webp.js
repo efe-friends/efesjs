@@ -54,7 +54,7 @@
     var settings = {
       origSrc: "lsrc",
       origDir: "images",
-      webpDir: "webps"
+      webpDir: "images"
     };
 
     /**

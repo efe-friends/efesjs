@@ -1,5 +1,5 @@
 'use strict';
-(() => {
+(function() {
 
   const childProcess = require('child_process');
 

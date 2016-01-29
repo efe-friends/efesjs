@@ -1,0 +1,20 @@
+{
+  "name": "start",
+  "version": "0.1",
+  "author": "eagle.h",
+  "description": "开启node http server",
+  "options": [{
+    "flags": "-p, --port [value]",
+    "description": "监听端口"
+  }, {
+    "flags": "-d, --direct",
+    "description": "直接访问文件，不处理合并"
+  }, {
+    "flags": "-b, --browsersync",
+    "description": "自动刷新"
+  }, {
+    "flags": "--color"
+  }],
+  "requires": [],
+  "packages": []
+}

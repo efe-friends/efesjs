@@ -23,7 +23,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     function ShakeHand() {
       _classCallCheck(this, ShakeHand);
 
-      this.SHAKE_THRESHOLD = 8000;
+      if (!!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)){
+        this.SHAKE_THRESHOLD = 5000;
+      } else {
+        this.SHAKE_THRESHOLD = 3000;
+      }
       this.lastUpdate = 0;
       this.x = 0;
       this.y = 0;
