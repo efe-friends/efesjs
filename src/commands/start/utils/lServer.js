@@ -81,6 +81,7 @@
     // 在程序启动的时候，将本地服务器需要先编译一个es6文件，
     // 预加载一下babel-preset-es2015模块，
     // 防止第一次请求的时候，因为加载这个模块占用的时间导致请求超时。
+    
     work.loadFile([{
       localDir: __dirname,
       output: 'scripts/index.js',

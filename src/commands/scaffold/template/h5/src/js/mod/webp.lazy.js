@@ -51,7 +51,7 @@
       container: window,
       origSrc: "lsrc",
       origDir: "images",
-      webpDir: "webps",
+      webpDir: "images",
       skip_invisible: false,
       appear: null,
       load: null,

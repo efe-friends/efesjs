@@ -4,6 +4,8 @@
   "id" : "{{id}}",
   "publish_url" : "{{publishUrl}}",
   "dev_url" : "{{devUrl}}",
+  "publish_dir":"{{publishDir}}",
+  "dev_dir":"{{devDir}}",
   "lint": {
     "js": {
       "engine": "eslint",

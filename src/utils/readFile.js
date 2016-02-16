@@ -9,6 +9,7 @@
 
   const concat = require('./compile/concat.js');
   const html = require('./compile/html.js');
+  const webp = require('./compile/webp.js');
 
   const rType = /\.(\w+)$/i;
 
@@ -28,6 +29,11 @@
 
           case '.html': // jade会生成 .html 文件所以不需要特殊处理其他 .htm .shtml .xhtml .dhtml 这些文件
             html(pathname, function(err, data) {
+              callback(err, data, pathname.output)
+            });
+            break;
+          case '.webp': //
+            webp(pathname, function(err, data) {
               callback(err, data, pathname.output)
             });
             break;

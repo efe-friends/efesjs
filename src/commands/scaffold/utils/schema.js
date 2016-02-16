@@ -44,6 +44,14 @@
         'name': 'devUrl',
         'message': '开发环境地址',
         'default': _this.info.devUrl || ''
+      }, {
+        'name': 'publishDir',
+        'message': '发布目录',
+        'default': _this.info.publishDir || ''
+      }, {
+        'name': 'devDir',
+        'message': '开发目录',
+        'default': _this.info.devDir || 'src'
       }];
 
       this.scaffold = [{
@@ -288,6 +296,8 @@
           _this.info.id = result.id;
           _this.info.publishUrl = result.publishUrl;
           _this.info.devUrl = result.devUrl;
+          _this.info.publishDir = result.publishDir;
+          _this.info.devDir = result.devDir;
 
           if (_this.initCmd) {
 
