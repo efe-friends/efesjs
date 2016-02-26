@@ -3,12 +3,14 @@
   const gulp = require('gulp');
 
   const $ = require('gulp-load-plugins')();
+  const es2015 = require('babel-preset-es2015');
+  const react = require('babel-preset-react');
   const through = require('through-gulp');
 
   const path = require('../path.js');
 
   const rBabel = /\.babel$/i;
-  const rEs6 = /\.es6$/i;
+  const rEs6 = /\.es(6|2015)$/i;
   const rJsx = /\.jsx$/i;
   const rCoffee = /\.coffee$/i;
   const rLess = /\.less$/i;
@@ -16,16 +18,16 @@
   const rScss = /\.scss$/i;
   const rCss = /\.css$/i;
 
-  module.exports = function(pathname, callback) {
+  module.exports = function(pathname, options, callback) {
 
     let srcs = pathname.input;
 
     let isPipe = false;
 
-    let beforeConcatPipe = through(function(file, encoding,callback) {
+    let beforeConcatPipe = through(function(file, encoding, callback) {
       this.push(file);
       callback();
-    },function(callback){
+    }, function(callback) {
       callback();
     });
 
@@ -49,6 +51,10 @@
       'Opera 12.1'
     ];
 
+    let publishDir = (pathname.config && pathname.config.publish_dir) ? pathname.config.publish_dir : './';
+
+    publishDir = options.outpath || publishDir;
+
     if (/\.css$/i.test(pathname.output)) {
       gulp.src(srcs)
         .pipe($.plumber())
@@ -60,13 +66,19 @@
             browsers: browsers
           })
         ]))
-        .on('error', $.util.log)
         .pipe($.if(isPipe, beforeConcatPipe))
         .pipe($.concat(pathname.output))
+        .pipe($.if(options.compress, $.postcss([
+          require('cssnano')()
+        ])))
+        .on('error', $.util.log)
+        .pipe($.if(options.publish && pathname.config, gulp.dest(publishDir, {
+          cwd: pathname.localDir
+        })))
         .pipe(through(function(file) {
           callback(null, file.contents);
           return file;
-        }));
+        }));;
       return;
     }
 
@@ -74,18 +86,22 @@
       gulp.src(srcs)
         .pipe($.plumber())
         .pipe($.if(rBabel, $.babel({
-          presets: ['es2015'] // es2015这个模块是一个加载起来很慢的模块，伤脑筋啊
+          presets: [es2015] // es2015这个模块是一个加载起来很慢的模块，伤脑筋啊
         })))
         .pipe($.if(rEs6, $.babel({
-          presets: ['es2015']
+          presets: [es2015] // es2015这个模块是一个加载起来很慢的模块，伤脑筋啊
         })))
         .pipe($.if(rJsx, $.babel({
-          presets: ['react'] // es2015这个模块是一个加载起来很慢的模块，伤脑筋啊
+          presets: [es2015, react]
         })))
         .pipe($.if(rCoffee, $.coffee()))
-        .on('error', $.util.log)
         .pipe($.if(isPipe, beforeConcatPipe))
         .pipe($.concat(pathname.output))
+        .pipe($.if(options.compress, $.uglify()))
+        .on('error', $.util.log)
+        .pipe($.if(options.publish && pathname.config, gulp.dest(publishDir, {
+          cwd: pathname.localDir
+        })))
         .pipe(through(function(file) {
           callback(null, file.contents);
           return file;

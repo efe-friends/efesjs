@@ -4,6 +4,7 @@
 
   const gulp = require('gulp');
   const through = require('through-gulp');
+  const $ = require('gulp-load-plugins')();
 
   const path = require('./path.js');
 
@@ -13,9 +14,9 @@
 
   const rType = /\.(\w+)$/i;
 
-  module.exports = function(pathname, callback) {
+  module.exports = function(pathname, options, callback) {
     if (typeof pathname === 'object' && pathname.localDir && pathname.input) {
-      concat(pathname, function(err, data) {
+      concat(pathname, options, function(err, data) {
         callback(err, data, pathname.output);
       });
 
@@ -28,17 +29,36 @@
         switch (type[0].toLowerCase()) {
 
           case '.html': // jade会生成 .html 文件所以不需要特殊处理其他 .htm .shtml .xhtml .dhtml 这些文件
-            html(pathname, function(err, data) {
+            html(pathname, options, function(err, data) {
               callback(err, data, pathname.output)
             });
             break;
           case '.webp': //
-            webp(pathname, function(err, data) {
+            webp(pathname, options, function(err, data) {
               callback(err, data, pathname.output)
             });
             break;
           default:
-            let _pathname = path.join(pathname.localDir, pathname.output);
+
+            let _pathname = path.join(pathname.localDir, pathname.config.dev_dir || '', pathname.output);
+            let publishDir = pathname.config && pathname.config.publish_dir ? pathname.config.publish_dir : './';
+
+            if (fs.existsSync(_pathname)) {
+              console.log(chalk.yellow('src:') + ' ' + chalk.grey(_pathname));
+              gulp.src(_pathname, {
+                  base: path.join(pathname.localDir, pathname.config.dev_dir || '')
+                })
+                .pipe($.if(options.publish && pathname.config, gulp.dest(publishDir, {
+                  cwd: pathname.localDir
+                })))
+                .pipe(through(function(file) {
+                  callback(null, file.contents);
+                  return file;
+                }));
+              return;
+            }
+
+            _pathname = path.join(pathname.localDir, pathname.output);
             if (fs.existsSync(_pathname)) {
               gulp.src(_pathname)
                 .pipe(through(function(file) {
@@ -46,7 +66,7 @@
                   return file;
                 }));
             } else {
-              callback(new Error('文件或目录不存在:'+_pathname));
+              callback(new Error('文件或目录不存在:' + _pathname));
             }
             break;
         }

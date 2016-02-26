@@ -1,0 +1,17 @@
+{
+  "name": "publish",
+  "version": "0.1",
+  "author": "eagle.h",
+  "description": "发布、打包最终代码。",
+  "options": [{
+    "flags": "-c, --compress",
+    "description": "压缩代码"
+  }, {
+    "flags": "--outpath [value]",
+    "description": "发布目录"
+  }, {
+    "flags": "--color"
+  }],
+  "requires": [],
+  "packages": []
+}

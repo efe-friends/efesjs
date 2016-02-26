@@ -11,10 +11,10 @@
 
   const path = require('../path.js');
 
-  module.exports = function(pathname, callback) {
+  module.exports = function(pathname, options, callback) {
 
-    let _pathname = path.join(pathname.localDir, pathname.config.dev_dir || '', pathname.output);
-    
+    let _pathname = path.join(pathname.localDir, (pathname.config && pathname.config.dev_dir) ? pathname.config.dev_dir : '', pathname.output);
+
     _pathname = $.util.replaceExtension(_pathname, '.png');
 
     if (!fs.existsSync(_pathname)) {
@@ -29,13 +29,23 @@
       _pathname = $.util.replaceExtension(_pathname, '.gif');
     }
 
-    console.log(chalk.yellow('src:')+' '+chalk.grey(_pathname));
-    gulp.src(_pathname)
+    console.log(chalk.yellow('src:') + ' ' + chalk.grey(_pathname));
+
+    let publishDir = (pathname.config && pathname.config.publish_dir) ? pathname.config.publish_dir : './';
+
+    publishDir = options.outpath || publishDir;
+
+    gulp.src(_pathname, {
+        base: path.join(pathname.localDir, pathname.config.dev_dir || '')
+      })
       .pipe($.plumber())
       .pipe(imageminWebp({
         quality: 50
       })())
       .on('error', $.util.log)
+      .pipe($.if(options.publish && pathname.config, gulp.dest(publishDir, {
+        cwd: pathname.localDir
+      })))
       .pipe(through(function(file) {
         callback(null, file.contents);
         return file;

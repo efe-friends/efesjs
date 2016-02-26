@@ -13,6 +13,18 @@
     "flags": "-b, --browsersync",
     "description": "自动刷新"
   }, {
+    "flags": "-c, --compress",
+    "description": "压缩代码"
+  }, {
+    "flags": "--outpath",
+    "description": "发布目录"
+  }, {
+    "flags": "--publish",
+    "description": "发布代码"
+  }, {
+    "flags": "-w, --work",
+    "description": "工作模式"
+  }, {
     "flags": "--color"
   }],
   "requires": [],

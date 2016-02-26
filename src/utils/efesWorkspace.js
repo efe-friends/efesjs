@@ -11,6 +11,9 @@
 
   const readFile = require('./readFile.js');
 
+  const rIP = /^([0-9]|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.([0-9]|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.([0-9]|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.([0-9]|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])(:\d+)?$/;
+  const rLocalHost = /^localhost(:\d+)?$/i;
+
   exports.tmpPublishDirForLocalDir = [];
 
   exports.loadFile = function(pathnames, options, callback) {
@@ -23,7 +26,7 @@
 
         let _pathname = path.join(pathname.localDir, pathname.output);
 
-        fs.readFile(_pathname, function(err, data) {
+        fs.readFile(_pathname, options, function(err, data) {
           if (err) {
             errors.push(err.message);
             cb();
@@ -37,7 +40,7 @@
 
       } else {
 
-        readFile(pathname, function(err, data) {
+        readFile(pathname, options, function(err, data) {
 
           if (err) {
             _errors.push(err.message);
@@ -191,8 +194,8 @@
       }
 
       // 先判断 host 是否和该目录相同。
-      if (_dir.devDomain == host || _dir.publishDomain == host) {
-
+      if (_dir.devDomain == host || _dir.publishDomain == host 
+        || rIP.test(host) || rLocalHost.test(host)) {
         // 其次判断 请求的路径 是否在这个目录下面。
         // 比如请求的路径是 /core/libs/zepto.min.js
         // 这个目录配置的路径是 /core/
