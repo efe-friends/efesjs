@@ -1,90 +1,232 @@
 # efes 
-e代驾前端助手 edaijia fe assistant<br>
-<br>
-PS：efes的git commit检测规则中，eslint、csslint，和图片必须add提交为强制检测，error将导致提交失败。version字符串检测只做提示，供开发人员参考。<br>
-PS：本助手是初期是在前端自动化工具 [gsp](https://github.com/viclm/gsp) 的基础上做的定制开发。后期对整个结构做了重构，采用类REST风格，每个命令作为一个独立的模块（放置在commonds目录下，通过load自动加载）。在此感谢 gsp 的开发者 [viclm](https://github.com/viclm)
 
-## node 版本要求
 
-node要求4.1.0+<br>
-下载地址：http://npm.taobao.org/mirrors/node<br>
-<br>
-python要求2.x版本<br>
+## 概述 Overview
+***e代驾前端助手 edaijia fe assistant***
+## 
+>efes的git commit检测规则中，eslint、csslint，和图片必须add提交为强制检测，error将导致提交失败。version字符串检测只做提示，供开发人员参考。
 
-## 安装/更新
+## 
+>本助手是在前端自动化工具 [gsp](https://github.com/viclm/gsp) 的基础上做的定制开发。后期对整个结构做了重构，采用类REST风格，每个命令作为一个独立的模块（放置在commonds目录下，通过load自动加载）。在此感谢 gsp 的开发者 [viclm](https://github.com/viclm)
 
-<code>
-npm install -g efes
-</code>
-<br>
-或<br>
-<code>
-cnpm install -g efes
-</code>
 
-## hook 
-初始化git commit提交验证<br>
-<br>
-git仓库根目录下运行下面的命令<br>
-<br>
-<code>
-efes hook
-</code>
-<br>
-<br>
-此命令会在.git/hooks目录下添加pre-commit文件，在git commit时，会触发此文件中的操作，进行lint、图片Add提交、version字符串检查（只针对新添加或修改的文件）。
+### 安装环境 Requirements
 
-## ver 
-为引用的js、css增加版本号字符串，默认：VERSION<br>
-<br>
-<br>
-<code>
-efes ver [-s versionstring]
-// -s 自定义版本字符串。
-</code>
-<br>
-<br>
-此命令会在会遍历当前目录和子目录下所有的html文件，监测使用相对路径的js和css为其添加/替换版本号字符串。
+* node 4.1.0+ 下载地址：http://npm.taobao.org/mirrors/node
+* python 2.x
 
-## init
-初始化项目验证规则/脚手架<br>
-<br>
-在开发的项目根目录下运行下面的命令<br>
-PS：为了避免错误，efes init在windows下请在cmd下运行。<br>
-<br>
-<code>
-efes init
-</code>
-<br>
-<br>
-选择脚手架为：no，此时，efes会在项目根目录下创建如下三个文件：<br>
-.eslintrc：eslint监测规则(此文件同时也是Sublime的插件Sublime-contrib-eslint配置文件)<br>
-.csslintrc：csslint监测规则\<br>
-.efesconfig：efes配置文件<br>
-<br>
-选择脚手架为：yes，此时，efes会在项目根目录创建完整的目录结构，和gulp配置。<br>
-生成后，请先运行下面的命令安装npm插件：<br>
-<br>
-<code>
-npm install
-</code>
-<br>
-<code>
-cnpm install
-</code>
-<br>
-<br>
-然后运行，下面命令启动gulp任务：<br>
-<br>
-<code>
-gulp
-</code>
-<br>
-<br>
-#### a 生成文件目录结构
+### 安装/更新 Install/Update
+
+`npm install -g efes`
+
+### 命令 Commands
+
+#### project（待开发）
+#####运行：
+`efes project`
+#####运行目录：
+`efes 工作区目录，efesproject.json所在目录。`
+#####功能简介：
+`根据efesproject.json文件中的配置，克隆/更新git仓库的代码。`
+#####efesproject.json：
+```
+{
+  "publishDomain" : "static.resource.com”,
+  "devDomain"     : "static.d.resource.com",
+  "projects"        : [{
+    "name"          : "efes-core”,
+    "git"           : "https://xxx.git.com/efes-core.git”,
+    "localDir"      : "efes-core”,
+    "publishDir"    : "/core/“
+  }, {
+    "name"          : "efes-events",
+    "git"           : "https://xxx.git.com/efes-events.git",
+    "localDir"      : "efes-events",
+    "publishDir"    : "/"
+  }, {
+    "name"          : "efes-main",
+    "git"           : "https://xxx.git.com/efes-main.git",
+    "localDir"      : "efes-main",
+    "publishDir"    : "/"
+  }, {
+    "name"          : "efes-other",
+    "git"           : "https://xxx.git.com/efes-other.git",
+    "localDir"      : "efes-other",
+    "publishDir"    : "/other/"
+  }, {
+    "name"          : "wap",
+    "git"           : "https://xxx.git.com/wap.git",
+    "localDir"      : "wap",
+    "publishDir"    : "/",
+    "publishDomain" : "wap.resource.com",
+    "devDomain"     : "wap.d.resource.com"
+  }]
+}
+```
+
+##### 参数说明：
+```
+publishDomain：线上访问域名（最顶部的为全局配置。此外，每个项目看自定义其域名）
+devDomain：测试、开发访问域名（最顶部的为全局配置。此外，每个项目看自定义其域名）
+projects：项目信息
+name：项目名称
+git：项目的git地址
+localDir：项目的本地路径
+publishDir：项目的访问路径，规则如下：
+     1、请求地址为：http://h5.edaijia.cn/core/，则配置为： /core/
+     2、请求地址为：http://h5.edaijia.cn/，则配置为：/
+     3、支持多个本地路径配置同一个访问路径
+```
+
+#### start
+##### 运行：
+`efes start`
+##### 运行目录：
+`efes 工作区目录，efesproject.json所在目录。`
+##### 功能简介：
+```
+开启node http server。前端开发者可以不用开启gulp，efes会根据配置文件efesproject.json中标注每个目录的域名、访问路径，以及每个目录的.efesconfig、concatfile.json中配置的信息，解析请求动态编译jsx、coffee、s6、less、sass、sass、jade，动态合并js、css，动态发布html，动态处理webp图片。用于本地开发、调试。
+```
+##### options
+* -p, --port [value] node http server监听端口，默认为7070，注意要与下面nginx配置相同。
+* -d, --direct 直接访问文件，不做任何处理。
+* -b, --browsersync 开启browsersync功能(自动刷新功能暂时不能使用)。
+* -c, --compress 开启压缩功能。
+* --publish 访问资源同时，将最终工作资源到发布目录
+
+##### nginx的配置：
+```
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    '' close;
+}
+
+server {
+  listen       80;
+  server_name  static.resource.com static.d.resource.com www.resource.com wap.resource.com;
+  charset utf-8;
+  autoindex       on;
+  autoindex_exact_size    on;
+  index index.html;
+
+  # BrowserSync websocket
+  location ^~ /browser-sync/socket.io/ {
+      proxy_pass http://127.0.0.1:7070/browser-sync/socket.io/;
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection "Upgrade";
+  }
+
+  location ~* \.(?:ttf|eot|woff)$ { #|ttc|otf
+      add_header "Access-Control-Allow-Origin" "*";
+      expires 1M;
+      access_log off;
+      add_header Cache-Control "public";
+      proxy_set_header x-request-filename $request_filename;
+      proxy_set_header Host             $host;
+      proxy_pass http://127.0.0.1:7070;
+  }
+
+  location ~* /.+\.[a-z]+$ {
+      proxy_set_header x-request-filename $request_filename;
+      proxy_set_header Host             $host;
+      proxy_pass http://127.0.0.1:7070;
+  }
+
+}
+```
+
+#### publish
+##### 运行
+`efes publish`
+##### 运行目录
+`efes项目目录，配置了.efesconfig和concatfile.json的目录`
+##### 功能简介
+`将efes项目下的源码、图片源文件、html/jade源文件编辑、合并到开发目录`
+##### options
+* -c, --compress  压缩代码
+* --outpath [value] 发布目录，支持相对路径和绝对路径，在不设置outpath 时，默认为项目中 .efesconfig 配置的发布目录。
+
+
+#### hook
+##### 运行：
+`efes hook`
+##### 运行目录：
+`git仓库根目录`
+##### 功能简介：
+```
+初始化git commit提交验证。此命令会在.git/hooks目录下添加pre-commit文件，在git commit时，会触发此文件中的操作，进行lint、图片Add提交、version字符串检查（只针对新添加或修改的文件）。
+```
+
+#### init
+##### 运行：
+`efes init [-f]`
+##### 运行目录：
+`本地项目根目录`
+##### 功能简介：
+```
+生成efes项目配置文件和lint检测规则文件。在项目的根目录下使用。
+PS：为了避免错误，efes init在windows下请在cmd下运行。
+```
+##### options
+* -f, --force 在非空目录强制执行。
+
+##### 选择脚手架为『no』时，生成如下几个文件：
+* .eslintrc：eslint监测规则(此文件同时也是Sublime的插件Sublime-contrib-eslint配置文件)
+* .eslintignore：eslint监测忽略规则
+* .csslintrc：csslint监测规则，Sublime的插件支持
+* .csslintignore：csslint监测忽略规则，Sublime的插件不支持。
+* .efesconfig：efes配置文件
+
+##### 选择脚手架为『yes』时，efes会在项目根目录创建完整的目录结构，和gulp配置。
+##### 生成文件目录结构：
+```
+    |— fonts                          字体
+    |— images                       图片
+    |— styles                         样式
+    |— scripts                        脚本
+    |— concatfile.json           合并配置文件
+    |— gulpfile.js                   gulp任务配置文件
+    |— package.json             npm配置文件
+    |— .eslintrc                      eslint规则文件
+    |— .eslintignore               eslint监测忽略规则
+    |— .csslintrc                    csslint规则文件
+    |— .csslintignore             csslint监测忽略规则
+    |— .efesconfig                efes项目配置文件
+    |— src                             开发目录
+        |— js                           js文件开发目录
+        |- icons                       icons精灵图小图片文件目录
+        |- images                    图片文件（将自动压缩、生成webp至根目录下的images文件夹中）
+        |— css                        css文件开发目录
+```
+
+
+#### scaffold
+##### 运行
+`efes scaffold` 或 `efes sc`
+##### 运行目录
+`本地项目根目录`
+##### 功能简介
+`前端脚手架。在脚手架中封装了一些常用的功能，让开发者免于复制粘贴文件的烦恼。
+PS：为了避免错误，efes init在windows下请在cmd下运行。`
+##### options
+* -f, --force 在非空目录强制执行
+
+
+##### h5 脚手架包含功能
+1. loading模板
+2. 横屏提示模板
+3. 重力感应示例
+4. webp监测，自动替换
+5. 唤起客户端或跳转到下载<br>
+PS：由于使用的是WebViewJavascriptBridge，作为和客户端通讯的规则，调用时需要和客户端定好WebViewJavascriptBridge接口
+6. 客户端内部调用原生功能插件<br>
+PS：经测试，ios9和Android有新的规则，现有代码只能在微信中唤起客户端。
+
+##### h5 脚手架目录结构
+```
     |— fonts                字体
     |— images               图片
-    |- webps                webp图片目录
     |— styles               样式
     |— scripts              脚本
     |— concatfile.json      合并配置文件
@@ -95,77 +237,6 @@ gulp
     |— .efesconfig          efes项目配置文件
     |— index.html           首页
     |— src                  开发目录
-        |— coffee           coffee文件开发目录
-        |— es6              es6文件开发目录
-        |— js               js文件开发目录
-        |- icons            icons精灵图小图片文件目录
-        |- images           图片文件（将自动压缩至根目录下的images文件夹中。对不需要压缩的文件在concatfile.json中配置）
-        |— less             less文件开发目录
-            |— includes     less引用文件目录，如：header.less等。
-            |— publishs     less发布文件目录，如：index.less等。concatfile.json中只能配置合并此目录下的文件
-        |— css              css文件开发目录
-        |- html             html文件开发目录，将自动复制至根目录。
-        |— jade             jade文件开发目录，jade不需要在concatfile.json中配置合并
-            |— includes     jade引用文件目录，如：header.jade等
-            |— publishs     jade发布目录文件
-
-#### b gulp自动化功能：
-1)、自动编译coffee、es6、less、jade<br>
-2)、根据concatfile.json配置的内容，自动合并js(coffee、es6)、css(less)<br>
-3)、支持sourcemap功能。<br>
-4)、文件有改变时自动刷新页面。<br>
-5)、图片自动压缩；icons精灵图自动合并；自动转换为webp图片
-
-## Sublime 配套插件(建议安装Sublime3)
-
-下面的插件，请先确认下列 npm 包是否已经安装：<br>
-elint<br>
-安装命令：cnpm install -g elint<br>
-csslint<br>
-安装命令：cnpm install -g csslint<br>
-<br>
-Sub­limeLin­ter：https://sublime.wbond.net/packages/SublimeLinter<br>
-SublimeLinter-csslint：https://sublime.wbond.net/packages/SublimeLinter-csslint<br>
-Sublime​Linter-contrib-eslint：https://packagecontrol.io/packages/SublimeLinter-contrib-eslint<br>
-Js​Format：https://packagecontrol.io/packages/JsFormat<br>
-
-## scaffold
-efes 脚手架<br>
-在脚手架中封装了一些常用的功能，让开发者免于复制粘贴文件的烦恼。<br>
-<code>
-efes scaffold
-</code>
-或使用简写
-<code>
-efes sc
-</code>
-
-
-### h5 脚手架包含功能
-1、loading模板<br>
-2、横屏提示模板<br>
-3、重力感应示例<br>
-4、webp监测，自动替换<br>
-5、唤起客户端或跳转到下载<br>
-PS：由于使用的是WebViewJavascriptBridge，作为和客户端通讯的规则，调用时需要和客户端定好WebViewJavascriptBridge接口<br>
-6、客户端内部调用原生功能插件<br>
-PS：经测试，ios9和Android有新的测试，现有代码只能在微信中唤起客户端。
-
-### h5 脚手架目录结构
-    |— fonts                字体
-    |— images               图片
-    |— styles               样式
-    |— scripts              脚本
-    |— concatfile.json      合并配置文件
-    |— gulpfile.js gulp     任务配置文件
-    |— package.json         npm配置文件
-    |— .eslintrc            eslint规则文件
-    |— .csslintrc           csslint规则文件
-    |— .efesconfig          efes项目配置文件
-    |— index.html           首页
-    |— src                  开发目录
-        |— coffee           coffee文件开发目录
-        |— es6              es6文件开发目录
         |— js               js文件开发目录
             |- index.js
             |- mod
@@ -178,9 +249,6 @@ PS：经测试，ios9和Android有新的测试，现有代码只能在微信中�
                 |- webp.lazy.js         webp监测，自动触发替换，有lazy效果
                 |- weight.js            重力感应示例
         |- images            图片文件（将自动压缩至根目录下的images文件夹中。对不需要压缩的文件在concatfile.json中配置）
-        |— less             less文件开发目录
-            |— includes     less引用文件目录，如：header.less等。
-            |— publishs     less发布文件目录，如：index.less等。concatfile.json中只能配置合并此目录下的文件
         |— css              css文件开发目录
             |- index.css
             |- mod
@@ -189,14 +257,43 @@ PS：经测试，ios9和Android有新的测试，现有代码只能在微信中�
                 |- landscape-tip.css    横屏提示css
                 |- loading.css          loading
                 |- weight.css           重力感应示例
-        |- html             html文件开发目录，将自动复制至根目录。
-        |— jade             jade文件开发目录，jade不需要在concatfile.json中配置合并
-            |— includes     jade引用文件目录，如：header.jade等
-            |— publishs     jade发布目录文件
+```
 
 
+#### ver
+##### 运行：
+`efes ver [-s xxxx]`
+##### 运行目录：
+`任意项目目录`
+##### 功能简介：
+```
+为当前目录下所有的html中引用的js、css（只处理相对路径）添加/替换版本号字符串，默认为：VERSION。
+```
+##### options
+* -s [value] 自定义的版本号字符串。
 
-## git commit 中文乱码解决方案
+
+### gulp自动化功能
+1. 自动编译coffee、es6、less、jade<br>
+2. 根据concatfile.json配置的内容，自动合并js(coffee、es6)、css(less)<br>
+3. 支持sourcemap功能。<br>
+4. 文件有改变时自动刷新页面。<br>
+5. 图片自动压缩；icons精灵图自动合并；自动转换为webp图片
+
+### Sublime 配套插件(建议安装Sublime3)
+下面的插件，请先确认下列 npm 包是否已经安装：
+
+* elint 安装命令：npm install -g elint
+* csslint 安装命令：npm install -g csslint
+
+Sublim插件：
+
+* Sub­limeLin­ter：https://sublime.wbond.net/packages/SublimeLinter
+* SublimeLinter-csslint：https://sublime.wbond.net/packages/SublimeLinter-csslint
+* Sublime​Linter-contrib-eslint：https://packagecontrol.io/packages/SublimeLinter-contrib-eslint
+* Js​Format：https://packagecontrol.io/packages/JsFormat
+
+### git commit 中文乱码解决方案
 
   git 中文文件名 乱码 mac<br>
   git 默认中文文件名是 xx%<br>
@@ -204,6 +301,16 @@ PS：经测试，ios9和Android有新的测试，现有代码只能在微信中�
   只需要<br>
   git config core.quotepath false<br>
   core.quotepath设为false的话，就不会对0x80以上的字符进行quote。中文显示正常<br>
+
+### 更新日志
+
+## v0.2.0更新
+1、添加start命令，本地代理服务器，替换每次需要开启gulp的繁琐操作。<br>
+2、添加publish命令，编译、合并、生成发布代码<br>
+3、修改脚手架和gulp，将原有编译策略按目录查询改为按文件名后缀判断文件类型。<br>
+4、efesconfig增加dev_dir(开发目录，默认为src)，publish_dir(发布目录，默认为当前路径)配置。<br>
+5、webp文件不单独生成到webps目录下，改为同目录，只改变后缀名。<br>
+
 
 ## v0.1.16更新
 1、添加lint ignore配置，分别对应 .eslintignore 和 .csslintignore两个文件。<br>

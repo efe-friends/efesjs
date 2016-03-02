@@ -51,6 +51,7 @@
       'Opera 12.1'
     ];
 
+    let devDir = pathname.config && pathname.config.dev_dir ? pathname.config.dev_dir : '';
     let publishDir = (pathname.config && pathname.config.publish_dir) ? pathname.config.publish_dir : './';
 
     publishDir = options.outpath || publishDir;

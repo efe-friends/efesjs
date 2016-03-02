@@ -7,7 +7,6 @@
   const $ = require('gulp-load-plugins')();
   const imageminWebp = require('imagemin-webp');
   const pngquant = require('imagemin-pngquant');
-  const through = require('through-gulp');
 
   const fsp = require('../../../utils/fs.js');
   const path = require('../../../utils/path.js');

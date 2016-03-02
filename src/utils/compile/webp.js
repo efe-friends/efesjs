@@ -13,7 +13,12 @@
 
   module.exports = function(pathname, options, callback) {
 
-    let _pathname = path.join(pathname.localDir, (pathname.config && pathname.config.dev_dir) ? pathname.config.dev_dir : '', pathname.output);
+    let devDir = pathname.config && pathname.config.dev_dir ? pathname.config.dev_dir : '';
+    let publishDir = (pathname.config && pathname.config.publish_dir) ? pathname.config.publish_dir : './';
+    
+    publishDir = options.outpath || publishDir;
+
+    let _pathname = path.join(pathname.localDir, devDir || '', pathname.output);
 
     _pathname = $.util.replaceExtension(_pathname, '.png');
 
@@ -31,12 +36,8 @@
 
     console.log(chalk.yellow('src:') + ' ' + chalk.grey(_pathname));
 
-    let publishDir = (pathname.config && pathname.config.publish_dir) ? pathname.config.publish_dir : './';
-
-    publishDir = options.outpath || publishDir;
-
     gulp.src(_pathname, {
-        base: path.join(pathname.localDir, pathname.config.dev_dir || '')
+        base: path.join(pathname.localDir, devDir || '')
       })
       .pipe($.plumber())
       .pipe(imageminWebp({

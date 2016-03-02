@@ -20,7 +20,7 @@ var imgDeps = [];
 
 /* imagemin */
 gulp.task('imagemin', function() {
-  var srcs = ['src/images/**/*'];
+  var srcs = ['src/**/*.+(jpg|jpeg|png|gif)'];
   if (concatfile.imgMinIgnore&&concatfile.imgMinIgnore.length > 0) { //获取不需要压缩的图片列表，从压缩目录中排除。
     for (var i = 0; i < concatfile.imgMinIgnore.length; i++) {
       srcs.push("!" + concatfile.imgMinIgnore[i]);
@@ -28,7 +28,7 @@ gulp.task('imagemin', function() {
 
     //将不需要压缩的图片copy到images目录
     gulp.src(concatfile.imgMinIgnore)
-      .pipe(gulp.dest('images'))
+      .pipe(gulp.dest('.'))
       .pipe(browserSync.reload({
         stream: true
       }));
@@ -42,7 +42,7 @@ gulp.task('imagemin', function() {
       }],
       use: [pngquant()]
     }))
-    .pipe(gulp.dest('images'))
+    .pipe(gulp.dest('.'))
     .pipe(browserSync.reload({
       stream: true
     }));
@@ -53,14 +53,14 @@ imgDeps.push('imagemin');
 {{if exWebp}}
 /* webp */
 gulp.task('webp', function() {
-  var srcs = ['src/images/**/*'];
+  var srcs = ['src/**/*.+(jpg|jpeg|png|gif)'];
 
   return gulp.src(srcs)
     .pipe($.plumber())
     .pipe(imageminWebp({
       quality: 50
     })())
-    .pipe(gulp.dest('images'))
+    .pipe(gulp.dest('.'))
     .pipe(browserSync.reload({
       stream: true
     }));
@@ -104,7 +104,7 @@ ccDeps.push('spritesmith');
 
 /*html*/
 gulp.task('html', function() {
-  return gulp.src('src/html/**/*.html')
+  return gulp.src('src/**/*.html')
     .pipe(gulp.dest('.'))
     .pipe(browserSync.reload({
       stream: true
@@ -122,7 +122,7 @@ gulp.task('less', function() {
     'Firefox ESR',
     'Opera 12.1'
   ];
-  return gulp.src('./src/less/publishs/**/*.less')
+  return gulp.src('./src/**/*.less')
     .pipe($.plumber())
     .pipe($.sourcemaps.init())
     .pipe($.less())
@@ -133,7 +133,7 @@ gulp.task('less', function() {
       })
     ]))
     .pipe($.sourcemaps.write({includeContent: false, sourceRoot: '/less/publishs'}))
-    .pipe(gulp.dest('.tmp/less'))
+    .pipe(gulp.dest('.tmp'))
     .pipe(browserSync.reload({
       stream: true
     }));
@@ -190,14 +190,14 @@ gulp.task('css-concat', ['less'], function() {
 /* coffee */
 gulp.task('coffee', function() {
 
-  return gulp.src('./src/coffee/**/*.coffee')
+  return gulp.src('./src/**/*.coffee')
     .pipe($.plumber())
     .pipe($.sourcemaps.init())
     .pipe($.coffee({
       bare: true
     })).on('error', $.util.log)
     .pipe($.sourcemaps.write({includeContent: false, sourceRoot: '/coffee'}))
-    .pipe(gulp.dest('.tmp/coffee'))
+    .pipe(gulp.dest('.tmp'))
     .pipe(browserSync.reload({
       stream: true
     }));
@@ -210,14 +210,14 @@ jsCcDeps.push('coffee');
 {{if exES6}}
 /* es6 */
 gulp.task('es6', function() {
-  return gulp.src('src/es6/**/*.js')
+  return gulp.src('src/**/*.babel')
     .pipe($.plumber())
     .pipe($.sourcemaps.init())
     .pipe($.babel({
       presets: ['es2015']
     }))
     .pipe($.sourcemaps.write({includeContent: false, sourceRoot: '/es6'}))
-    .pipe(gulp.dest('.tmp/es6'))
+    .pipe(gulp.dest('.tmp'))
     .pipe(browserSync.reload({
       stream: true
     }));
@@ -244,8 +244,8 @@ gulp.task('js-concat', jsCcDeps, function() {
           return ele.replace(/\.coffee$/i, '.js').replace(/^src/i, '.tmp');
         }
 
-        if (/^src\/es6/i.test(ele)) {
-          return ele.replace(/^src/i, '.tmp');
+        if (/\.babel$/i.test(ele)) {
+          return ele.replace(/\.babel$/i, '.js').replace(/^src/i, '.tmp');
         }
 
         return ele;
@@ -281,7 +281,7 @@ gulp.task('js-concat', jsCcDeps, function() {
 {{if exJade}}
 /* jade */
 gulp.task('jade', function() {
-  return gulp.src('src/jade/publishs/**/*.jade')
+  return gulp.src('src/**/*.jade')
     .pipe($.plumber())
     .pipe($.jade({
       pretty: true
@@ -308,8 +308,8 @@ gulp.task('concat', ccDeps, function() {
         return ele.replace(/\.coffee$/i, '.js').replace(/^src/i, '.tmp');
       }
 
-      if (/^src\/es6/i.test(ele)) {
-        return ele.replace(/^src/i, '.tmp');
+      if (/\.babel$/i.test(ele)) {
+        return ele.replace(/\.babel$/i, '.js').replace(/^src/i, '.tmp');
       }
 
       if (/\.less$/i.test(ele)) {
@@ -377,32 +377,32 @@ gulp.task('reload-concatfile',function(){
 gulp.task('watch', ['concat'], function() {
 
   {{if exLess}}
-  gulp.watch(['src/less/**/*.*'], ['css-concat']);
+  gulp.watch(['src/**/*.less'], ['css-concat']);
   {{/if}}
 
-  gulp.watch(['src/css/**/*.*'], ['css-concat']);
+  gulp.watch(['src/**/*.css'], ['css-concat']);
 
   {{if exCoffee}}
-  gulp.watch(['src/coffee/**/*.*'], ['js-concat']);
+  gulp.watch(['src/**/*.coffee'], ['js-concat']);
   {{/if}}
 
   {{if exES6}}
-  gulp.watch(['src/es6/**/*.*'], ['js-concat']);
+  gulp.watch(['src/**/*.babel'], ['js-concat']);
   {{/if}}
 
-  gulp.watch(['src/js/**/*.*'], ['js-concat']);
+  gulp.watch(['src/**/*.js'], ['js-concat']);
 
   {{if exJade}}
-  gulp.watch(['src/jade/**/*.*'], ['jade']);
+  gulp.watch(['src/**/*.jade'], ['jade']);
   {{/if}}
 
-  gulp.watch(['src/images/**/*.*'], imgDeps);
+  gulp.watch(['src/**/*.+(jpg|jpeg|png|gif)'], imgDeps);
 
   {{if exSprite}}
   gulp.watch(['src/icons/**/*.*'], ['spritesmith']);
   {{/if}}
 
-  gulp.watch(['src/html/**/*.*'], ['html']);
+  gulp.watch(['src/**/*.html'], ['html']);
 
   gulp.watch('concatfile.json', ['reload-concatfile','concat']);
 

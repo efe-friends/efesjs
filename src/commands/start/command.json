@@ -8,19 +8,19 @@
     "description": "监听端口"
   }, {
     "flags": "-d, --direct",
-    "description": "直接访问文件，不处理合并"
+    "description": "直接访问文件，不做任何处理"
   }, {
     "flags": "-b, --browsersync",
-    "description": "自动刷新"
+    "description": "开启browsersync功能"
   }, {
     "flags": "-c, --compress",
     "description": "压缩代码"
   }, {
-    "flags": "--outpath",
+    "flags": "--outpath [value]",
     "description": "发布目录"
   }, {
     "flags": "--publish",
-    "description": "发布代码"
+    "description": "访问资源同时，将最终工作资源到发布目录"
   }, {
     "flags": "-w, --work",
     "description": "工作模式"

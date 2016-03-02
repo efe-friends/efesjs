@@ -40,13 +40,16 @@
             break;
           default:
 
-            let _pathname = path.join(pathname.localDir, pathname.config.dev_dir || '', pathname.output);
+            
+            let devDir = pathname.config && pathname.config.dev_dir ? pathname.config.dev_dir : '';
             let publishDir = pathname.config && pathname.config.publish_dir ? pathname.config.publish_dir : './';
+
+            let _pathname = path.join(pathname.localDir, devDir || '', pathname.output);
 
             if (fs.existsSync(_pathname)) {
               console.log(chalk.yellow('src:') + ' ' + chalk.grey(_pathname));
               gulp.src(_pathname, {
-                  base: path.join(pathname.localDir, pathname.config.dev_dir || '')
+                  base: path.join(pathname.localDir, devDir || '')
                 })
                 .pipe($.if(options.publish && pathname.config, gulp.dest(publishDir, {
                   cwd: pathname.localDir

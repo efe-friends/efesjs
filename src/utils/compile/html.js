@@ -26,11 +26,13 @@
     }
 
     // 寻找开发目录下的jade文件
-    let _pathname = path.join(pathname.localDir, pathname.config.dev_dir || '', pathname.output.replace(/\.html$/i, '.jade'));
 
+    let devDir = pathname.config && pathname.config.dev_dir ? pathname.config.dev_dir : '';
     let publishDir = pathname.config && pathname.config.publish_dir ? pathname.config.publish_dir : './';
 
     publishDir = options.outpath || publishDir;
+    
+    let _pathname = path.join(pathname.localDir, devDir || '', pathname.output.replace(/\.html$/i, '.jade'));
 
     if (fs.existsSync(_pathname)) {
       console.log(chalk.yellow('src:') + ' ' + chalk.grey(_pathname));
@@ -52,7 +54,7 @@
 
     // 寻找开发目录下jade目录下的jade文件  
     // 注释掉：不限定jade文件的目录
-    /*_pathname = path.join(pathname.localDir, pathname.config.dev_dir || '', 'jade', pathname.output.replace(/\.html$/i, '.jade'));
+    /*_pathname = path.join(pathname.localDir, devDir || '', 'jade', pathname.output.replace(/\.html$/i, '.jade'));
 
     if (fs.existsSync(_pathname)) {
       console.log(chalk.yellow('src:') + ' ' + chalk.grey(_pathname));
@@ -73,19 +75,19 @@
     }*/
 
     // 寻找开发目录下的html文件
-    _pathname = path.join(pathname.localDir, pathname.config.dev_dir || '', pathname.output);
+    _pathname = path.join(pathname.localDir, devDir || '', pathname.output);
 
     // 寻找开发目录下html目录下的文件
     // 注释掉：不限定html文件的目录
     /*if (!fs.existsSync(_pathname)) {
-      _pathname = path.join(pathname.localDir, pathname.config.dev_dir || '', 'html', pathname.output);
+      _pathname = path.join(pathname.localDir, devDir || '', 'html', pathname.output);
     }*/
 
     // 寻找发布目录下的html文件
     if (fs.existsSync(_pathname)) {
       console.log(chalk.yellow('src:') + ' ' + chalk.grey(_pathname));
       gulp.src(_pathname, {
-          base: path.join(pathname.localDir, pathname.config.dev_dir || '')
+          base: path.join(pathname.localDir, devDir || '')
         })
         .pipe($.if(options.publish && pathname.config, gulp.dest(publishDir, {
           cwd: pathname.localDir
