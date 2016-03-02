@@ -304,51 +304,54 @@ Sublim插件：
 
 ### 更新日志
 
-## v0.2.0更新
-1、添加start命令，本地代理服务器，替换每次需要开启gulp的繁琐操作。<br>
-2、添加publish命令，编译、合并、生成发布代码<br>
-3、修改脚手架和gulp，将原有编译策略按目录查询改为按文件名后缀判断文件类型。<br>
-4、efesconfig增加dev_dir(开发目录，默认为src)，publish_dir(发布目录，默认为当前路径)配置。<br>
-5、webp文件不单独生成到webps目录下，改为同目录，只改变后缀名。<br>
+#### v0.2.0更新
+1. 添加start命令，本地代理服务器，替换每次需要开启gulp的繁琐操作。
+2. 添加publish命令，编译、合并、生成发布代码
+3. 修改脚手架和gulp，将原有编译策略按目录查询改为按文件名后缀判断文件类型。
+4. efesconfig增加dev_dir(开发目录，默认为src)，publish_dir(发布目录，默认为当前路径)配置。
+5. webp文件不单独生成到webps目录下，改为同目录，只改变后缀名。
 
 
-## v0.1.16更新
-1、添加lint ignore配置，分别对应 .eslintignore 和 .csslintignore两个文件。<br>
-注意：.eslintignore sublime的linter插件支持，.csslintignore不支持<br>
-2、优化lint速度。<br>
-3、删除脚手架生产的不必要的文件。<br>
-4、修复h5脚手架中 webp.js的使用'let'关键字的bug.
+#### v0.1.16更新
+1. 添加lint ignore配置，分别对应 .eslintignore 和 .csslintignore两个文件。<br>
+PS：.eslintignore sublime的linter插件支持，.csslintignore不支持
+2. 优化lint速度。
+3. 删除脚手架生产的不必要的文件。
+4. 修复h5脚手架中 webp.js的使用'let'关键字的bug.
 
-## v0.1.15更新
+#### v0.1.15更新
 修复init、scaffold命令不能生成脚手架文件bug
 
-## v0.1.14更新
-1、添加 efes scaffold 脚手架h5模块代码<br>
-2、添加图片 webp 自动转换功能
+#### v0.1.14更新
+1. 添加 efes scaffold 脚手架h5模块代码
+2. 添加图片 webp 自动转换功能
 
-## v0.1.13更新
+#### v0.1.13更新
 脚手架添加icons精灵图自动合并功能。
 
-## v0.1.12更新
+#### v0.1.12更新
 修复init生成项目初始文件时，部分文件不能正确生成bug
 
-## v0.1.10更新
-1、新增替换版本号字符串命令『efes ver』。<br>
-2、gulp提供图片压缩支持（使用pngquant压缩引擎）。<br>
-3、src目录中增加html，方便自动刷新。<br>
-bugs fixed<br>
-1、修复gulp编译es6时的错误。<br>
-2、优化commit的速度。
+#### v0.1.10更新
+1. 新增替换版本号字符串命令『efes ver』。
+2. gulp提供图片压缩支持（使用pngquant压缩引擎）。
+3. src目录中增加html，方便自动刷新。
+bugs fixed
 
-## v0.1.9更新
-bugs fixed<br>
-1、修复windows下不能init不能生成文件、目录的bug。
+1. 修复gulp编译es6时的错误。
+2. 优化commit的速度。
+
+#### v0.1.9更新
+bugs fixed
+
+1. 修复windows下不能init不能生成文件、目录的bug。
 
 
-## v0.1.8更新
-1、调整init命令的脚手架选项，改为选择是否使用脚手架。<br>
-2、支持脚手架生成文件结构<br>
-3、支持sourcemap功能<br>
+#### v0.1.8更新
+1. 调整init命令的脚手架选项，改为选择是否使用脚手架。
+2. 支持脚手架生成文件结构
+3. 支持sourcemap功能
 
-遗留bug：<br>
-1、sourcemap 对同名的css、js文件不能正确区分。<br>
+遗留bug：
+
+1. sourcemap 对同名的css、js文件不能正确区分。
