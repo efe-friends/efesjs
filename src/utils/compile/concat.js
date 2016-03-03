@@ -14,8 +14,8 @@
   const rJsx = /\.jsx$/i;
   const rCoffee = /\.coffee$/i;
   const rLess = /\.less$/i;
-  const rSass = /\.sass$/i;
-  const rScss = /\.scss$/i;
+ /* const rSass = /\.sass$/i;
+  const rScss = /\.scss$/i;*/
   const rCss = /\.css$/i;
 
   module.exports = function(pathname, options, callback) {
@@ -60,8 +60,8 @@
       gulp.src(srcs)
         .pipe($.plumber())
         .pipe($.if(rLess, $.less()))
-        .pipe($.if(rScss, $.sass()))
-        .pipe($.if(rSass, $.sass()))
+        /*.pipe($.if(rScss, $.sass()))
+        .pipe($.if(rSass, $.sass()))*/
         .pipe($.postcss([
           require('autoprefixer')({
             browsers: browsers
@@ -79,7 +79,7 @@
         .pipe(through(function(file) {
           callback(null, file.contents);
           return file;
-        }));;
+        }));
       return;
     }
 

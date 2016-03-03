@@ -1,0 +1,11 @@
+{
+  "name": "project",
+  "version": "0.1",
+  "author": "eagle.h",
+  "description": "克隆/更新 efes工作区下的git项目。",
+  "options": [{
+    "flags": "--color"
+  }],
+  "requires": [],
+  "packages": []
+}

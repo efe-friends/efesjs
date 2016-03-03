@@ -21,7 +21,7 @@
 
 ### 命令 Commands
 
-#### project（待开发）
+#### project
 #####运行：
 `efes project`
 #####运行目录：
