@@ -11,8 +11,9 @@
   module.exports = function(dirname, options) {
 
     let projects = fsp.readJSONSync(path.join(dirname, 'efesproject.json'));
-    let branch = projects.gitDefaultBranch || 'master';
-    let rBranch = new RegExp('\\*\\s' + branch + '\\b', 'm');
+    let localBranch = projects.git && projects.git.localBranch ? projects.git.localBranch : 'master';
+    let remoteBranch = projects.git && projects.git.remoteBranch ? projects.git.remoteBranch : '';
+    let rBranch = new RegExp('\\*\\s' + localBranch + '\\b', 'm');
     let errors = [];
 
     if (projects && projects.projects.length > 0) {
@@ -26,7 +27,7 @@
           let configRepo = function() {
             childProcess.exec('efes hook', {
               cwd: repoPath
-            }, function(err, stdout){
+            }, function(err, stdout) {
 
             });
           };
@@ -35,8 +36,8 @@
             childProcess.exec('git branch', {
               cwd: repoPath
             }, function(err, stdout) {
-
-              console.log('\n',chalk.green('更新 '), `${repoName}`);
+              console.log('\n');
+              console.log(chalk.green('更新 '), `${repoName}`);
 
               if (rBranch.test(stdout)) {
 
@@ -45,21 +46,22 @@
                   stdio: 'inherit'
                 });
 
-                _pull.on('close',function(){
+                _pull.on('close', function() {
                   configRepo();
                   callback();
                 });
 
               } else {
 
-                console.log(chalk.yellow('Warnning'), repoName, '不是 ' + branch + ' 分支， 跳过更新。');
+                console.log(chalk.yellow('Warnning'), repoName, '不是 ' + localBranch + ' 分支， 跳过更新。');
                 configRepo();
                 callback();
 
               }
             });
           } else {
-            console.log('\n',chalk.green('克隆 '), `${repoName}`);
+            console.log('\n');
+            console.log(chalk.green('克隆 '), `${repoName}`);
 
             /*let _clone = childProcess.exec(`git clone ${repoName} ${pj.localDir}`, function(err, stdout, stderr) {
 
@@ -99,16 +101,16 @@
 
             _clone.on('exit', function(code) {
 
-              if (branch !== 'master') {
+              if (localBranch !== 'master') {
 
-                console.log(chalk.green('检出 '),`${repoName} 分支：${branch}`);
+                console.log(chalk.green('检出 '), `${repoName} 分支：${localBranch} ${remoteBranch}`);
 
-                childProcess.exec(`git checkout -b ${branch}`, {
-                  cwd: repoPath
-                }, function(err, stdout, stderr) {
-                  if (err) {
-                    console.log(chalk.bgRed('Error'), repoName, stderr);
-                  }
+                let _checkout = childProcess.exec(`git checkout -b ${localBranch} ${remoteBranch}`, {
+                  cwd: repoPath,
+                  stdio: 'inherit'
+                });
+
+                _checkout.on('close', function(){
                   callback();
                 });
               }

@@ -16,6 +16,8 @@
 
   exports.tmpPublishDirForLocalDir = [];
 
+  exports.tmpLocalEfesProjectDirs = null;
+
   exports.loadFile = function(pathnames, options, callback) {
 
     let _data, _errors = [];
@@ -84,17 +86,29 @@
 
       if (repo === '.efesconfig') {
 
-        dirs.push({
+        /*dirs.push({
           "localDir": "/",
           "concatfile": fsp.readJSONSync(path.join(dirname, "concatfile.json")),
+          "config": fsp.readJSONSync(path.join(dirname, ".efesconfig"))
+        });*/
+
+        dirs.push({
+          "localDir": "/",
+          "concatfile": path.join(dirname, "concatfile.json"),
           "config": fsp.readJSONSync(path.join(dirname, ".efesconfig"))
         });
 
       } else if (fs.existsSync(efesconfig)) { // 步骤2
 
-        dirs.push({
+        /*dirs.push({
           "localDir": repo,
           "concatfile": fsp.readJSONSync(path.join(dirname, repo, "concatfile.json")),
+          "config": fsp.readJSONSync(path.join(dirname, repo, ".efesconfig"))
+        });*/
+
+        dirs.push({
+          "localDir": repo,
+          "concatfile": path.join(dirname, repo, "concatfile.json"),
           "config": fsp.readJSONSync(path.join(dirname, repo, ".efesconfig"))
         });
 
@@ -128,9 +142,15 @@
             let _concatfile = fsp.readJSONSync(path.join(dirname, _subrepo, "concatfile.json"));
             let _config = fsp.readJSONSync(path.join(dirname, _subrepo, ".efesconfig"))
 
-            dirs.push({
+            /*dirs.push({
               "localDir": _subrepo,
               "concatfile": _concatfile,
+              "config": _config
+            });*/
+
+            dirs.push({
+              "localDir": _subrepo,
+              "concatfile": path.join(dirname, _subrepo, "concatfile.json"),
               "config": _config
             });
 
@@ -194,8 +214,7 @@
       }
 
       // 先判断 host 是否和该目录相同。
-      if (_dir.devDomain == host || _dir.publishDomain == host 
-        || rIP.test(host) || rLocalHost.test(host)) {
+      if (_dir.devDomain == host || _dir.publishDomain == host || rIP.test(host) || rLocalHost.test(host)) {
         // 其次判断 请求的路径 是否在这个目录下面。
         // 比如请求的路径是 /core/libs/zepto.min.js
         // 这个目录配置的路径是 /core/
@@ -213,18 +232,23 @@
           // 查找到有配置了合并规则的目录，对指定了合并规则的文件赋值合并来源
           if (_dir.concatfile) {
 
-            for (let output in _dir.concatfile.pkg) {
-              let input = _dir.concatfile.pkg[output];
+            let _concatfile = fsp.readJSONSync(_dir.concatfile);
 
-              if (output === localPathname.output) {
+            if (_concatfile) {
 
-                localPathname = {
-                  localDir: path.join(dirname, _dir.localDir),
-                  output: output,
-                  input: input,
-                  config: _dir.config
-                };
+              for (let output in _concatfile.pkg) {
+                let input = _concatfile.pkg[output];
 
+                if (output === localPathname.output) {
+
+                  localPathname = {
+                    localDir: path.join(dirname, _dir.localDir),
+                    output: output,
+                    input: input,
+                    config: _dir.config
+                  };
+
+                }
               }
             }
 

@@ -12,6 +12,11 @@
   const work = require('../../../utils/efesWorkspace.js');
   const path = require('../../../utils/path.js');
 
+  const $ = require('gulp-load-plugins')();
+  const es2015 = require('babel-preset-es2015');
+  const react = require('babel-preset-react');
+  const through = require('through-gulp');
+
 
   let onRequest = function(request, response, dirs, projects, options) {
 
@@ -35,18 +40,18 @@
       }
     };
 
-    let localPathname = work.tmpPublishDirForLocalDir[md5(host + '/' + pathname)];
+    //let localPathname = work.tmpPublishDirForLocalDir[md5(host + '/' + pathname)];
 
-    if (!localPathname) {
+    //if (!localPathname) {
       // 由于需要支持 一个根访问路径 可以配置多个 本地目录，
       // 所以匹配出来的本地路径有可能会有多个。
       // todo 每个查找在第一次大约要使用300ms，有待优化
-      localPathname = work.getLocalPathname(pathname, host, dirs, projects);
+      let localPathname = work.getLocalPathname(pathname, host, dirs, projects);
 
       // 将已经查找到的路径对应关系缓存起来，方便下次调用。
-      work.tmpPublishDirForLocalDir[md5(host + '/' + pathname)] = localPathname;
+      //work.tmpPublishDirForLocalDir[md5(host + '/' + pathname)] = localPathname;
 
-    }
+    //}
 
     //response.end(JSON.stringify(dirs));
     //return;
@@ -76,6 +81,44 @@
 
   };
 
+  let startServer = function(dirs, options, projects) {
+
+    if (options.browsersync) {
+      global.bs = require("browser-sync").create();
+      global.bs.init({
+        port: options.port,
+        server: {
+          baseDir: "./"
+        },
+        open: false,
+        middleware: function(request, response, next) {
+          onRequest(request, response, dirs, projects, options);
+        }
+      });
+      return;
+    }
+
+    let server = http.createServer();
+
+    server.on('listening', function(err) {
+      if (err) {
+        console.error(chalk.red('efes本地代理服务启动失败'));
+      } else {
+
+        console.log('启动成功，监听端口： %s', options.port);
+      }
+
+    });
+
+    server.on('request', function(request, response) {
+
+      onRequest(request, response, dirs, projects, options);
+
+    });
+
+    server.listen(options.port);
+  };
+
   module.exports = function(options, projects) {
 
     // 在程序启动的时候，将本地服务器需要先编译一个es6文件，
@@ -88,43 +131,21 @@
       input: ['preload.babel']
     }], options, function(err, filedata, local) {
 
-      work.loadLocalDir(projects, function(dirs) {
+      if (!work.tmpLocalEfesProjectDirs) {
 
-        if (options.browsersync) {
-          global.bs = require("browser-sync").create();
-          global.bs.init({
-            port: options.port,
-            server: {
-              baseDir: "./"
-            },
-            open: false,
-            middleware: function(request, response, next) {
-              onRequest(request, response, dirs, projects, options);
-            }
-          });
-          return;
-        }
+        work.loadLocalDir(projects, function(dirs) {
 
-        let server = http.createServer();
+          work.tmpLocalEfesProjectDirs = dirs;
 
-        server.on('listening', function(err) {
-          if (err) {
-            console.error(chalk.red('efes本地代理服务启动失败'));
-          } else {
-
-            console.log('启动成功，监听端口： %s', options.port);
-          }
-
+          startServer(dirs, options, projects);
         });
 
-        server.on('request', function(request, response) {
+      } else {
 
-          onRequest(request, response, dirs, projects, options);
+        startServer(work.tmpLocalEfesProjectDirs, options, projects);
 
-        });
+      }
 
-        server.listen(options.port);
-      });
     });
 
   };
