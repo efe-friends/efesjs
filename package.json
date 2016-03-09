@@ -1,6 +1,6 @@
 {
   "name": "efes",
-  "version": "0.1.18",
+  "version": "0.1.20",
   "description": "edaijia fe assistant",
   "main": "dist/efes.js",
   "bin": {
@@ -28,6 +28,7 @@
     "commander": "^2.9.0",
     "csslint": "^0.10.0",
     "cssnano": "^3.5.2",
+    "deep-assign": "^2.0.0",
     "eslint": "^0.24.1",
     "gulp": "^3.9.0",
     "gulp-babel": "^6.1.1",

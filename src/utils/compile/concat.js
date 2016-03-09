@@ -33,7 +33,7 @@
 
     if (srcs.beforeConcatPipe) {
       isPipe = true;
-      beforeConcatPipe = require(path.join(pathname.localDir, srcs.beforeConcatPipe))();
+      beforeConcatPipe = require(path.join(pathname.root, srcs.beforeConcatPipe))();
     }
 
     if (!Array.isArray(srcs) && srcs.input && Array.isArray(srcs.input)) {
@@ -41,7 +41,7 @@
     }
 
     srcs = srcs.map(function(src) {
-      return path.join(pathname.localDir, src);
+      return path.join(pathname.root, src);
     });
 
     let browsers = [
@@ -74,7 +74,7 @@
         ])))
         .on('error', $.util.log)
         .pipe($.if(options.publish && pathname.config, gulp.dest(publishDir, {
-          cwd: pathname.localDir
+          cwd: pathname.root
         })))
         .pipe(through(function(file) {
           callback(null, file.contents);
@@ -101,7 +101,7 @@
         .pipe($.if(options.compress, $.uglify()))
         .on('error', $.util.log)
         .pipe($.if(options.publish && pathname.config, gulp.dest(publishDir, {
-          cwd: pathname.localDir
+          cwd: pathname.root
         })))
         .pipe(through(function(file) {
           callback(null, file.contents);

@@ -18,7 +18,7 @@
     
     publishDir = options.outpath || publishDir;
 
-    let _pathname = path.join(pathname.localDir, devDir || '', pathname.output);
+    let _pathname = path.join(pathname.root, devDir || '', pathname.output);
 
     _pathname = $.util.replaceExtension(_pathname, '.png');
 
@@ -37,7 +37,7 @@
     console.log(chalk.yellow('src:') + ' ' + chalk.grey(_pathname));
 
     gulp.src(_pathname, {
-        base: path.join(pathname.localDir, devDir || '')
+        base: path.join(pathname.root, devDir || '')
       })
       .pipe($.plumber())
       .pipe(imageminWebp({
@@ -45,7 +45,7 @@
       })())
       .on('error', $.util.log)
       .pipe($.if(options.publish && pathname.config, gulp.dest(publishDir, {
-        cwd: pathname.localDir
+        cwd: pathname.root
       })))
       .pipe(through(function(file) {
         callback(null, file.contents);

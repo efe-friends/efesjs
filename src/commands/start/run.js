@@ -35,15 +35,13 @@
 
     let dirname = process.cwd();
 
-    let projects = fsp.readJSONSync(path.join(dirname,'efesproject.json'));
+    let spaceInfo = fsp.readJSONSync(path.join(dirname,'efesproject.json'));
 
-    if (!projects) {
-      console.log(chalk.red("没有在当前目录找到efes项目配置文件：efesproject.json，请先按照下列步骤生成此文件（或者使用efes project 生成）"));
+    if (!spaceInfo) {
+      console.log(chalk.red("没有在当前目录找到efes项目配置文件：efesproject.json，请先参考github上efes的说明创建此文件。"));
     } else {
-      // todo efes project 生成 efesproject.json
+      lServer(options, spaceInfo);
     }
-    
-    lServer(options, projects);
 
   };
 

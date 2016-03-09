@@ -15,7 +15,7 @@
   const rType = /\.(\w+)$/i;
 
   module.exports = function(pathname, options, callback) {
-    if (typeof pathname === 'object' && pathname.localDir && pathname.input) {
+    if (typeof pathname === 'object' && pathname.root && pathname.input) {
       concat(pathname, options, function(err, data) {
         callback(err, data, pathname.output);
       });
@@ -44,15 +44,15 @@
             let devDir = pathname.config && pathname.config.dev_dir ? pathname.config.dev_dir : '';
             let publishDir = pathname.config && pathname.config.publish_dir ? pathname.config.publish_dir : './';
 
-            let _pathname = path.join(pathname.localDir, devDir || '', pathname.output);
+            let _pathname = path.join(pathname.root, devDir || '', pathname.output);
 
             if (fs.existsSync(_pathname)) {
               console.log(chalk.yellow('src:') + ' ' + chalk.grey(_pathname));
               gulp.src(_pathname, {
-                  base: path.join(pathname.localDir, devDir || '')
+                  base: path.join(pathname.root, devDir || '')
                 })
                 .pipe($.if(options.publish && pathname.config, gulp.dest(publishDir, {
-                  cwd: pathname.localDir
+                  cwd: pathname.root
                 })))
                 .pipe(through(function(file) {
                   callback(null, file.contents);
@@ -61,7 +61,7 @@
               return;
             }
 
-            _pathname = path.join(pathname.localDir, pathname.output);
+            _pathname = path.join(pathname.root, pathname.output);
             if (fs.existsSync(_pathname)) {
               gulp.src(_pathname)
                 .pipe(through(function(file) {

@@ -31,51 +31,97 @@
 #####efesproject.json：
 ```
 {
-  "publishDomain" : "static.resource.com”,
-  "devDomain"     : "static.d.resource.com",
-  "projects"        : [{
-    "name"          : "efes-core”,
-    "git"           : "https://xxx.git.com/efes-core.git”,
-    "localDir"      : "efes-core”,
-    "publishDir"    : "/core/“
+  "global": {
+    "git": {
+      "host": "ssh://xxx.git.com/",
+      "config": {
+        "user.name": "hbxeagle",
+        "user.email": "hbxeagle@github.com"
+      },
+      "branch": {
+        "local": "develop",
+        "remote": "origin/develop"
+      }
+    },
+    "domain": {
+      "publish": "h5.xxx.com",
+      "dev": "h5.test.xxx.ccom"
+    }
+  },
+  "projects": [{
+    "name": "project0",
+    "git": {
+      "repo": "project0",
+      "mapping": "pj0"
+    },
+    "rewrite": {
+      "root": "pj0/main",
+      "request": "/"
+    },
+    "domain": {
+      "publish": "www.xxx.com",
+      "dev": "www.test.xxx.com"
+    }
   }, {
-    "name"          : "efes-events",
-    "git"           : "https://xxx.git.com/efes-events.git",
-    "localDir"      : "efes-events",
-    "publishDir"    : "/"
+    "name": "project1",
+    "git": {
+      "repo": "project1"
+    },
+    "rewrite": {
+      "root": "project1",
+      "request": "/pj1/"
+    }
   }, {
-    "name"          : "efes-main",
-    "git"           : "https://xxx.git.com/efes-main.git",
-    "localDir"      : "efes-main",
-    "publishDir"    : "/"
+    "name": "project1 subProject",
+    "rewrite": {
+      "root": "fe-edaijia-events",
+      "request": "/spj/"
+    }
   }, {
-    "name"          : "efes-other",
-    "git"           : "https://xxx.git.com/efes-other.git",
-    "localDir"      : "efes-other",
-    "publishDir"    : "/other/"
+    "name": "project2",
+    "git": {
+      "repo": "project2"
+    },
+    "rewrite": {
+      "root": "project2",
+      "request": "/"
+    }
   }, {
-    "name"          : "wap",
-    "git"           : "https://xxx.git.com/wap.git",
-    "localDir"      : "wap",
-    "publishDir"    : "/",
-    "publishDomain" : "wap.resource.com",
-    "devDomain"     : "wap.d.resource.com"
+    "name": "project3",
+    "git": {
+      "repo": "project3"
+    },
+    "rewrite": {
+      "root": "project3",
+      "request": "/"
+    }
   }]
 }
 ```
 
 ##### 参数说明：
 ```
-publishDomain：线上访问域名（最顶部的为全局配置。此外，每个项目看自定义其域名）
-devDomain：测试、开发访问域名（最顶部的为全局配置。此外，每个项目看自定义其域名）
+global：全局配置
+	git：git配置
+		host：git仓库的host
+		config：git config配置项（key:value）
+		branch：默认git分支
+			local：本地分支名称
+			remote：远程分支名称
+	domain：域名
+		publish：线上访问域名（最顶部的为全局配置。此外，每个项目看自定义其域名）
+		dev：测试、开发访问域名（最顶部的为全局配置。此外，每个项目看自定义其域名）
 projects：项目信息
-name：项目名称
-git：项目的git地址
-localDir：项目的本地路径
-publishDir：项目的访问路径，规则如下：
-     1、请求地址为：http://h5.edaijia.cn/core/，则配置为： /core/
-     2、请求地址为：http://h5.edaijia.cn/，则配置为：/
-     3、支持多个本地路径配置同一个访问路径
+	name：项目名称
+	git：git自定义配置（非必填）
+		repo：git仓库名称（不需要 .git 后缀）
+		mapping：本地部署目录（非必填，如果不填默认为git仓库名称）
+	rewrite：rewrite对应关系
+		root：项目的本地路径，具体参照上面的例子。
+		request：项目的访问路径，规则如下：
+			1、请求地址为：http://h5.edaijia.cn/core/，则配置为： /core/
+			2、请求地址为：http://h5.edaijia.cn/，则配置为：/
+			3、支持多个本地路径配置同一个访问路径
 ```
 
 #### start

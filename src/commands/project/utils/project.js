@@ -4,27 +4,56 @@
   const chalk = require('chalk');
   const fs = require('fs');
   const childProcess = require('child_process');
+  const assign = require("deep-assign");
 
   const fsp = require('../../../utils/fs.js');
   const path = require('../../../utils/path.js');
 
   module.exports = function(dirname, options) {
 
-    let projects = fsp.readJSONSync(path.join(dirname, 'efesproject.json'));
-    let localBranch = projects.git && projects.git.localBranch ? projects.git.localBranch : 'master';
-    let remoteBranch = projects.git && projects.git.remoteBranch ? projects.git.remoteBranch : '';
+    let spaceInfo = fsp.readJSONSync(path.join(dirname, 'efesproject.json'));
+
+    let _spaceInfo = assign({
+      "global": {
+        "git": {
+          "branch": {
+            "local": "master",
+            "remote": ""
+          }
+        }
+      }
+    }, spaceInfo);
+
+    let _global = _spaceInfo.global;
+
+    let localBranch = _global.git.branch.local;
+    let remoteBranch = _global.git.branch.remote;
     let rBranch = new RegExp('\\*\\s' + localBranch + '\\b', 'm');
     let errors = [];
 
-    if (projects && projects.projects.length > 0) {
-      async.eachSeries(projects.projects, function(pj, callback) {
+    let projects = _spaceInfo.projects;
+
+    if (projects && projects.length > 0) {
+
+      async.eachSeries(projects, function(pj, callback) {
 
         if (pj.git) {
 
-          let repoName = pj.git;
-          let repoPath = path.join(dirname, pj.localDir);
+          let repoName = (pj.git.host || _global.git.host) + pj.git.repo + ".git";
+          let repoPath = path.join(dirname, pj.git.mapping || pj.git.repo);
 
           let configRepo = function() {
+
+            let _gitConfig = assign(_global.git.config, pj.git.config);
+
+            if (_gitConfig) {
+              for (let i in _gitConfig) {
+                childProcess.execSync(`git config ${i} "${_gitConfig[i]}"`, {
+                  cwd: repoPath
+                });
+              }
+            }
+
             childProcess.exec('efes hook', {
               cwd: repoPath
             }, function(err, stdout) {
@@ -87,7 +116,7 @@
               }
               configRepo();
             });*/
-            let _clone = childProcess.spawn(`git`, ['clone', repoName, pj.localDir], {
+            let _clone = childProcess.spawn(`git`, ['clone', repoName, pj.git.mapping || pj.git.repo], {
               stdio: 'inherit'
             });
 
@@ -101,6 +130,10 @@
 
             _clone.on('exit', function(code) {
 
+              console.log('---',code);
+
+              configRepo();
+
               if (localBranch !== 'master') {
 
                 console.log(chalk.green('检出 '), `${repoName} 分支：${localBranch} ${remoteBranch}`);
@@ -110,7 +143,7 @@
                   stdio: 'inherit'
                 });
 
-                _checkout.on('close', function(){
+                _checkout.on('exit', function(code) {
                   callback();
                 });
               }

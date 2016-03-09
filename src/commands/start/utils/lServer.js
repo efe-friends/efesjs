@@ -12,13 +12,13 @@
   const work = require('../../../utils/efesWorkspace.js');
   const path = require('../../../utils/path.js');
 
-  const $ = require('gulp-load-plugins')();
+  /*const $ = require('gulp-load-plugins')();
   const es2015 = require('babel-preset-es2015');
   const react = require('babel-preset-react');
-  const through = require('through-gulp');
+  const through = require('through-gulp');*/
 
 
-  let onRequest = function(request, response, dirs, projects, options) {
+  let onRequest = function(request, response, dirs, spaceInfo, options) {
 
     let pathname = url.parse(request.url).pathname;
     let host = request.headers.host;
@@ -46,7 +46,7 @@
       // 由于需要支持 一个根访问路径 可以配置多个 本地目录，
       // 所以匹配出来的本地路径有可能会有多个。
       // todo 每个查找在第一次大约要使用300ms，有待优化
-      let localPathname = work.getLocalPathname(pathname, host, dirs, projects);
+      let localPathname = work.getLocalPathname(pathname, host, dirs, spaceInfo);
 
       // 将已经查找到的路径对应关系缓存起来，方便下次调用。
       //work.tmpPublishDirForLocalDir[md5(host + '/' + pathname)] = localPathname;
@@ -81,7 +81,7 @@
 
   };
 
-  let startServer = function(dirs, options, projects) {
+  let startServer = function(dirs, options, spaceInfo) {
 
     if (options.browsersync) {
       global.bs = require("browser-sync").create();
@@ -92,7 +92,7 @@
         },
         open: false,
         middleware: function(request, response, next) {
-          onRequest(request, response, dirs, projects, options);
+          onRequest(request, response, dirs, spaceInfo, options);
         }
       });
       return;
@@ -112,41 +112,41 @@
 
     server.on('request', function(request, response) {
 
-      onRequest(request, response, dirs, projects, options);
+      onRequest(request, response, dirs, spaceInfo, options);
 
     });
 
     server.listen(options.port);
   };
 
-  module.exports = function(options, projects) {
+  module.exports = function(options, spaceInfo) {
 
     // 在程序启动的时候，将本地服务器需要先编译一个es6文件，
     // 预加载一下babel-preset-es2015模块，
     // 防止第一次请求的时候，因为加载这个模块占用的时间导致请求超时。
 
-    work.loadFile([{
-      localDir: __dirname,
-      output: 'scripts/index.js',
-      input: ['preload.babel']
-    }], options, function(err, filedata, local) {
+    //work.loadFile([{
+    //  root: __dirname,
+    //  output: 'scripts/index.js',
+    //  input: ['preload.babel']
+    //}], options, function(err, filedata, local) {
 
       if (!work.tmpLocalEfesProjectDirs) {
 
-        work.loadLocalDir(projects, function(dirs) {
+        work.loadLocalDir(spaceInfo, function(dirs) {
 
           work.tmpLocalEfesProjectDirs = dirs;
 
-          startServer(dirs, options, projects);
+          startServer(dirs, options, spaceInfo);
         });
 
       } else {
 
-        startServer(work.tmpLocalEfesProjectDirs, options, projects);
+        startServer(work.tmpLocalEfesProjectDirs, options, spaceInfo);
 
       }
 
-    });
+    //});
 
   };
 
