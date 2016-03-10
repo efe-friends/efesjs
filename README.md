@@ -33,10 +33,10 @@
 {
   "global": {
     "git": {
-      "host": "ssh://xxx.git.com/",
+      "host": "ssh://host.you-git-resource.com/",
       "config": {
         "user.name": "hbxeagle",
-        "user.email": "hbxeagle@github.com"
+        "user.email": "hbxeagle@domain1.com"
       },
       "branch": {
         "local": "develop",
@@ -44,8 +44,8 @@
       }
     },
     "domain": {
-      "publish": "h5.xxx.com",
-      "dev": "h5.test.xxx.ccom"
+      "publish": "static.resource.com",
+      "dev": "static.test.resource.ccom"
     }
   },
   "projects": [{
@@ -59,8 +59,8 @@
       "request": "/"
     },
     "domain": {
-      "publish": "www.xxx.com",
-      "dev": "www.test.xxx.com"
+      "publish": "static1.resource.ccom",
+      "dev": "static1.test.resource.ccom"
     }
   }, {
     "name": "project1",
@@ -95,6 +95,35 @@
       "root": "project3",
       "request": "/"
     }
+  }, {
+  	"name": "other-host-git-project0",
+  	"git": {
+      "host": "https://host.you-git-resource-2.com/",
+      "config": {
+        "user.name": "eagle",
+        "user.email": "eagle@aaa.com"
+      },
+      "branch": {
+        "local": "develop",
+        "remote": "origin/develop"
+      },
+      "repo": "project0",
+      "mapping": "o-project0"
+    },
+    "domain": {
+      "publish": "static.resource1.ccom",
+      "dev": "static.test.resource1.ccom"
+    },
+    "rewrite": {
+      "root":"o-project0",
+      "request":"/"
+    }
+  }, {
+  	"name": "local-project0",
+  	"domain": {
+  	  "publish": "local.mydomain.com",
+  	  "dev": "local.test.mydomain.com"
+  	}
   }]
 }
 ```
@@ -140,6 +169,16 @@ projects：项目信息
 * -c, --compress 开启压缩功能。
 * --publish 访问资源同时，将最终工作资源到发布目录
 
+##### hosts的配置：
+```
+127.0.0.1 static.resource.com
+127.0.0.1 static.test.resource.com
+127.0.0.1 static.resource1.com
+127.0.0.1 static.test.resource1.com
+127.0.0.1 local.mydomain.com
+127.0.0.1 local.test.mydomain.com
+```
+
 ##### nginx的配置：
 ```
 map $http_upgrade $connection_upgrade {
@@ -149,7 +188,7 @@ map $http_upgrade $connection_upgrade {
 
 server {
   listen       80;
-  server_name  static.resource.com static.d.resource.com www.resource.com wap.resource.com;
+  server_name  static.resource.com static.test.resource.com static.resource1.com static.test.resource1.com local.mydomain.com local.test.mydomain.com;
   charset utf-8;
   autoindex       on;
   autoindex_exact_size    on;
