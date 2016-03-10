@@ -123,7 +123,11 @@
   	"domain": {
   	  "publish": "local.mydomain.com",
   	  "dev": "local.test.mydomain.com"
-  	}
+  	},
+  	"rewrite": {
+      "root":"local-project0",
+      "request":"/"
+    }
   }]
 }
 ```
@@ -167,7 +171,7 @@ projects：项目信息
 * -d, --direct 直接访问文件，不做任何处理。
 * -b, --browsersync 开启browsersync功能(自动刷新功能暂时不能使用)。
 * -c, --compress 开启压缩功能。
-* --publish 访问资源同时，将最终工作资源到发布目录
+* --publish 访问资源同时，将最终需要生产的资源发布到发布目录(可能会影响性能，建议使用 efes publish 命令发布)
 
 ##### hosts的配置：
 ```
@@ -211,13 +215,12 @@ server {
       proxy_set_header Host             $host;
       proxy_pass http://127.0.0.1:7070;
   }
-
+  
   location ~* /.+\.[a-z]+$ {
       proxy_set_header x-request-filename $request_filename;
       proxy_set_header Host             $host;
       proxy_pass http://127.0.0.1:7070;
   }
-
 }
 ```
 
