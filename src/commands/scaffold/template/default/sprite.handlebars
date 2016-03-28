@@ -1,0 +1,14 @@
+[class^=icon-] {
+  display: inline-block;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+}
+{{#sprites}}
+.{{name}} {
+  background-image: url({{{escaped_image}}});
+  background-position: {{percent offset_x width total_width}}% {{percent offset_y height total_height}}%;
+  background-size: {{px2rem total_width}}rem {{px2rem total_height}}rem;
+  width: {{px2rem width}}rem;
+  height: {{px2rem height}}rem;
+}
+{{/sprites}}

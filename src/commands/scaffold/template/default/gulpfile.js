@@ -77,7 +77,17 @@ gulp.task('spritesmith', function() {
   // Generate our spritesheet
   var spriteData = gulp.src(srcs).pipe(spritesmith({
     imgName: 'icons.png',
-    cssName: 'icons.css'
+    cssName: 'icons.css',
+    imgPath: '../images/icons.png',
+    cssTemplate: 'sprite.handlebars',
+    cssHandlebarsHelpers: {
+      percent: function(offset, length, total) {
+        return offset / (length - total) * 100;
+      },
+      px2rem: function(length) {
+        return length / 100;
+      }
+    }
   }));
 
   // Pipe image stream through image optimizer and onto disk
