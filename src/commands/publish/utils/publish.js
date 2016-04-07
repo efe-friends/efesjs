@@ -23,7 +23,7 @@
 
       for (let output in concatfile.pkg) {
         work.loadFile([{
-          localDir: dirname,
+          root: dirname,
           output: output,
           input: concatfile.pkg[output],
           config: config
@@ -46,7 +46,8 @@
     };
 
     // 第二步处理图片
-    gulp.src(path.join(dirname, config.dev_dir) + '/**/*.+(jpg|jpeg|png|gif)')
+    gulp.src([path.join(dirname, config.dev_dir) + '/**/*.+(jpg|jpeg|png|gif)',
+      "!" + path.join(dirname, config.dev_dir) + '/**/icons/*.png'])
       .pipe($.plumber())
       .pipe(imageminWebp({
         quality: 50
@@ -56,7 +57,8 @@
         cwd: dirname
       })));
 
-    gulp.src(path.join(dirname, config.dev_dir) + '/**/*.+(jpg|jpeg|png|gif)')
+    gulp.src([path.join(dirname, config.dev_dir) + '/**/*.+(jpg|jpeg|png|gif)',
+      "!" + path.join(dirname, config.dev_dir) + '/**/icons/*.png'])
       .pipe($.plumber())
       .pipe($.imagemin({
         progressive: true,
@@ -93,8 +95,9 @@
     // 第四步处理其他文件
     gulp.src([
         path.join(dirname, config.dev_dir) + '/**/*',
-        "!" + path.join(dirname, config.dev_dir) + '/**/*.+(js|css|jsx|sass|scss|coffee|babel|es2015|es6)',
+        "!" + path.join(dirname, config.dev_dir) + '/**/*.+(js|css|jsx|less|sass|scss|coffee|babel|es2015|es6)',
         "!" + path.join(dirname, config.dev_dir) + '/**/*.+(jpg|jpeg|png|gif)',
+        "!" + path.join(dirname, config.dev_dir) + '/**/icons/*.png',
         "!" + path.join(dirname, config.dev_dir) + '/**/*.jade',
       ])
       .pipe($.if(condition, gulp.dest(publishDir, {

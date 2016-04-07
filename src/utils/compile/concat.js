@@ -93,7 +93,7 @@
           presets: [es2015] // es2015这个模块是一个加载起来很慢的模块，伤脑筋啊
         })))
         .pipe($.if(rJsx, $.babel({
-          presets: [es2015, react]
+          presets: [react, es2015]
         })))
         .pipe($.if(rCoffee, $.coffee()))
         .pipe($.if(isPipe, beforeConcatPipe))

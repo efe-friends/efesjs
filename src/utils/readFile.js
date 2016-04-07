@@ -73,6 +73,19 @@
             }
             break;
         }
+      } else {
+
+        let _pathname = path.join(pathname.root, pathname.output);
+        if (fs.existsSync(_pathname)) {
+          gulp.src(_pathname)
+            .pipe(through(function(file) {
+              callback(null, file.contents, pathname.output);
+              return file;
+            }));
+        } else {
+          callback(new Error('文件或目录不存在:' + _pathname));
+        }
+
       }
       callback();
     }

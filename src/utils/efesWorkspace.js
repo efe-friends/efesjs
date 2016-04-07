@@ -30,7 +30,7 @@
 
       if (options.direct) {
 
-        let _pathname = path.join(pathname.localDir, pathname.output);
+        let _pathname = path.join(pathname.root, pathname.output);
 
         fs.readFile(_pathname, options, function(err, data) {
           if (err) {
@@ -326,6 +326,7 @@
       }*/
 
       // 先判断 host 是否和该目录相同。
+      //console.log(host,_dir.domain.dev,_dir.domain.publish);
       if (_dir.domain.dev == host || _dir.domain.publish == host || rIP.test(host) || rLocalHost.test(host)) {
         // 其次判断 请求的路径 是否在这个目录下面。
         // 比如请求的路径是 /core/libs/zepto.min.js
