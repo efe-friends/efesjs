@@ -17,6 +17,7 @@
   const react = require('babel-preset-react');
   const through = require('through-gulp');*/
 
+  const rType = /\.(\w+)$/i;
 
   let onRequest = function(request, response, dirs, spaceInfo, options) {
 
@@ -29,7 +30,7 @@
       if (data) {
         if (!options.browsersync) {
           response.writeHeader(code, {
-            'content-type': mime.lookup(pathname),
+            'content-type': pathname.match(rType)?mime.lookup(pathname):mime.lookup('json'),
           });
         }
         response.end(data);
