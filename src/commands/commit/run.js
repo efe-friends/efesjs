@@ -132,6 +132,7 @@
             let _ignores = fsp.readFileSync(path.join(process.cwd(), config.baseDir, _sublinter.ignore));
             _ignores = _ignores.split('\n');
             _ignores.every(function(_ignore){
+              _ignore = path.join(config.baseDir,_ignore);
               if (minimatch(filename, _ignore)) {
                 isIgnore = true;
                 return false;

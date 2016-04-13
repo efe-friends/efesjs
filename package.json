@@ -1,6 +1,6 @@
 {
   "name": "efes",
-  "version": "0.1.21",
+  "version": "0.1.24",
   "description": "edaijia fe assistant",
   "main": "dist/efes.js",
   "bin": {
@@ -43,6 +43,7 @@
     "gulp-postcss": "^6.0.1",
     "gulp-uglify": "^1.5.3",
     "gulp-util": "^3.0.7",
+    "gulp-imagemin": "^1.0.1",
     "imagemin-pngquant": "^4.2.2",
     "imagemin-webp": "^3.1.1",
     "inquirer": "^0.9.0",
