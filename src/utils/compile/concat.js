@@ -1,6 +1,8 @@
 (function() {
-
+  const fs = require('fs');
+  const chalk = require('chalk');
   const gulp = require('gulp');
+  const webpack = require('webpack-stream');
 
   const $ = require('gulp-load-plugins')();
   const es2015 = require('babel-preset-es2015');
@@ -8,7 +10,8 @@
   const through = require('through-gulp');
 
   const path = require('../path.js');
-
+  const rJsFile = /\.(babel|es6|es2015|jsx|js|coffee)$/i;
+  const rCssFile = /\.(less|css)$/i;
   const rBabel = /\.babel$/i;
   const rEs6 = /\.es(6|2015)$/i;
   const rJsx = /\.jsx$/i;
@@ -41,7 +44,27 @@
     }
 
     srcs = srcs.map(function(src) {
-      return path.join(pathname.root, src);
+
+      let _root = pathname.root;
+      if (src.match(/(^\/|^!\/)/)) {
+        _root = process.cwd();
+      }
+
+      let _src = path.join(_root, src);
+
+      if (src.match(/^!/)) {
+        _src = "!" + path.join(_root, src.replace(/^!/,''));
+      }
+
+      if (!src.match(/^!/)) {
+        try {
+          fs.accessSync(_src);
+        } catch(e) {
+          console.log(chalk.yellow('文件不存在或为匹配规则：') + _src);
+        }
+      }
+
+      return _src;
     });
 
     let browsers = [
@@ -68,6 +91,20 @@
           })
         ]))
         .pipe($.if(isPipe, beforeConcatPipe))
+        .pipe($.if(!options.publish,through(function(file,enc,cb){
+          let contents = file.contents.toString();
+          let _path = file.history && file.history[0];
+          
+          contents = "\n\n\n \/\*\* SOURCE: " + _path + "  \*\*\/\n\n\n" + contents;
+          
+          if (!_path.match(rCssFile)) {
+            contents = "";
+            console.log(chalk.yellow("非css文件：")+_path);
+          }
+
+          file.contents = new Buffer(contents)
+          return cb(null,file);
+        })))
         .pipe($.concat(pathname.output))
         .pipe($.if(options.compress, $.postcss([
           require('cssnano')()
@@ -84,6 +121,22 @@
     }
 
     if (/\.js$/i.test(pathname.output)) {
+
+      /*gulp.src(srcs)
+        .pipe($.plumber())
+        .pipe(webpack())
+        .pipe($.concat(pathname.output))
+        .pipe($.if(options.compress, $.uglify()))
+        .on('error', $.util.log)
+        .pipe($.if(options.publish && pathname.config, gulp.dest(publishDir, {
+          cwd: pathname.root
+        })))
+        .pipe(through(function(file) {
+          callback(null, file.contents);
+          return file;
+        }));
+      return;*/
+
       gulp.src(srcs)
         .pipe($.plumber())
         .pipe($.if(rBabel, $.babel({
@@ -97,15 +150,29 @@
         })))
         .pipe($.if(rCoffee, $.coffee()))
         .pipe($.if(isPipe, beforeConcatPipe))
+        .pipe($.if(!options.publish,through(function(file,enc,cb){
+          let contents = file.contents.toString();
+          let _path = file.history && file.history[0];
+
+          contents = "\/\*\* SOURCE: " + _path + "  \*\*\/\n\n\n" + contents + "\n\n\n";
+
+          if (!_path.match(rJsFile)) {
+            contents = "";
+            console.log(chalk.yellow("非js文件：")+_path);
+          }
+
+          file.contents = new Buffer(contents);
+          return cb(null,file);
+        })))
         .pipe($.concat(pathname.output))
         .pipe($.if(options.compress, $.uglify()))
         .on('error', $.util.log)
         .pipe($.if(options.publish && pathname.config, gulp.dest(publishDir, {
           cwd: pathname.root
         })))
-        .pipe(through(function(file) {
+        .pipe(through(function(file,enc,cb) {
           callback(null, file.contents);
-          return file;
+          return cb(null,file);
         }));
       return;
     }
