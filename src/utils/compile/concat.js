@@ -2,7 +2,6 @@
   const fs = require('fs');
   const chalk = require('chalk');
   const gulp = require('gulp');
-  const webpack = require('webpack-stream');
 
   const $ = require('gulp-load-plugins')();
   const es2015 = require('babel-preset-es2015');
@@ -17,8 +16,8 @@
   const rJsx = /\.jsx$/i;
   const rCoffee = /\.coffee$/i;
   const rLess = /\.less$/i;
- /* const rSass = /\.sass$/i;
-  const rScss = /\.scss$/i;*/
+  /* const rSass = /\.sass$/i;
+   const rScss = /\.scss$/i;*/
   const rCss = /\.css$/i;
 
   module.exports = function(pathname, options, callback) {
@@ -52,14 +51,14 @@
 
       let _src = path.join(_root, src);
 
-      if (src.match(/^!/)) {
-        _src = "!" + path.join(_root, src.replace(/^!/,''));
+      if (src.match(/^!/)) { // 处理 minimatch 排除规则
+        _src = "!" + path.join(_root, src.replace(/^!/, ''));
       }
 
       if (!src.match(/^!/)) {
         try {
           fs.accessSync(_src);
-        } catch(e) {
+        } catch (e) {
           console.log(chalk.yellow('文件不存在或为匹配规则：') + _src);
         }
       }
@@ -91,19 +90,19 @@
           })
         ]))
         .pipe($.if(isPipe, beforeConcatPipe))
-        .pipe($.if(!options.publish,through(function(file,enc,cb){
+        .pipe($.if(!options.publish, through(function(file, enc, cb) {
           let contents = file.contents.toString();
           let _path = file.history && file.history[0];
-          
+
           contents = "\n\n\n \/\*\* SOURCE: " + _path + "  \*\*\/\n\n\n" + contents;
-          
+
           if (!_path.match(rCssFile)) {
             contents = "";
-            console.log(chalk.yellow("非css文件：")+_path);
+            console.log(chalk.yellow("非css文件：") + _path);
           }
 
           file.contents = new Buffer(contents)
-          return cb(null,file);
+          return cb(null, file);
         })))
         .pipe($.concat(pathname.output))
         .pipe($.if(options.compress, $.postcss([
@@ -122,21 +121,6 @@
 
     if (/\.js$/i.test(pathname.output)) {
 
-      /*gulp.src(srcs)
-        .pipe($.plumber())
-        .pipe(webpack())
-        .pipe($.concat(pathname.output))
-        .pipe($.if(options.compress, $.uglify()))
-        .on('error', $.util.log)
-        .pipe($.if(options.publish && pathname.config, gulp.dest(publishDir, {
-          cwd: pathname.root
-        })))
-        .pipe(through(function(file) {
-          callback(null, file.contents);
-          return file;
-        }));
-      return;*/
-
       gulp.src(srcs)
         .pipe($.plumber())
         .pipe($.if(rBabel, $.babel({
@@ -150,7 +134,7 @@
         })))
         .pipe($.if(rCoffee, $.coffee()))
         .pipe($.if(isPipe, beforeConcatPipe))
-        .pipe($.if(!options.publish,through(function(file,enc,cb){
+        .pipe($.if(!options.publish, through(function(file, enc, cb) {
           let contents = file.contents.toString();
           let _path = file.history && file.history[0];
 
@@ -158,11 +142,11 @@
 
           if (!_path.match(rJsFile)) {
             contents = "";
-            console.log(chalk.yellow("非js文件：")+_path);
+            console.log(chalk.yellow("非js文件：") + _path);
           }
 
           file.contents = new Buffer(contents);
-          return cb(null,file);
+          return cb(null, file);
         })))
         .pipe($.concat(pathname.output))
         .pipe($.if(options.compress, $.uglify()))
@@ -170,33 +154,13 @@
         .pipe($.if(options.publish && pathname.config, gulp.dest(publishDir, {
           cwd: pathname.root
         })))
-        .pipe(through(function(file,enc,cb) {
+        .pipe(through(function(file, enc, cb) {
           callback(null, file.contents);
-          return cb(null,file);
+          return cb(null, file);
         }));
       return;
     }
 
-    // 拆分 css 和 js 的处理，减少处理时间
-    /*gulp.src(srcs)
-      .pipe($.plumber())
-      .pipe($.if(rBabel, $.babel({
-        presets: ['es2015']
-      })))
-      .pipe($.if(rCoffee, $.coffee()))
-      .pipe($.if(rLess, $.less()))
-      .pipe($.if(rCss, $.postcss([
-        require('autoprefixer')({
-          browsers: browsers
-        })
-      ])))
-      .on('error', $.util.log)
-      .pipe($.concat(pathname.output))
-      .pipe(through(function(file) {
-        callback(null, file.contents);
-        return file;
-      }));*/
-    //callback(null, '11111');
   };
 
 })();

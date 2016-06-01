@@ -107,6 +107,7 @@
           let _tmp = {
             config: _config,
             concatfile: _config ? path.join(dirname, _path, 'concatfile.json') : null,
+            //webpack: _config ? path.join(dirname, _path, 'webpack.config.js') : null,
             domain: {
               publish: _dir.domain.publish,
               dev: _dir.domain.dev
@@ -135,6 +136,7 @@
       let _tmp = {
         config: _config,
         concatfile: _config ? path.join(dirname, _path, 'concatfile.json') : null,
+        //webpack: _config ? path.join(dirname, _path, 'webpack.config.js') : null,
         domain: {
           publish: _global.domain.publish,
           dev: _global.domain.dev
@@ -167,6 +169,7 @@
       let _dir = {
         config: null,
         concatfile: null,
+        //webpack:null,
         domain: {
           publish: null,
           dev: null
@@ -185,6 +188,7 @@
 
       _dir.config = _config;
       _dir.concatfile = _config ? path.join(dirname, _project.rewrite.root, 'concatfile.json') : null;
+      //_dir.webpack = _config ? path.join(dirname, _project.rewrite.root, 'webpack.config.js') : null,
 
       _dir.rewrite.root = _project.rewrite.root;
       _dir.rewrite.request = _project.rewrite.request;
@@ -209,33 +213,9 @@
 
         matchPath('/', dirs, spaceInfo.global);
 
-        /*dirs.push({
-          "localDir": "/",
-          "concatfile": path.join(dirname, "concatfile.json"),
-          "config": fsp.readJSONSync(path.join(dirname, ".efesconfig"))
-        });*/
-
       } else {
         matchPath(repo, dirs, spaceInfo.global);
       }
-
-      /*else if (fs.existsSync(efesconfig)) { // 步骤2
-
-        dirs.push({
-          "localDir": repo,
-          "concatfile": path.join(dirname, repo, "concatfile.json"),
-          "config": fsp.readJSONSync(path.join(dirname, repo, ".efesconfig"))
-        });
-
-      } else if (fs.statSync(subdirname).isDirectory()) {
-
-        dirs.push({
-          "localDir": repo,
-          "concatfile": null,
-          "config": null
-        });
-
-      }*/
 
       let regIncludes = [/\.efesconfig$/i];
       let regExcludes = [/node_modules/, /\.git/, /\.tmp/];
@@ -254,15 +234,9 @@
           let _subrepo = [repo, path.dirname(subrepo)].join(path.sep);
 
           if (subrepo != '.efesconfig') { // 排除 步骤2 重复项
-            let _concatfile = fsp.readJSONSync(path.join(dirname, _subrepo, "concatfile.json"));
-            let _config = fsp.readJSONSync(path.join(dirname, _subrepo, ".efesconfig"))
+            //let _concatfile = fsp.readJSONSync(path.join(dirname, _subrepo, "concatfile.json"));
+            //let _config = fsp.readJSONSync(path.join(dirname, _subrepo, ".efesconfig"))
             matchPath(_subrepo, dirs, spaceInfo.global);
-
-            /*dirs.push({
-              "localDir": _subrepo,
-              "concatfile": path.join(dirname, _subrepo, "concatfile.json"),
-              "config": _config
-            });*/
 
           }
 
@@ -299,32 +273,6 @@
 
       let dirLength2 = 0;
 
-      /*spaceInfo.projects.some(function(_project) {
-
-        let _dirLength2 = _dir.localDir.match(new RegExp(_project.localDir));
-
-        console.log(_dir.localDir, _project.localDir, _dirLength2, dirLength2);
-
-        _dirLength2 = _dirLength2 ? _dirLength2[0].length : 0;
-
-        if (_dirLength2 > dirLength2) {
-
-          dirLength2 = _dirLength2;
-
-          _dir.publishDir = (_project.publishDir + _dir.localDir.replace(_project.localDir, '').replace(/^\//, '')).replace(/\/$/, '') + '/';
-          _dir.devDomain = _project.devDomain ? _project.devDomain : spaceInfo.devDomain;
-          _dir.publishDomain = _project.publishDomain ? _project.publishDomain : spaceInfo.publishDomain;
-
-        }
-
-      });
-
-      if (!_dir.publishDir) {
-        _dir.publishDir = '/' + _dir.localDir + '/';
-        _dir.devDomain = spaceInfo.devDomain;
-        _dir.publishDomain = spaceInfo.publishDomain;
-      }*/
-
       // 先判断 host 是否和该目录相同。
       //console.log(host,_dir.domain.dev,_dir.domain.publish);
       if (_dir.domain.dev == host || _dir.domain.publish == host || rIP.test(host) || rLocalHost.test(host)) {
@@ -358,7 +306,8 @@
                     root: path.join(dirname, _dir.rewrite.root),
                     output: output,
                     input: input,
-                    config: _dir.config
+                    config: _dir.config,
+                    //webpack: _dir.webpack
                   };
 
                 }
