@@ -40,7 +40,8 @@
         if (pj.git) {
 
           let repoName = (pj.git.host || _global.git.host) + pj.git.repo + ".git";
-          let repoPath = path.join(dirname, pj.git.mapping || pj.git.repo);
+          //let repoPath = path.join(dirname, pj.git.mapping || pj.git.repo);// 取消git配置中的mapping参数，防止多人合作，git仓库本地目录不一致导致的跨库合目录不一致。
+          let repoPath = path.join(dirname, pj.git.repo);
 
           let configRepo = function() {
 
@@ -116,7 +117,7 @@
               }
               configRepo();
             });*/
-            let _clone = childProcess.spawn(`git`, ['clone', repoName, pj.git.mapping || pj.git.repo], {
+            let _clone = childProcess.spawn(`git`, ['clone', repoName, pj.git.repo], {
               stdio: 'inherit'
             });
 

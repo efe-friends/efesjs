@@ -51,8 +51,7 @@
   "projects": [{
     "name": "project0",
     "git": {
-      "repo": "project0",
-      "mapping": "pj0"
+      "repo": "project0"
     },
     "rewrite": {
       "root": "pj0/main",
@@ -107,8 +106,7 @@
         "local": "develop",
         "remote": "origin/develop"
       },
-      "repo": "project0",
-      "mapping": "o-project0"
+      "repo": "project0"
     },
     "domain": {
       "publish": "static.resource1.ccom",
@@ -148,7 +146,6 @@ projects：项目信息
 	name：项目名称
 	git：git自定义配置（非必填）
 		repo：git仓库名称（不需要 .git 后缀）
-		mapping：本地部署目录（非必填，如果不填默认为git仓库名称）
 	rewrite：rewrite对应关系
 		root：项目的本地路径，具体参照上面的例子。
 		request：项目的访问路径，规则如下：
@@ -392,7 +389,11 @@ Sublim插件：
 
 ### 更新日志
 
-#### v0.2.0更新
+#### v0.1.26更新
+1. concatfile.json配置支持跨库和mimimatch匹配规则。
+2. 取消git配置中的mapping参数，防止多人合作，git仓库本地目录不一致导致的跨库合目录不一致。
+
+#### v0.1.20更新
 1. 添加start命令，本地代理服务器，替换每次需要开启gulp的繁琐操作。
 2. 添加publish命令，编译、合并、生成发布代码
 3. 修改脚手架和gulp，将原有编译策略按目录查询改为按文件名后缀判断文件类型。
