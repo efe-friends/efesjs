@@ -8,6 +8,9 @@
   const react = require('babel-preset-react');
   const through = require('through-gulp');
 
+  const browserify = require('browserify');
+  const babelify = require('babelify');
+
   const path = require('../path.js');
   const rJsFile = /\.(babel|es6|es2015|jsx|js|coffee)$/i;
   const rCssFile = /\.(less|css)$/i;
@@ -123,14 +126,65 @@
 
       gulp.src(srcs)
         .pipe($.plumber())
-        .pipe($.if(rBabel, $.babel({
-          presets: [es2015] // es2015这个模块是一个加载起来很慢的模块，伤脑筋啊
+        .pipe($.if(rBabel, through(function(file, enc, cb) {
+          browserify({
+              entries: [file.path],
+              debug: true,
+              extensions: ['', '.js', '.json', '.babel', '.jsx', '.es6', '.es2015']
+            })
+            .transform(babelify, {
+              extensions: ['', '.js', '.babel', '.jsx', '.es6', '.es2015'],
+              presets: [es2015]
+            })
+            .bundle(function(err, res) {
+              err && $.util.log(err.stack || err.message);
+              if (res) {
+                file.contents = res;
+              } else {
+                file.contents = new Buffer('');
+              }
+              cb(null, file);
+            });
         })))
-        .pipe($.if(rEs6, $.babel({
-          presets: [es2015] // es2015这个模块是一个加载起来很慢的模块，伤脑筋啊
+        .pipe($.if(rEs6, through(function(file, enc, cb) {
+          browserify({
+              entries: [file.path],
+              debug: true,
+              extensions: ['', '.js', '.json', '.babel', '.jsx', '.es6', '.es2015']
+            })
+            .transform(babelify, {
+              extensions: ['', '.js', '.babel', '.jsx', '.es6', '.es2015'],
+              presets: [es2015]
+            })
+            .bundle(function(err, res) {
+              err && $.util.log(err.stack || err.message);
+              if (res) {
+                file.contents = res;
+              } else {
+                file.contents = new Buffer('');
+              }
+              cb(null, file);
+            });
         })))
-        .pipe($.if(rJsx, $.babel({
-          presets: [react, es2015]
+        .pipe($.if(rJsx, through(function(file, enc, cb) {
+          browserify({
+              entries: [file.path],
+              debug: true,
+              extensions: ['', '.js', '.json', '.babel', '.jsx', '.es6', '.es2015']
+            })
+            .transform(babelify, {
+              extensions: ['', '.js', '.babel', '.jsx', '.es6', '.es2015'],
+              presets: [es2015, react]
+            })
+            .bundle(function(err, res) {
+              err && $.util.log(err.stack || err.message);
+              if (res) {
+                file.contents = res;
+              } else {
+                file.contents = new Buffer('');
+              }
+              cb(null, file);
+            });
         })))
         .pipe($.if(rCoffee, $.coffee()))
         .pipe($.if(isPipe, beforeConcatPipe))
