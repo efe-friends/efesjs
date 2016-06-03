@@ -389,6 +389,9 @@ Sublim插件：
 
 ### 更新日志
 
+#### v0.1.27更新
+1. 使用browserify&babelify替换gulp-babel，添加对es6 import的支持。
+
 #### v0.1.26更新
 1. concatfile.json配置支持跨库和mimimatch匹配规则。
 2. 取消git配置中的mapping参数，防止多人合作，git仓库本地目录不一致导致的跨库合目录不一致。
