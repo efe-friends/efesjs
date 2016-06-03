@@ -23,7 +23,15 @@
    const rScss = /\.scss$/i;*/
   const rCss = /\.css$/i;
 
+  const env = require('../efesEnv.js');
+
   module.exports = function(pathname, options, callback) {
+
+    let baseDir = process.cwd();
+
+    if (env && env.baseDir) {
+      baseDir = env.baseDir;
+    }
 
     let srcs = pathname.input;
 
@@ -49,7 +57,7 @@
 
       let _root = pathname.root;
       if (src.match(/(^\/|^!\/)/)) {
-        _root = process.cwd();
+        _root = baseDir;
       }
 
       let _src = path.join(_root, src);

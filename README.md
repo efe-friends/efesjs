@@ -389,7 +389,7 @@ Sublim插件：
 
 ### 更新日志
 
-#### v0.1.27更新
+#### v0.1.28更新
 1. 使用browserify&babelify替换gulp-babel，添加对es6 import的支持。
 
 #### v0.1.26更新
