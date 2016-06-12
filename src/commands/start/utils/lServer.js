@@ -6,16 +6,14 @@
   const mime = require('mime');
   const url = require('url');
   const md5 = require('md5');
+  const assign = require('deep-assign');
 
   const browserSync = require('browser-sync');
 
   const work = require('../../../utils/efesWorkspace.js');
+  const env = require('../../../utils/efesEnv.js');
   const path = require('../../../utils/path.js');
-
-  /*const $ = require('gulp-load-plugins')();
-  const es2015 = require('babel-preset-es2015');
-  const react = require('babel-preset-react');
-  const through = require('through-gulp');*/
+  const fsp = require('../../../utils/fs.js');
 
   const rType = /\.(\w+)$/i;
 
@@ -30,7 +28,7 @@
       if (data) {
         if (!options.browsersync) {
           response.writeHeader(code, {
-            'content-type': pathname.match(rType)?mime.lookup(pathname):mime.lookup('json'),
+            'content-type': pathname.match(rType) ? mime.lookup(pathname) : mime.lookup('json'),
           });
         }
         response.end(data);
@@ -41,18 +39,43 @@
       }
     };
 
-    //let localPathname = work.tmpPublishDirForLocalDir[md5(host + '/' + pathname)];
+    let localPathname = work.tmpPublishDirForLocalDir[md5(host + '/' + pathname)];
 
-    //if (!localPathname) {
+    if (!localPathname) {
       // 由于需要支持 一个根访问路径 可以配置多个 本地目录，
       // 所以匹配出来的本地路径有可能会有多个。
       // todo 每个查找在第一次大约要使用300ms，有待优化
-      let localPathname = work.getLocalPathname(pathname, host, dirs, spaceInfo);
+      localPathname = work.getLocalPathname(pathname, host, dirs, spaceInfo);
+
+      // console.log(localPathname);
 
       // 将已经查找到的路径对应关系缓存起来，方便下次调用。
-      //work.tmpPublishDirForLocalDir[md5(host + '/' + pathname)] = localPathname;
+      work.tmpPublishDirForLocalDir[md5(host + '/' + pathname)] = localPathname;
 
-    //}
+    } else {
+      // 更新 concatfile 中的信息
+      localPathname.map(function(info) {
+
+        let _concatfile = fsp.readJSONSync(path.join(info.root, 'concatfile.json'));
+
+        if (_concatfile) {
+
+          for (let output in _concatfile.pkg) {
+            let input = _concatfile.pkg[output];
+
+            if (output === info.output) {
+
+              return assign({},info, {
+                output: output,
+                input: input
+              });
+
+            }
+          }
+        }
+
+      });
+    }
 
     //response.end(JSON.stringify(dirs));
     //return;
@@ -132,20 +155,20 @@
     //  input: ['preload.babel']
     //}], options, function(err, filedata, local) {
 
-      if (!work.tmpLocalEfesProjectDirs) {
+    if (!work.tmpLocalEfesProjectDirs) {
 
-        work.loadLocalDir(spaceInfo, function(dirs) {
+      work.loadLocalDir(spaceInfo, function(dirs) {
 
-          work.tmpLocalEfesProjectDirs = dirs;
+        work.tmpLocalEfesProjectDirs = dirs;
 
-          startServer(dirs, options, spaceInfo);
-        });
+        startServer(dirs, options, spaceInfo);
+      });
 
-      } else {
+    } else {
 
-        startServer(work.tmpLocalEfesProjectDirs, options, spaceInfo);
+      startServer(work.tmpLocalEfesProjectDirs, options, spaceInfo);
 
-      }
+    }
 
     //});
 

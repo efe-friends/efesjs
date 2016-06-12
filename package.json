@@ -1,6 +1,6 @@
 {
   "name": "efes",
-  "version": "0.1.28",
+  "version": "0.1.29",
   "description": "edaijia fe assistant",
   "main": "dist/efes.js",
   "bin": {
@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "art-template": "^3.0.3",
-    "async": "^0.2.10",
+    "async": "^2.0.0-rc.5",
     "autoprefixer": "^6.3.1",
     "babel-core": "^6.9.1",
     "babel-polyfill": "^6.9.1",

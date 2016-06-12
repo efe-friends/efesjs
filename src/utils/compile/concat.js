@@ -23,7 +23,7 @@
    const rScss = /\.scss$/i;*/
   const rCss = /\.css$/i;
 
-  const env = require('../efesEnv.js');
+  const env = require('../efesEnv.js').env;
 
   module.exports = function(pathname, options, callback) {
 

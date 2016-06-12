@@ -107,7 +107,6 @@
           let _tmp = {
             config: _config,
             concatfile: _config ? path.join(dirname, _path, 'concatfile.json') : null,
-            //webpack: _config ? path.join(dirname, _path, 'webpack.config.js') : null,
             domain: {
               publish: _dir.domain.publish,
               dev: _dir.domain.dev
@@ -136,7 +135,6 @@
       let _tmp = {
         config: _config,
         concatfile: _config ? path.join(dirname, _path, 'concatfile.json') : null,
-        //webpack: _config ? path.join(dirname, _path, 'webpack.config.js') : null,
         domain: {
           publish: _global.domain.publish,
           dev: _global.domain.dev
@@ -169,7 +167,6 @@
       let _dir = {
         config: null,
         concatfile: null,
-        //webpack:null,
         domain: {
           publish: null,
           dev: null
@@ -188,7 +185,6 @@
 
       _dir.config = _config;
       _dir.concatfile = _config ? path.join(dirname, _project.rewrite.root, 'concatfile.json') : null;
-      //_dir.webpack = _config ? path.join(dirname, _project.rewrite.root, 'webpack.config.js') : null,
 
       _dir.rewrite.root = _project.rewrite.root;
       _dir.rewrite.request = _project.rewrite.request;
@@ -279,9 +275,11 @@
         // 其次判断 请求的路径 是否在这个目录下面。
         // 比如请求的路径是 /core/libs/zepto.min.js
         // 这个目录配置的路径是 /core/
-        // 则 pathname.indexOf(_dir.rewrite.request) 返回 0；
-        // 表示 请求的文件 在这个目录下面。
-        if (_dir.rewrite.request && pathname.indexOf(_dir.rewrite.request) === 0) {
+        // 使用查找两个路径的相对路径进行匹配
+        // 如果 /core/libs/zepto.min.js 是 /core/ 的下面的路径，则_relative中不包含 .. 这个操作。
+        let _relative = path.relative(_dir.rewrite.request, pathname);
+
+        if (_dir.rewrite.request && _relative.indexOf('..') === -1) {
 
           //let localPathname = path.join(dirname, _dir.rewrite.root, pathname.replace(_dir.rewrite.request, ''));
           let localPathname = {
@@ -306,8 +304,7 @@
                     root: path.join(dirname, _dir.rewrite.root),
                     output: output,
                     input: input,
-                    config: _dir.config,
-                    //webpack: _dir.webpack
+                    config: _dir.config
                   };
 
                 }

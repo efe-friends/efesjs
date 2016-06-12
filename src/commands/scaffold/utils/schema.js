@@ -11,6 +11,8 @@
 
       this.options = {};
 
+      this.localDirInfo = {};
+
       this.initCmd = initCmd === true;
 
       this.done = function() {};
@@ -167,7 +169,7 @@
 
         } else {
 
-          _this.start(_this.options);
+          _this.start(_this.options, _this.localDirInfo);
 
         }
       });
@@ -288,8 +290,8 @@
         _this.info.description = res.description;
 
         _this.projectInfo[0].default = _this.projectInfo[0].default || res.name;
-        _this.projectInfo[1].default = _this.projectInfo[1].default || 'http://h5.edaijia.cn/' + res.name;
-        _this.projectInfo[2].default = _this.projectInfo[2].default || 'http://h5.d.edaijia.cn/' + res.name;
+        _this.projectInfo[1].default = _this.projectInfo[1].default || "http://" + _this.localDirInfo.domain.publish + _this.localDirInfo.rewrite.request;
+        _this.projectInfo[2].default = _this.projectInfo[2].default || "http://" + _this.localDirInfo.domain.dev + _this.localDirInfo.rewrite.request;
 
         _this.prompt.get(_this.projectInfo, function(error, result) {
 
@@ -314,11 +316,13 @@
 
     }
 
-    start(options, done) {
+    start(options, localDirInfo, done) {
 
       let _this = this;
 
       _this.options = options;
+
+      _this.localDirInfo = localDirInfo;
 
       _this.done = done || _this.done;
 

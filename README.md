@@ -230,6 +230,8 @@ server {
 `将efes项目下的源码、图片源文件、html/jade源文件编辑、合并到开发目录`
 ##### options
 * -c, --compress  压缩代码
+* -a, --all git commit 的 -a参数，此参数触发 git commit 操作。
+* -m, --message git commit 的 -m参数，此参数触发 git commit 操作。
 * --outpath [value] 发布目录，支持相对路径和绝对路径，在不设置outpath 时，默认为项目中 .efesconfig 配置的发布目录。
 
 
@@ -343,6 +345,38 @@ PS：经测试，ios9和Android有新的规则，现有代码只能在微信中�
                 |- loading.css          loading
                 |- weight.css           重力感应示例
 ```
+##### concatfile.json的示例：
+```
+{
+  "pkg": {
+    "scripts/base.js": [
+      "/other-project/src/**/*.*",
+      "!/other-project/src/**/*cookie.*",
+      "src/base.babel"
+    ],
+    "scripts/index.js": [
+      "/other-project/libs/zepto.min.js",
+      "/other-project/libs/base.js",
+      "/other-project/libs/react.min.js",
+      "/other-project/libs/react-dom.min.js",
+      "libs/redux.min.js",
+      "libs/react-redux.js",
+      "src/index.jsx"
+    ],
+    "scripts/aaa.js": [
+      "src/bbb.jsx"
+    ],
+    "styles/index.css": [
+      "/other-project/libs/reset.mobile.min.css",
+      "src/css/index.less"
+    ]
+  }
+}
+```
+##### concatfile.json说明：
+1. 在efes的项目中，如果需要自动编译或合并js、css就需要配置concatfile.json文件，efes会根据这个文件编译、合并、发布js和css文件。如果没有配置此文件对js、css的处理为，把开发目录（默认为src。.efesconfig中所配置）所有的js、css文件复制到发布目录（默认为项目根目录。.efesconfig中所配置）。
+2. concatfile.json的配置的目录支持minimatch的规则（gulp.src的目录规则）。
+3. 配置的less、jsx、es6等文件都是单个编译的，如果需要先合并后编译其他文件，请在该文件中使用import语句。
 
 
 #### ver
@@ -388,6 +422,9 @@ Sublim插件：
   core.quotepath设为false的话，就不会对0x80以上的字符进行quote。中文显示正常<br>
 
 ### 更新日志
+
+#### v0.1.28更新
+1. efes publish 合并 git commit功能，当配置参数 -a, -m "xxxx" 或 -am "xxx"时，将自动触发git commit命令提交git。
 
 #### v0.1.28更新
 1. 使用browserify&babelify替换gulp-babel，添加对es6 import的支持。

@@ -8,7 +8,11 @@
   const scaffolding = require('./utils/scaffolding.js');
   const Schema = require('./utils/schema.js');
 
+  const info = require('../../utils/efesEnv.js');
+
   module.exports = function(options, projectInfo) {
+
+    let localDirInfo = info.getLocalDirInfo(process.cwd());
 
     if (!projectInfo) {
 
@@ -33,7 +37,7 @@
 
     let schema = new Schema(options.type == 'default');
 
-    schema.start(options, function(info) {
+    schema.start(options, localDirInfo, function(info) {
 
       scaffolding(info, function(error) {
         if (error) {
