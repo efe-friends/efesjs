@@ -52,6 +52,7 @@ module.exports = function(opts) {
     let contents = file.contents.toString();
 
     if (contents.indexOf('import ') !== -1 || contents.indexOf('export ') !== -1) {
+      let _this = this;
       browserify({
           entries: [file.path],
           debug: true,
@@ -68,7 +69,8 @@ module.exports = function(opts) {
           } else {
             file.contents = new Buffer('');
           }
-          this.push(file);
+          _this.push(file);
+          cb();
         });
     } else {
 
@@ -105,8 +107,8 @@ module.exports = function(opts) {
           showProperties: false
         }));
       }
+      cb();
     }
-    cb();
   });
 
 };
