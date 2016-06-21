@@ -99,7 +99,7 @@
 
       var _extname = path.extname(filename);
 
-      if (/^\.(jpg|png|gif|jpeg)$/i.test(_extname)) {
+      if (/^\.(jpg|png|gif|jpeg|handlebars)$/i.test(_extname)) {
         tmpl = fs.readFileSync(retmpl);
       }
       else {

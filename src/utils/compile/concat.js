@@ -3,6 +3,10 @@
   const chalk = require('chalk');
   const gulp = require('gulp');
 
+  const objectAssign = require('object-assign');
+  const replaceExt = require('replace-ext');
+  const babel = require('babel-core');
+
   const $ = require('gulp-load-plugins')();
   const es2015 = require('babel-preset-es2015');
   const react = require('babel-preset-react');
@@ -14,8 +18,7 @@
   const path = require('../path.js');
   const rJsFile = /\.(babel|es6|es2015|jsx|js|coffee)$/i;
   const rCssFile = /\.(less|css)$/i;
-  const rBabel = /\.babel$/i;
-  const rEs6 = /\.es(6|2015)$/i;
+  const rBabel = /\.(babel|es6|es2015)$/i;
   const rJsx = /\.jsx$/i;
   const rCoffee = /\.coffee$/i;
   const rLess = /\.less$/i;
@@ -24,6 +27,13 @@
   const rCss = /\.css$/i;
 
   const env = require('../efesEnv.js').env;
+
+  const babelCompile = require('./babel.js');
+
+
+  function replaceExtension(fp) {
+    return path.extname(fp) ? replaceExt(fp, '.js') : fp;
+  }
 
   module.exports = function(pathname, options, callback) {
 
@@ -134,65 +144,11 @@
 
       gulp.src(srcs)
         .pipe($.plumber())
-        .pipe($.if(rBabel, through(function(file, enc, cb) {
-          browserify({
-              entries: [file.path],
-              debug: true,
-              extensions: ['', '.js', '.json', '.babel', '.jsx', '.es6', '.es2015']
-            })
-            .transform(babelify, {
-              extensions: ['', '.js', '.babel', '.jsx', '.es6', '.es2015'],
-              presets: [es2015]
-            })
-            .bundle(function(err, res) {
-              err && $.util.log(err.stack || err.message);
-              if (res) {
-                file.contents = res;
-              } else {
-                file.contents = new Buffer('');
-              }
-              cb(null, file);
-            });
+        .pipe($.if(rBabel, babelCompile({
+          presets: [es2015]
         })))
-        .pipe($.if(rEs6, through(function(file, enc, cb) {
-          browserify({
-              entries: [file.path],
-              debug: true,
-              extensions: ['', '.js', '.json', '.babel', '.jsx', '.es6', '.es2015']
-            })
-            .transform(babelify, {
-              extensions: ['', '.js', '.babel', '.jsx', '.es6', '.es2015'],
-              presets: [es2015]
-            })
-            .bundle(function(err, res) {
-              err && $.util.log(err.stack || err.message);
-              if (res) {
-                file.contents = res;
-              } else {
-                file.contents = new Buffer('');
-              }
-              cb(null, file);
-            });
-        })))
-        .pipe($.if(rJsx, through(function(file, enc, cb) {
-          browserify({
-              entries: [file.path],
-              debug: true,
-              extensions: ['', '.js', '.json', '.babel', '.jsx', '.es6', '.es2015']
-            })
-            .transform(babelify, {
-              extensions: ['', '.js', '.babel', '.jsx', '.es6', '.es2015'],
-              presets: [es2015, react]
-            })
-            .bundle(function(err, res) {
-              err && $.util.log(err.stack || err.message);
-              if (res) {
-                file.contents = res;
-              } else {
-                file.contents = new Buffer('');
-              }
-              cb(null, file);
-            });
+        .pipe($.if(rJsx, babelCompile({
+          presets: [es2015, react]
         })))
         .pipe($.if(rCoffee, $.coffee()))
         .pipe($.if(isPipe, beforeConcatPipe))

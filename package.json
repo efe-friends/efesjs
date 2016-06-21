@@ -1,6 +1,6 @@
 {
   "name": "efes",
-  "version": "0.1.29",
+  "version": "0.1.30",
   "description": "edaijia fe assistant",
   "main": "dist/efes.js",
   "bin": {
@@ -63,6 +63,7 @@
     "precss": "^1.4.0",
     "prompt": "~0.2.13",
     "psi": "^1.0.6",
+    "replace-ext": "0.0.1",
     "spritesmith": "^3.0.0",
     "text-table": "^0.2.0",
     "through-gulp": "^0.5.0"

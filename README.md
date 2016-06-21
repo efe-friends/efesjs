@@ -423,6 +423,9 @@ Sublim插件：
 
 ### 更新日志
 
+#### v0.1.30更新
+1. 兼容使用concatfile的方式合并jsx或es6时，使用browserify造成的多个闭包的错误。
+
 #### v0.1.28更新
 1. efes publish 合并 git commit功能，当配置参数 -a, -m "xxxx" 或 -am "xxx"时，将自动触发git commit命令提交git。
 
