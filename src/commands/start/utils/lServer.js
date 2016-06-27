@@ -20,6 +20,11 @@
   let onRequest = function(request, response, dirs, spaceInfo, options) {
 
     let pathname = url.parse(request.url).pathname;
+
+    if (pathname.match(/\/$/)) {
+      pathname = pathname + 'index.html';
+    }
+
     let host = request.headers.host;
 
     //console.log(chalk.green('start----'), (new Date()).getTime(), pathname);

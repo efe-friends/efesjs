@@ -213,7 +213,7 @@ server {
       proxy_pass http://127.0.0.1:7070;
   }
   
-  location ~* /.+\.[a-z]+$ {
+  location ~ / {
       proxy_set_header x-request-filename $request_filename;
       proxy_set_header Host             $host;
       proxy_pass http://127.0.0.1:7070;
@@ -422,6 +422,9 @@ Sublim插件：
   core.quotepath设为false的话，就不会对0x80以上的字符进行quote。中文显示正常<br>
 
 ### 更新日志
+
+#### v0.1.32更新
+1. 添加请求路径 index 默认匹配 index.html。（http://static.resource.com/ 访问 http://static.resource.com/index.html）
 
 #### v0.1.30更新
 1. 兼容使用concatfile的方式合并jsx或es6时，使用browserify造成的多个闭包的错误。
