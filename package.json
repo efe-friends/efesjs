@@ -1,6 +1,6 @@
 {
   "name": "efes",
-  "version": "0.1.35",
+  "version": "0.1.36",
   "description": "edaijia fe assistant",
   "main": "dist/efes.js",
   "bin": {

@@ -223,9 +223,7 @@
         }
 
         subfiles.forEach(function(subrepo) {
-
-          let _subrepo = [repo, path.dirname(subrepo)].join(path.sep);
-
+          let _subrepo = path.join(repo, path.dirname(subrepo));
           if (subrepo != '.efesconfig') { // 排除 步骤2 重复项
             //let _concatfile = fsp.readJSONSync(path.join(dirname, _subrepo, "concatfile.json"));
             //let _config = fsp.readJSONSync(path.join(dirname, _subrepo, ".efesconfig"))

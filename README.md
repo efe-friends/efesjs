@@ -516,6 +516,8 @@ Sublim插件：
 
 ### 更新日志
 
+#### v0.1.35更新
+1. 修复windows下，efes start启动是路径错误bug。
 
 #### v0.1.34更新
 1. 修复由v0.1.28造成的publish在npm4.*下的bug。
