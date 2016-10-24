@@ -3,7 +3,6 @@
   const chalk = require('chalk');
   const gulp = require('gulp');
 
-  const objectAssign = require('object-assign');
   const replaceExt = require('replace-ext');
   const babel = require('babel-core');
 

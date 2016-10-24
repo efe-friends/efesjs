@@ -9,17 +9,111 @@
 ## 
 >本助手是在前端自动化工具 [gsp](https://github.com/viclm/gsp) 的基础上做的定制开发。后期对整个结构做了重构，采用类REST风格，每个命令作为一个独立的模块（放置在commonds目录下，通过load自动加载）。在此感谢 gsp 的开发者 [viclm](https://github.com/viclm)
 
+## 准备 Prepare
 
-### 安装环境 Requirements
+### 1 安装环境 Requirements
 
 * node 4.1.0+ 下载地址：http://npm.taobao.org/mirrors/node
 * python 2.x
+* nginx
 
-### 安装/更新 Install/Update
+### 2 安装/更新 Install/Update
 
 `npm install -g efes`
 
-### 命令 Commands
+## 开始 Getting Started
+
+### 1 创建工作目录 Create The Work Space
+
+#### 1.1 创建目录 Mkdir
+
+```shell
+mkdir WorkSpaceEfes
+```
+
+#### 1.2 创建`efesproject.json`配置文件 Create The Config File `efesproject.json`
+
+```shell
+touch efesproject.json
+vim efesproject.json
+```
+
+>这里只是一个简单的示例，详细文档查看下面对`efesproject.josn`的说明。
+
+```json
+{
+  "global": {
+    "git": {
+      "host": "https://github.com/",
+      "config": {
+        "user.name": "your_github_user_name",
+        "user.email": "your_github_user_email"
+      },
+      "branch": {
+        "local": "master",
+        "remote": "origin/master"
+      }
+    },
+    "domain": {
+      "publish": "static.resource.com",
+      "dev": "static.test.resource.ccom"
+    }
+  },
+  "projects": [{
+    "name": "wap",
+    "git": {
+      "repo": "edaijia-fe/efes-exp-wap"
+    },
+    "rewrite": {
+      "root": "efes-exp-wap/main",
+      "request": "/"
+    },
+    "domain": {
+      "publish": "wap.efes.com",
+      "dev": "wap.test.efes.com"
+    }
+  }, {
+    "name": "www",
+    "git": {
+      "repo": "edaijia-fe/efes-exp-www"
+    },
+    "rewrite": {
+      "root": "efes-exp-www",
+      "request": "/"
+    },
+    "domain": {
+      "publish": "www.efes.com",
+      "dev": "www.test.efes.com"
+    }
+  }]
+}
+```
+
+#### 1.3 拉去git仓库 Clone Git Repositorys
+
+#### 1.4 配置nginx
+
+#### 1.5 配置host
+
+#### 1.6 运行`efes start` Run `efes start`
+
+### 2 创建新项目 Build A New Efes Project
+
+#### 2.1 初始化/脚手架生成项目 Init/Scaffold
+
+#### 2.2 创建源文件文件
+
+#### 2.3 编辑文件合并规则
+
+#### 2.4 开发
+
+### 3 发布项目 Publish The Project
+
+#### 3.1 publish
+
+#### 3.2 commit
+
+## 命令 Commands
 
 #### project
 #####运行：
@@ -29,7 +123,7 @@
 #####功能简介：
 `根据efesproject.json文件中的配置，克隆/更新git仓库的代码。`
 #####efesproject.json：
-```
+```json
 {
   "global": {
     "git": {
@@ -181,7 +275,7 @@ projects：项目信息
 ```
 
 ##### nginx的配置：
-```
+```conf
 map $http_upgrade $connection_upgrade {
     default upgrade;
     '' close;
@@ -241,9 +335,8 @@ server {
 ##### 运行目录：
 `git仓库根目录`
 ##### 功能简介：
-```
-初始化git commit提交验证。此命令会在.git/hooks目录下添加pre-commit文件，在git commit时，会触发此文件中的操作，进行lint、图片Add提交、version字符串检查（只针对新添加或修改的文件）。
-```
+>初始化git commit提交验证。此命令会在.git/hooks目录下添加pre-commit文件，在git commit时，会触发此文件中的操作，进行lint、图片Add提交、version字符串检查（只针对新添加或修改的文件）。
+
 
 #### init
 ##### 运行：
@@ -251,10 +344,10 @@ server {
 ##### 运行目录：
 `本地项目根目录`
 ##### 功能简介：
-```
-生成efes项目配置文件和lint检测规则文件。在项目的根目录下使用。
-PS：为了避免错误，efes init在windows下请在cmd下运行。
-```
+
+>生成efes项目配置文件和lint检测规则文件。在项目的根目录下使用。
+>PS：为了避免错误，efes init在windows下请在cmd下运行。
+
 ##### options
 * -f, --force 在非空目录强制执行。
 
@@ -346,7 +439,7 @@ PS：经测试，ios9和Android有新的规则，现有代码只能在微信中�
                 |- weight.css           重力感应示例
 ```
 ##### concatfile.json的示例：
-```
+```json
 {
   "pkg": {
     "scripts/base.js": [
@@ -422,6 +515,11 @@ Sublim插件：
   core.quotepath设为false的话，就不会对0x80以上的字符进行quote。中文显示正常<br>
 
 ### 更新日志
+
+
+#### v0.1.34更新
+1. 修复由v0.1.28造成的publish在npm4.*下的bug。
+2. 修改错误的git地址和issue地址。
 
 #### v0.1.32更新
 1. 添加请求路径 index 默认匹配 index.html。（http://static.resource.com/ 访问 http://static.resource.com/index.html）

@@ -4,9 +4,6 @@
   const fs = require('fs');
   const async = require('async');
   const chalk = require('chalk');
-  const assign = require("deep-assign");
-
-  const extend = require('util')._extend;
 
 
   const fsp = require('./fs.js');
@@ -290,11 +287,8 @@
 
           // 查找到有配置了合并规则的目录，对指定了合并规则的文件赋值合并来源
           if (_dir.concatfile) {
-
             let _concatfile = fsp.readJSONSync(_dir.concatfile);
-
             if (_concatfile) {
-
               for (let output in _concatfile.pkg) {
                 let input = _concatfile.pkg[output];
 
@@ -306,11 +300,9 @@
                     input: input,
                     config: _dir.config
                   };
-
                 }
               }
             }
-
           }
 
           // 在判断是这个目录下的时候，用正则判断匹配目录的长度，从而优先处理子目录的特殊配置
@@ -328,8 +320,6 @@
             // 如果匹配长度和最长的一样，则push进本地路径列表中。
             out.push(localPathname);
           }
-
-
         }
       }
 

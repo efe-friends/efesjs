@@ -97,11 +97,19 @@
   module.exports = walk;
 })();
 
-/*var regExcludes = [/index\.html/, /js\/lib\.js/, /node_modules/];
+// var _regIncludes = [/\.efesconfig$/i];
+// var _regExcludes = [/\/node_modules\//, /\/\.git\//, /\/\.tmp\//];
 
-walk('.', regExcludes, function(err, results) {
-  if (err) {
-    throw err;
-  }
-  console.log(results);
-});*/
+// // var _regIncludes = ['**/.efesconfig'];
+// // var _regExcludes = ['**/node_modules/**', '**/.git/**', '**/.tmp/**'];
+
+// var st = new Date();
+// walk('./', _regIncludes, _regExcludes, function (err, subfiles) {
+//   if (err) {
+//     console.log(chalk.red(err.message));
+//     return;
+//   }
+//   console.log(subfiles);
+//   var end = st.getTime() - (new Date()).getTime()
+//   console.log(end)
+// });

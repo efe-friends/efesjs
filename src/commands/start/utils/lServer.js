@@ -133,7 +133,6 @@
       if (err) {
         console.error(chalk.red('efes本地代理服务启动失败'));
       } else {
-
         console.log('启动成功，监听端口： %s', options.port);
       }
 
