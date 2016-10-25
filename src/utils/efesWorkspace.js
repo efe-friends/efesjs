@@ -268,8 +268,6 @@
         let _relative = path.relative(_dir.rewrite.request, pathname);
 
         if (_dir.rewrite.request && _relative.indexOf('..') === -1) {
-
-          //let localPathname = path.join(dirname, _dir.rewrite.root, pathname.replace(_dir.rewrite.request, ''));
           let localPathname = {
             root: path.join(dirname, _dir.rewrite.root),
             output: pathname.replace(_dir.rewrite.request, ''),
@@ -282,9 +280,7 @@
             if (_concatfile) {
               for (let output in _concatfile.pkg) {
                 let input = _concatfile.pkg[output];
-
                 if (output === localPathname.output) {
-
                   localPathname = {
                     root: path.join(dirname, _dir.rewrite.root),
                     output: output,

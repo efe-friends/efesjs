@@ -60,7 +60,6 @@
     } else {
       // 更新 concatfile 中的信息
       localPathname.map(function(info) {
-
         let _concatfile = fsp.readJSONSync(path.join(info.root, 'concatfile.json'));
 
         if (_concatfile) {
@@ -69,12 +68,13 @@
             let input = _concatfile.pkg[output];
 
             if (output === info.output) {
-
-              return assign({},info, {
-                output: output,
-                input: input
-              });
-
+              info.output = output;
+              info.input = input;
+              return info;
+              // return assign({},info, {
+              //   output: output,
+              //   input: input
+              // });
             }
           }
         }

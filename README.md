@@ -1,7 +1,7 @@
 # efes 
 
 
-## 概述 Overview
+## 概述 `Overview`
 ***e代驾前端助手 edaijia fe assistant***
 ## 
 >efes的git commit检测规则中，eslint、csslint，和图片必须add提交为强制检测，error将导致提交失败。version字符串检测只做提示，供开发人员参考。
@@ -9,33 +9,35 @@
 ## 
 >本助手是在前端自动化工具 [gsp](https://github.com/viclm/gsp) 的基础上做的定制开发。后期对整个结构做了重构，采用类REST风格，每个命令作为一个独立的模块（放置在commonds目录下，通过load自动加载）。在此感谢 gsp 的开发者 [viclm](https://github.com/viclm)
 
-## 准备 Prepare
+## 准备 `Prepare`
 
-### 1 安装环境 Requirements
+### 1 安装环境 `Requirements`
 
 * node 4.1.0+ 下载地址：http://npm.taobao.org/mirrors/node
 * python 2.x
 * nginx
 
-### 2 安装/更新 Install/Update
-
-`npm install -g efes`
-
-## 开始 Getting Started
-
-### 1 创建工作目录 Create The Work Space
-
-#### 1.1 创建目录 Mkdir
+### 2 安装/更新 `Install/Update`
 
 ```shell
-mkdir WorkSpaceEfes
+~ npm install -g efes
 ```
 
-#### 1.2 创建`efesproject.json`配置文件 Create The Config File `efesproject.json`
+## 开始 `Getting Started`
+
+### 1 创建工作目录 `Create The Work Space`
+
+#### 1.1 创建目录 `Mkdir`
 
 ```shell
-touch efesproject.json
-vim efesproject.json
+~ mkdir WorkspaceEfes
+```
+
+#### 1.2 创建『efesproject.json』配置文件 `Create The Config File "efesproject.json"`
+
+```shell
+~ touch efesproject.json
+~ vim efesproject.json
 ```
 
 >这里只是一个简单的示例，详细文档查看下面对`efesproject.josn`的说明。
@@ -89,31 +91,171 @@ vim efesproject.json
 }
 ```
 
-#### 1.3 拉去git仓库 Clone Git Repositorys
+#### 1.3 拉去git仓库 `Clone Git Repositorys`
 
-#### 1.4 配置nginx
+```shell
+~ efes project
+```
 
-#### 1.5 配置host
+#### 1.4 配置nginx `Config Nginx`
 
-#### 1.6 运行`efes start` Run `efes start`
+> 参照 nginx的配置
 
-### 2 创建新项目 Build A New Efes Project
+#### 1.5 配置hosts `Config hosts`
 
-#### 2.1 初始化/脚手架生成项目 Init/Scaffold
+> 参照 hosts的配置
+
+#### 1.6 运行『efes start』 `Run "efes start"`
+
+> 由于加载的东西比较多，所以启动比较慢......  ○|￣|_
+
+出现下面提示，表示已经启动成功
+
+```shell
+~ efes start
+正在启动efes本地代理服务...
+启动成功，监听端口： 7070
+/
+```
+
+> 访问一个地址，看看效果。
+
+### 2 创建新项目 `Build A New Efes Project`
+
+#### 2.1 初始化/脚手架生成项目 `Init/Scaffold`
+
+```shell
+~ cd WorkspaceEfes
+~ mkdir firstefes
+~ cd firstefes
+~ efes init
+```
+
+或在 www.efes.com这个下面建一个子项目，相应的后面的域名、访问路径也会随之修改。
+
+```shell
+~ cd WorkspaceEfes
+~ cd efes-exp-www
+~ mkdir firstefes
+~ cd firstefes
+~ efes init
+```
+
+> 按提示填写答案，在选择『使用脚手架生成文件结构』时，选择『 NO 』。
+
+如下显示：
+
+```shell
+~ firstefes efes init
+此操作会根据下面的问题，为efes项目在当前目录创建三个配置文件：
+.eslintrc: eslint检测规则，同时也是Sublime的插件Sublime-contrib-eslint配置文件
+.csslintrc: csslint检测规则
+.efesconfig: efes项目配置文件
+
+请回答下列问题：
+[?] 项目名称：  (firstefes)
+[?] 项目描述：
+error:   Invalid input for 项目描述：
+[?] 项目描述：  first efes project
+[?] 项目ID：  (firstefes)
+[?] 线上环境地址  (http://static.resource.com/firstefes)
+[?] 开发环境地址  (http://static.test.resource.com/firstefes)
+[?] 发布目录
+[?] 开发目录  (src)
+? 使用脚手架生成文件结构： NO
+[?] 还需要对上述操作进行修改吗？  (y/N)
+
+Write .csslintignore ... OK
+Write .efesconfig ... OK
+Write .csslintrc ... OK
+Write concatfile.json ... OK
+Write .eslintignore ... OK
+Write .eslintrc ... OK
+
+Done, without errors.
+```
+
+此时会生成六个配置文件分别为：
+1. .csslintrc .csslintignore csslint检查规则和排除文件规则，其中排除文件规则对csslint这个插件不起作用，只在git commit的语法检查时生效。
+2. .eslintrc .eslintignore eslint检查规则和排除文件规则。
+3. .efesconfig efes子项目配置文件
+4. concatfile.json 文件合并配置文件
 
 #### 2.2 创建源文件文件
 
+```shell
+~ cd firstefes
+~ mkdir src
+~ cd src
+~ mkdir js
+~ cd js
+~ viv a.js
+~ vim b.js
+```
+src/js/a.js
+
+```js
+console.log('come from file a');
+```
+
+src/js/b.js
+```js
+console.log('come from file b');
+```
+
 #### 2.3 编辑文件合并规则
+
+```json
+{
+  "pkg": {
+    "scripts/index.js": [
+      "src/js/a.js",
+      "src/js/b.js"
+    ]
+  },
+  "imgMinIgnore":[]
+}
+```
+
+> 编辑完 concatfile.json 后可以去访问以下这个文件，试试效果。http://static.test.resource.com/firstefes/scripts/index.js
 
 #### 2.4 开发
 
-### 3 发布项目 Publish The Project
+### 3 发布项目 `Publish The Project`
 
 #### 3.1 publish
 
+> 在提交代码前，还需要一步操作就是将源代码生成出来。因为开发过程中，编译后的代码都是在内存中，没有在硬盘中生成实际的文件。
+
+```shell
+~ cd firstefes
+~ efes publish
+```
+
 #### 3.2 commit
 
-## 命令 Commands
+正常提交，会触发 git commit hook，进行语法等提交检查
+
+```shell
+~ git commit -am "test"
+```
+
+如果需要绕过提交检查可以使用如下命令
+
+```shell
+~ git commit -am "test" --no-verify
+```
+
+## 编译
+
+efes 在编译 es6、less、jade 这些文件时，是根据文件名后缀判断的具体适用规则的，如下：
+
+1. 适用es6规则的后缀：.es6, .babel, .es2015, .jsx
+2. 适用jsx语法的后缀：.jsx
+3. 适用less语法的后缀：.less
+4. 适用jade语法的后缀：.jade
+
+## 命令 `Commands`
 
 #### project
 #####运行：
@@ -515,6 +657,11 @@ Sublim插件：
   core.quotepath设为false的话，就不会对0x80以上的字符进行quote。中文显示正常<br>
 
 ### 更新日志
+
+#### v0.1.37更新
+1. 修复windows下，其他命令路径错误bug。
+2. 补充README
+3. 修复concatfile.json修改后需要重启 efes start 命令才能更新的bug
 
 #### v0.1.35更新
 1. 修复windows下，efes start启动是路径错误bug。
