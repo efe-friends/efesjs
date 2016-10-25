@@ -8,10 +8,11 @@
   const fs = require('fs');
   const table = require('text-table');
   const minimatch = require("minimatch");
+  const regexfiles = require('regex-files');
 
   const fsp = require('../../utils/fs');
   const path = require('../../utils/path.js');
-  const walk = require('../../utils/walk.js');
+  // const walk = require('../../utils/walk.js');
 
   const rFileStatus = /^([A-Z])\s+(.+)$/;
 
@@ -68,17 +69,16 @@
         let regIncludes = [/\.efesconfig$/i];
         let regExcludes = [/node_modules/, /\.git/, /\.tmp/];
 
-        walk(subdirname, regIncludes, regExcludes, function(err, subfiles) {
+        regexfiles(subdirname, regExcludes, regIncludes, function(err, subfiles) {
 
           if (err) {
             console.log(chalk.red(err.message));
             return;
           }
-          subfiles.forEach(function(subrepo) {
-            let data = fsp.readJSONSync(path.join(subdirname, subrepo));
-            let _subrepo = [repo, path.dirname(subrepo)].join(path.sep);
+          subfiles && subfiles.forEach(function(subrepo) {
+            let data = fsp.readJSONSync(subrepo);
             if (data) {
-              configs[_subrepo] = data;
+              configs[subrepo] = data;
             }
           });
 

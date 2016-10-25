@@ -7,8 +7,10 @@
 
   const async = require('async');
   const chalk = require('chalk');
+  const regexfiles = require('regex-files');
+
   const path = require('../../utils/path.js');
-  const walk = require('../../utils/walk.js');
+  // const walk = require('../../utils/walk.js');
 
   const ver = require('./utils/ver.js');
 
@@ -24,13 +26,10 @@
         });
 
       } else {
-
         ver.checkVer(file, dirname, options, (error, illSource) => {
           illLength += illSource ? illSource.length : 0;
         });
-
       }
-
     }
 
     return illLength;
@@ -65,7 +64,7 @@
 
       let regExcludes = [/node_modules/, /\.git/, /\.tmp/];
 
-      walk(dirname, regIncludes, regExcludes, function(err, results) {
+      regexfiles(dirname, regExcludes, regIncludes, function(err, results) {
 
         if (err) {
           throw err;
@@ -74,6 +73,8 @@
         let illLength = 0;
 
         async.each(results, function(repo, callback) {
+
+          repo = path.relative(dirname, repo);
 
           let suffix = path.extname(repo).slice(1);
 

@@ -4,10 +4,10 @@
   const fs = require('fs');
   const async = require('async');
   const chalk = require('chalk');
-
+  const regexfiles = require('regex-files');
 
   const fsp = require('./fs.js');
-  const walk = require('./walk.js');
+  // const walk = require('./walk.js');
   const path = require('./path.js');
 
   const readFile = require('./readFile.js');
@@ -203,9 +203,7 @@
       let efesconfig = path.join(dirname, repo, '.efesconfig');
 
       if (repo === '.efesconfig') {
-
         matchPath('/', dirs, spaceInfo.global);
-
       } else {
         matchPath(repo, dirs, spaceInfo.global);
       }
@@ -214,7 +212,7 @@
       let regExcludes = [/node_modules/, /\.git/, /\.tmp/];
 
       // 处理子目录下面配置了 .efesconfig 的目录
-      walk(subdirname, regIncludes, regExcludes, function(err, subfiles) {
+      regexfiles(subdirname, regExcludes, regIncludes, function(err, subfiles) {
 
         if (err) {
           console.log(chalk.red(err.message));
@@ -222,15 +220,10 @@
           return;
         }
 
-        subfiles.forEach(function(subrepo) {
-          let _subrepo = path.join(repo, path.dirname(subrepo));
+        subfiles && subfiles.forEach(function(subrepo) {
           if (subrepo != '.efesconfig') { // 排除 步骤2 重复项
-            //let _concatfile = fsp.readJSONSync(path.join(dirname, _subrepo, "concatfile.json"));
-            //let _config = fsp.readJSONSync(path.join(dirname, _subrepo, ".efesconfig"))
-            matchPath(_subrepo, dirs, spaceInfo.global);
-
+            matchPath(subrepo, dirs, spaceInfo.global);
           }
-
         });
 
         callback2();

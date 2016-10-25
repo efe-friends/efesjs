@@ -5,9 +5,10 @@
   const async = require('async');
   const chalk = require('chalk');
   const fs = require('fs');
+  const regexfiles = require('regex-files');
 
   const fsp = require('../../../utils/fs.js');
-  const walk = require('../../../utils/walk.js');
+  // const walk = require('../../../utils/walk.js');
   const path = require('../../../utils/path.js');
 
 
@@ -15,64 +16,57 @@
 
     let dirname = path.join(__dirname, '..', 'template', data.scaffold);
 
-    let regIncludes = [];
+    let rIncludes = [];
 
-    let regExcludes = [/\.git/, /\.tmp/, /.DS_Store/, /README.md/];
+    let rExcludes = [/\.git/, /\.tmp/, /.DS_Store/, /README.md/];
 
     if (!data.exCoffee) {
-      regExcludes.push(/coffee/);
+      rExcludes.push(/coffee/);
     }
     if (!data.exES6) {
-      regExcludes.push(/es6/);
+      rExcludes.push(/es6/);
     }
     if (!data.exLess) {
-      regExcludes.push(/less/);
+      rExcludes.push(/less/);
     }
     if (!data.exJade) {
-      regExcludes.push(/jade/);
+      rExcludes.push(/jade/);
     }
     if (!data.exIcons) {
-      regExcludes.push(/icons/);
+      rExcludes.push(/icons/);
     }
     if (!data.modCallClient) {
-      regExcludes.push(/call-client/);
+      rExcludes.push(/call-client/);
     }
     if (!data.modDownload) {
-      regExcludes.push(/download/);
+      rExcludes.push(/download/);
     }
     if (!data.modLandscape) {
-      regExcludes.push(/landscape-tip/);
+      rExcludes.push(/landscape-tip/);
     }
     if (!data.modScroll) {
-      regExcludes.push(/transation/);
-      regExcludes.push(/animations/);
+      rExcludes.push(/transation/);
+      rExcludes.push(/animations/);
     }
     if (!data.modWebp) {
-      regExcludes.push(/webp/);
+      rExcludes.push(/webp/);
     }
     if (!data.modWeight) {
-      regExcludes.push(/weight/);
+      rExcludes.push(/weight/);
     }
     if (!data.modShakeHand) {
-      regExcludes.push(/shake-hand/);
+      rExcludes.push(/shake-hand/);
     }
 
-    walk(dirname, regIncludes, regExcludes, function(err, results) {
-
+    regexfiles(dirname, rExcludes, rIncludes, function(err, results) {
       async.each(results, function(repo, done) {
-
         let stat = fs.lstatSync(repo);
-        let rdirname = repo.replace(dirname, '').replace(path.sep, '');
+        let rdirname = path.relative(dirname, repo);
         let fall = [];
-
         if (stat.isDirectory()) {
-
           fall.push(fsp.pMkdir(rdirname));
-
         } else if (!/^\./.test(rdirname)) {
-
           fall.push(fsp.pWriteFile(rdirname.replace('_', '.'), repo, data));
-
         }
         async.waterfall(fall, done);
       }, function() {
