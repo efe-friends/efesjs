@@ -1,17 +1,12 @@
 "use strict";
 (function() {
-
   const fs = require('fs');
   const async = require('async');
   const chalk = require('chalk');
   const regexfiles = require('regex-files');
-
   const fsp = require('./fs.js');
-  // const walk = require('./walk.js');
   const path = require('./path.js');
-
   const readFile = require('./readFile.js');
-
   const rIP = /^([0-9]|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.([0-9]|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.([0-9]|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.([0-9]|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])(:\d+)?$/;
   const rLocalHost = /^localhost(:\d+)?$/i;
 
@@ -193,8 +188,8 @@
 
     });
 
-    /*console.log(dirs);
-    process.exit(0);*/
+    // console.log(dirs);
+    // process.exit(0);
 
     // 第二步，处理获取当前目录下的所有子目录
     async.eachSeries(fs.readdirSync(dirname), function(repo, callback2) {
@@ -215,14 +210,15 @@
       regexfiles(subdirname, regExcludes, regIncludes, function(err, subfiles) {
 
         if (err) {
-          console.log(chalk.red(err.message));
+          global.efesecho.log(chalk.red(err.message));
           callback2();
           return;
         }
 
         subfiles && subfiles.forEach(function(subrepo) {
-          if (subrepo != '.efesconfig') { // 排除 步骤2 重复项
-            matchPath(subrepo, dirs, spaceInfo.global);
+          let _subrepo = path.relative(subdirname, subrepo);
+          if (_subrepo != '.efesconfig') { // 排除 步骤2 重复项
+            matchPath(path.relative(dirname, path.dirname(subrepo)), dirs, spaceInfo.global);
           }
         });
 
@@ -291,7 +287,7 @@
               }
             }
           }
-
+          
           // 在判断是这个目录下的时候，用正则判断匹配目录的长度，从而优先处理子目录的特殊配置
           let _dirLength = pathname.match(new RegExp(_dir.rewrite.request));
 

@@ -78,7 +78,7 @@
           subfiles && subfiles.forEach(function(subrepo) {
             let data = fsp.readJSONSync(subrepo);
             if (data) {
-              configs[subrepo] = data;
+              configs[path.dirname(subrepo)] = data;
             }
           });
 

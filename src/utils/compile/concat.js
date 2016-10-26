@@ -1,18 +1,15 @@
 (function() {
   const fs = require('fs');
   const chalk = require('chalk');
-  const gulp = require('gulp');
-
   const replaceExt = require('replace-ext');
-  const babel = require('babel-core');
-
-  const $ = require('gulp-load-plugins')();
+  const gulp = require('gulp');
   const es2015 = require('babel-preset-es2015');
   const react = require('babel-preset-react');
   const through = require('through-gulp');
-
+  const babel = require('babel-core');
   const browserify = require('browserify');
   const babelify = require('babelify');
+  const $ = require('gulp-load-plugins')();
 
   const path = require('../path.js');
   const rJsFile = /\.(babel|es6|es2015|jsx|js|coffee)$/i;

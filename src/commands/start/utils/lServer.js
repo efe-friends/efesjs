@@ -1,6 +1,5 @@
 "use strict";
 (function() {
-
   const chalk = require('chalk');
   const http = require('http');
   const mime = require('mime');
@@ -9,7 +8,6 @@
   const assign = require('deep-assign');
 
   const browserSync = require('browser-sync');
-
   const work = require('../../../utils/efesWorkspace.js');
   const env = require('../../../utils/efesEnv.js');
   const path = require('../../../utils/path.js');
@@ -85,16 +83,16 @@
     //response.end(JSON.stringify(dirs));
     //return;
 
-    console.log(chalk.bold.green('GET:') + ' http://' + host + pathname);
+    global.efesecho.log(chalk.bold.green('GET:') + ' http://' + host + pathname);
     work.loadFile(localPathname, options, function(err, filedata, local) {
       //console.log(chalk.grey('Local:' + local));
 
       if (err) {
 
-        console.error(chalk.bold.white.bgRed(' ERROR '));
+        global.efesecho.error(chalk.bold.white.bgRed(' ERROR '));
 
         err.some(function(_err) {
-          console.error(_err);
+          global.efesecho.error(_err);
         });
 
         if (filedata) {
@@ -131,9 +129,9 @@
 
     server.on('listening', function(err) {
       if (err) {
-        console.error(chalk.red('efes本地代理服务启动失败'));
+        global.efesecho.error(chalk.red('efes本地代理服务启动失败'));
       } else {
-        console.log('启动成功，监听端口： %s', options.port);
+        global.efesecho.log('启动成功，监听端口： %s', options.port);
       }
 
     });

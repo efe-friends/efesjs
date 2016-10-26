@@ -1,13 +1,10 @@
 (function() {
   const fs = require('fs');
   const chalk = require('chalk');
-
   const gulp = require('gulp');
   const through = require('through-gulp');
   const $ = require('gulp-load-plugins')();
-
   const path = require('./path.js');
-
   const concat = require('./compile/concat.js');
   const html = require('./compile/html.js');
   const webp = require('./compile/webp.js');
@@ -47,7 +44,7 @@
             let _pathname = path.join(pathname.root, devDir || '', pathname.output);
 
             if (fs.existsSync(_pathname)) {
-              console.log(chalk.yellow('src:') + ' ' + chalk.grey(_pathname));
+              global.efesecho.log(chalk.yellow('src:') + ' ' + chalk.grey(_pathname));
               gulp.src(_pathname, {
                   base: path.join(pathname.root, devDir || '')
                 })

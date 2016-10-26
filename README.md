@@ -216,7 +216,6 @@ console.log('come from file b');
   "imgMinIgnore":[]
 }
 ```
-
 > 编辑完 concatfile.json 后可以去访问以下这个文件，试试效果。http://static.test.resource.com/firstefes/scripts/index.js
 
 #### 2.4 开发

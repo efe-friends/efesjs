@@ -1,4 +1,10 @@
 "use strict";
+global.logTimeStart = (new Date()).getTime();
+global.logTime = function(msg){
+  let logTimeStep = (new Date()).getTime();
+  console.log(msg, logTimeStep - global.logTimeStart);
+};
+global.efesecho = console;
 
 (function() {
 
@@ -12,9 +18,7 @@
 
   const pkg = require('../../package.json');
 
-
   const run = function(command) {
-
 
     let repo = command.name();
     let options = command.opts();
@@ -25,7 +29,7 @@
     if (_cmd) {
 
       if (_cmd.installed === false) {
-        console.log('\n' + chalk.red(`此命令需要安装后才能使用，请运行 efes install --cmd ${repo} 进行安装。`) + '\n');
+        global.efesecho.log('\n' + chalk.red(`此命令需要安装后才能使用，请运行 efes install --cmd ${repo} 进行安装。`) + '\n');
         process.exit(1);
       }
 
@@ -36,7 +40,7 @@
           let _stats = fs.existsSync(path.join(__dirname, dirname, _repo, 'command.json'));
 
           if (!_stats) {
-            console.log(chalk.yellow.bold(`监测到 ${repo} 所依赖的 efes 命令 ${_repo} 有误，可能导致 ${repo} 不能使用。`))
+            global.efesecho.log(chalk.yellow.bold(`监测到 ${repo} 所依赖的 efes 命令 ${_repo} 有误，可能导致 ${repo} 不能使用。`))
           }
 
         });
@@ -61,7 +65,7 @@
         }
       });
       if (cmd) {
-        console.log("'\s' 不是一个 efes 的命令。参见 'efes --help'.", cmd);
+        global.efesecho.log("'\s' 不是一个 efes 的命令。参见 'efes --help'.", cmd);
       } else {
         program.help();
       }
