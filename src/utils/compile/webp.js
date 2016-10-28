@@ -34,7 +34,7 @@
       _pathname = $.util.replaceExtension(_pathname, '.gif');
     }
 
-    console.log(chalk.yellow('src:') + ' ' + chalk.grey(_pathname));
+    global.efesecho.log(chalk.yellow('src:') + ' ' + chalk.grey(_pathname));
 
     gulp.src(_pathname, {
         base: path.join(pathname.root, devDir || '')

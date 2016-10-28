@@ -8,14 +8,18 @@
   const assign = require('deep-assign');
 
   const browserSync = require('browser-sync');
-  const work = require('../../../utils/efesWorkspace.js');
-  const env = require('../../../utils/efesEnv.js');
+  // const work = require('../../../utils/efesWorkspace.js');
+
+  const epc = require('../../../utils/efesProjectConfigs.js');
+  const reqMatchToLocalPath = require('../../../utils/reqMatchToLocalPath.js');
+  const buildResBody = require('../../../utils/buildResBody.js');
+
   const path = require('../../../utils/path.js');
   const fsp = require('../../../utils/fs.js');
 
   const rType = /\.(\w+)$/i;
 
-  let onRequest = function(request, response, dirs, spaceInfo, options) {
+  let onRequest = function(request, response, efesProjectConfigs, spaceInfo, options) {
 
     let pathname = url.parse(request.url).pathname;
 
@@ -42,51 +46,17 @@
       }
     };
 
-    let localPathname = work.tmpPublishDirForLocalDir[md5(host + '/' + pathname)];
-
-    if (!localPathname) {
-      // 由于需要支持 一个根访问路径 可以配置多个 本地目录，
-      // 所以匹配出来的本地路径有可能会有多个。
-      // todo 每个查找在第一次大约要使用300ms，有待优化
-      localPathname = work.getLocalPathname(pathname, host, dirs, spaceInfo);
-
-      // console.log(localPathname);
-
-      // 将已经查找到的路径对应关系缓存起来，方便下次调用。
-      work.tmpPublishDirForLocalDir[md5(host + '/' + pathname)] = localPathname;
-
-    } else {
-      // 更新 concatfile 中的信息
-      localPathname.map(function(info) {
-        let _concatfile = fsp.readJSONSync(path.join(info.root, 'concatfile.json'));
-
-        if (_concatfile) {
-
-          for (let output in _concatfile.pkg) {
-            let input = _concatfile.pkg[output];
-
-            if (output === info.output) {
-              info.output = output;
-              info.input = input;
-              return info;
-              // return assign({},info, {
-              //   output: output,
-              //   input: input
-              // });
-            }
-          }
-        }
-
-      });
-    }
-
-    //response.end(JSON.stringify(dirs));
-    //return;
+    let projectConfigs = epc.getProjectConfig(host, pathname, efesProjectConfigs, spaceInfo.global);
+    // console.log(host, pathname, projectConfigs);
+    let pathConfigs = reqMatchToLocalPath.match(host, pathname, projectConfigs);
+    // console.log(host, pathname, efesProjectConfigs);
+    // response.end(JSON.stringify(efesProjectConfigs));
+    // return;
 
     global.efesecho.log(chalk.bold.green('GET:') + ' http://' + host + pathname);
-    work.loadFile(localPathname, options, function(err, filedata, local) {
+    buildResBody.build(pathConfigs, options, function(err, filedata, local) {
       //console.log(chalk.grey('Local:' + local));
-
+      
       if (err) {
 
         global.efesecho.error(chalk.bold.white.bgRed(' ERROR '));
@@ -108,7 +78,7 @@
 
   };
 
-  let startServer = function(dirs, options, spaceInfo) {
+  let startServer = function(efesProjectConfigs, options, spaceInfo) {
 
     if (options.browsersync) {
       global.bs = require("browser-sync").create();
@@ -119,7 +89,7 @@
         },
         open: false,
         middleware: function(request, response, next) {
-          onRequest(request, response, dirs, spaceInfo, options);
+          onRequest(request, response, efesProjectConfigs, spaceInfo, options);
         }
       });
       return;
@@ -133,19 +103,22 @@
       } else {
         global.efesecho.log('启动成功，监听端口： %s', options.port);
       }
-
     });
 
     server.on('request', function(request, response) {
-
-      onRequest(request, response, dirs, spaceInfo, options);
-
+      onRequest(request, response, efesProjectConfigs, spaceInfo, options);
     });
 
     server.listen(options.port);
   };
 
   module.exports = function(options, spaceInfo) {
+
+    epc.find(spaceInfo, function(configs){
+      // console.log(configs);
+      startServer(configs, options, spaceInfo);
+    });
+
 
     // 在程序启动的时候，将本地服务器需要先编译一个es6文件，
     // 预加载一下babel-preset-es2015模块，
@@ -157,20 +130,24 @@
     //  input: ['preload.babel']
     //}], options, function(err, filedata, local) {
 
-    if (!work.tmpLocalEfesProjectDirs) {
+    // if (!epc.tmpEfesProjectConfigs || epc.tmpEfesProjectConfigs.length < 1) {
 
-      work.loadLocalDir(spaceInfo, function(dirs) {
+    //   epc.find(spaceInfo, function(configs){
+    //     epc.tmpEfesProjectConfigs = configs;
+    //     startServer(configs, options, spaceInfo);
+    //   });
+    //   // work.loadLocalDir(spaceInfo, function(dirs) {
 
-        work.tmpLocalEfesProjectDirs = dirs;
+    //   //   work.tmpLocalEfesProjectDirs = dirs;
 
-        startServer(dirs, options, spaceInfo);
-      });
+    //   //   startServer(dirs, options, spaceInfo);
+    //   // });
 
-    } else {
+    // } else {
+    //   console.log('-----');
+    //   startServer(epc.tmpEfesProjectConfigs, options, spaceInfo);
 
-      startServer(work.tmpLocalEfesProjectDirs, options, spaceInfo);
-
-    }
+    // }
 
     //});
 

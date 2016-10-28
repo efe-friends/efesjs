@@ -11,45 +11,43 @@
 
   const rType = /\.(\w+)$/i;
 
-  module.exports = function(pathname, options, callback) {
-    if (typeof pathname === 'object' && pathname.root && pathname.input) {
-      concat(pathname, options, function(err, data) {
-        callback(err, data, pathname.output);
+  module.exports = function(pathConfig, options, callback) {
+    if (typeof pathConfig === 'object' && pathConfig.root && pathConfig.input) {
+      concat(pathConfig, options, function(err, data) {
+        callback(err, data, pathConfig.output);
       });
 
     } else {
-
-      let type = pathname.output.match(rType);
+      let type = pathConfig.output.match(rType);
 
       if (type && type[0]) {
 
         switch (type[0].toLowerCase()) {
 
           case '.html': // jade会生成 .html 文件所以不需要特殊处理其他 .htm .shtml .xhtml .dhtml 这些文件
-            html(pathname, options, function(err, data) {
-              callback(err, data, pathname.output)
+            html(pathConfig, options, function(err, data) {
+              callback(err, data, pathConfig.output)
             });
             break;
           case '.webp': //
-            webp(pathname, options, function(err, data) {
-              callback(err, data, pathname.output)
+            webp(pathConfig, options, function(err, data) {
+              callback(err, data, pathConfig.output)
             });
             break;
           default:
 
-            
-            let devDir = pathname.config && pathname.config.dev_dir ? pathname.config.dev_dir : '';
-            let publishDir = pathname.config && pathname.config.publish_dir ? pathname.config.publish_dir : './';
+            let devDir = pathConfig.config && pathConfig.config.dev_dir ? pathConfig.config.dev_dir : '';
+            let publishDir = pathConfig.config && pathConfig.config.publish_dir ? pathConfig.config.publish_dir : './';
 
-            let _pathname = path.join(pathname.root, devDir || '', pathname.output);
+            let _pathname = path.join(pathConfig.root, devDir || '', pathConfig.output);
 
             if (fs.existsSync(_pathname)) {
               global.efesecho.log(chalk.yellow('src:') + ' ' + chalk.grey(_pathname));
               gulp.src(_pathname, {
-                  base: path.join(pathname.root, devDir || '')
+                  base: path.join(pathConfig.root, devDir || '')
                 })
-                .pipe($.if(options.publish && pathname.config, gulp.dest(publishDir, {
-                  cwd: pathname.root
+                .pipe($.if(options.publish && pathConfig.config, gulp.dest(publishDir, {
+                  cwd: pathConfig.root
                 })))
                 .pipe(through(function(file) {
                   callback(null, file.contents);
@@ -58,11 +56,11 @@
               return;
             }
 
-            _pathname = path.join(pathname.root, pathname.output);
+            _pathname = path.join(pathConfig.root, pathConfig.output);
             if (fs.existsSync(_pathname)) {
               gulp.src(_pathname)
                 .pipe(through(function(file) {
-                  callback(null, file.contents, pathname.output);
+                  callback(null, file.contents, pathConfig.output);
                   return file;
                 }));
             } else {
@@ -72,11 +70,11 @@
         }
       } else {
 
-        let _pathname = path.join(pathname.root, pathname.output);
+        let _pathname = path.join(pathConfig.root, pathConfig.output);
         if (fs.existsSync(_pathname)) {
           gulp.src(_pathname)
             .pipe(through(function(file) {
-              callback(null, file.contents, pathname.output);
+              callback(null, file.contents, pathConfig.output);
               return file;
             }));
         } else {

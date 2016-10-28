@@ -13,15 +13,19 @@
   const fsp = require('../../../utils/fs.js');
   const path = require('../../../utils/path.js');
 
-  const work = require('../../../utils/efesWorkspace.js');
+  // const work = require('../../../utils/efesWorkspace.js');
+
+  const epc = require('../../../utils/efesProjectConfigs.js');
+  const reqMatchToLocalPath = require('../../../utils/reqMatchToLocalPath.js');
+  const buildResBody = require('../../../utils/buildResBody.js');
 
   const echoLog = function(file) {
-    console.log(chalk.green('发布：'), file.relative || file.path);
+    global.efesecho.log(chalk.green('发布：'), file.relative || file.path);
     return true;
   };
 
   const step1 = function(dirname, config, publishDir, options) {
-    console.log(chalk.green('开始将图片转换为webp格式...'));
+    global.efesecho.log(chalk.green('开始将图片转换为webp格式...'));
     // 第一步处理图片 webp
     gulp.src([path.join(dirname, config.dev_dir) + '/**/*.+(jpg|jpeg|png|gif)',
         "!" + path.join(dirname, config.dev_dir) + '/**/icons/*.png'
@@ -40,7 +44,7 @@
   };
 
   const step2 = function(dirname, config, publishDir, options) {
-    console.log(chalk.green('开始压缩图片...'));
+    global.efesecho.log(chalk.green('开始压缩图片...'));
     // 第二步处理图片 压缩
     gulp.src([path.join(dirname, config.dev_dir) + '/**/*.+(jpg|jpeg|png|gif)',
         "!" + path.join(dirname, config.dev_dir) + '/**/icons/*.png'
@@ -63,7 +67,7 @@
   };
 
   const step3 = function(dirname, config, publishDir, options) {
-    console.log(chalk.green('开始编译jade文件...'));
+    global.efesecho.log(chalk.green('开始编译jade文件...'));
     // 第三步处理jade
     gulp.src(path.join(dirname, config.dev_dir) + '/**/*.jade')
       .pipe($.plumber())
@@ -81,13 +85,13 @@
   };
 
   const step4 = function(dirname, config, publishDir, options) {
-    console.log(chalk.green('开始复制处理其他文件...'));
+    global.efesecho.log(chalk.green('开始复制处理其他文件...'));
 
     const condition = function(file) {
       if (!options.publish || !config || fs.statSync(file.path).isDirectory()) {
         return false;
       }
-      console.log(chalk.green('发布：'), file.relative || file.path);
+      global.efesecho.log(chalk.green('发布：'), file.relative || file.path);
       return true;
     };
 
@@ -114,7 +118,7 @@
 
   const step5 = function(options) {
     if (options.all || options.message) {
-      console.log(chalk.green('开始提交git仓库...'));
+      global.efesecho.log(chalk.green('开始提交git仓库...'));
       let _cmd = 'git commit -am ' + options.message;
       if (!options.all) {
         _cmd = 'git commit -m ' + options.message;
@@ -129,7 +133,7 @@
           stdio: 'inherit'
         });
       } catch(e) {
-        console.log(e);
+        global.efesecho.log(e);
       }
     }
   };
@@ -158,18 +162,27 @@
 
         });
       }*/
-
-      console.log(chalk.green('开始编译、合并js、css文件...'));
+      global.efesecho.log(chalk.green('开始编译、合并js、css文件...'));
       async.forEachOfSeries(concatfile.pkg, function(input, output, cb) {
-        work.loadFile([{
+        buildResBody.build([{
           root: dirname,
           output: output,
           input: input,
           config: config
         }], options, function(err, filedata, local) {
-          console.log(chalk.green('发布：'), output);
+          global.efesecho.log(chalk.green('发布：'), output);
           cb();
         });
+
+        // work.loadFile([{
+        //   root: dirname,
+        //   output: output,
+        //   input: input,
+        //   config: config
+        // }], options, function(err, filedata, local) {
+        //   console.log(chalk.green('发布：'), output);
+        //   cb();
+        // });
 
       }, function(err) {
         err && config.log(err);

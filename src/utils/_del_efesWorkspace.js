@@ -7,6 +7,9 @@
   const fsp = require('./fs.js');
   const path = require('./path.js');
   const readFile = require('./readFile.js');
+
+  const efesProjectConfigs = require('./efesProjectConfigs.js');
+
   const rIP = /^([0-9]|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.([0-9]|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.([0-9]|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.([0-9]|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])(:\d+)?$/;
   const rLocalHost = /^localhost(:\d+)?$/i;
 
@@ -15,7 +18,7 @@
   exports.tmpLocalEfesProjectDirs = null;
 
   exports.loadFile = function(pathnames, options, callback) {
-
+    
     let _data, _errors = [];
 
     async.eachSeries(pathnames, function iterator(pathname, cb) {
@@ -37,7 +40,7 @@
         });
 
       } else {
-
+        
         readFile(pathname, options, function(err, data) {
 
           if (err) {
