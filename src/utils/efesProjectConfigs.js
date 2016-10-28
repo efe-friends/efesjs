@@ -301,8 +301,9 @@ export function getProjectConfig(requestHost, requestPath, spaceProjectConfigs, 
     if(isRoot) {
       let configDirname = reqDirname;
       let _config = null;
-      while(configDirname && !_config ) {
-        // console.log('--------', configDirname, path.join(efesSpaceDirname, configDirname, ".efesconfig"));
+      while(configDirname != '/' && !_config ) {
+        // console.log(configDirname);
+        // console.log('========', configDirname, path.join(efesSpaceDirname, configDirname, ".efesconfig"));
         _config = fsp.readJSONSync(path.join(efesSpaceDirname, configDirname, ".efesconfig"));
         if(!_config) {
           configDirname = path.join(configDirname, '..');
