@@ -4,11 +4,9 @@
   const http = require('http');
   const mime = require('mime');
   const url = require('url');
-  const md5 = require('md5');
   const assign = require('deep-assign');
 
   const browserSync = require('browser-sync');
-  // const work = require('../../../utils/efesWorkspace.js');
 
   const epc = require('../../../utils/efesProjectConfigs.js');
   const reqMatchToLocalPath = require('../../../utils/reqMatchToLocalPath.js');
@@ -19,7 +17,7 @@
 
   const rType = /\.(\w+)$/i;
 
-  let onRequest = function(request, response, efesProjectConfigs, spaceInfo, options) {
+  let onRequest = function(request, response, spaceProjectConfigs, spaceInfo, spaceDirname, options) {
 
     let pathname = url.parse(request.url).pathname;
 
@@ -46,11 +44,11 @@
       }
     };
 
-    let projectConfigs = epc.getProjectConfig(host, pathname, efesProjectConfigs, spaceInfo.global);
+    let projectConfigs = epc.getProjectConfig(host, pathname, spaceInfo, spaceDirname, spaceProjectConfigs);
     // console.log(host, pathname, projectConfigs);
-    let pathConfigs = reqMatchToLocalPath.match(host, pathname, projectConfigs);
-    // console.log(host, pathname, efesProjectConfigs);
-    // response.end(JSON.stringify(efesProjectConfigs));
+    let pathConfigs = reqMatchToLocalPath.match(host, pathname, projectConfigs, spaceDirname);
+    // console.log(host, pathname, spaceProjectConfigs);
+    // response.end(JSON.stringify(spaceProjectConfigs));
     // return;
 
     global.efesecho.log(chalk.bold.green('GET:') + ' http://' + host + pathname);
@@ -78,7 +76,7 @@
 
   };
 
-  let startServer = function(efesProjectConfigs, options, spaceInfo) {
+  let startServer = function(spaceProjectConfigs, spaceInfo, spaceDirname, options) {
 
     if (options.browsersync) {
       global.bs = require("browser-sync").create();
@@ -89,7 +87,7 @@
         },
         open: false,
         middleware: function(request, response, next) {
-          onRequest(request, response, efesProjectConfigs, spaceInfo, options);
+          onRequest(request, response, spaceProjectConfigs, spaceInfo, spaceDirname, options);
         }
       });
       return;
@@ -106,17 +104,17 @@
     });
 
     server.on('request', function(request, response) {
-      onRequest(request, response, efesProjectConfigs, spaceInfo, options);
+      onRequest(request, response, spaceProjectConfigs, spaceInfo, spaceDirname, options);
     });
 
     server.listen(options.port);
   };
 
-  module.exports = function(options, spaceInfo) {
+  module.exports = function(spaceInfo, spaceDirname, options) {
 
-    epc.find(spaceInfo, function(configs){
-      // console.log(configs);
-      startServer(configs, options, spaceInfo);
+    epc.find(spaceInfo, spaceDirname, function(spaceProjectConfigs){
+      // console.log(spaceProjectConfigs);
+      startServer(spaceProjectConfigs, spaceInfo, spaceDirname, options);
     });
 
 
@@ -130,10 +128,10 @@
     //  input: ['preload.babel']
     //}], options, function(err, filedata, local) {
 
-    // if (!epc.tmpEfesProjectConfigs || epc.tmpEfesProjectConfigs.length < 1) {
+    // if (!epc.tmpspaceProjectConfigs || epc.tmpspaceProjectConfigs.length < 1) {
 
     //   epc.find(spaceInfo, function(configs){
-    //     epc.tmpEfesProjectConfigs = configs;
+    //     epc.tmpspaceProjectConfigs = configs;
     //     startServer(configs, options, spaceInfo);
     //   });
     //   // work.loadLocalDir(spaceInfo, function(dirs) {
@@ -145,7 +143,7 @@
 
     // } else {
     //   console.log('-----');
-    //   startServer(epc.tmpEfesProjectConfigs, options, spaceInfo);
+    //   startServer(epc.tmpspaceProjectConfigs, options, spaceInfo);
 
     // }
 

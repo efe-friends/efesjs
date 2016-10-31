@@ -6,9 +6,7 @@
   const es2015 = require('babel-preset-es2015');
   const react = require('babel-preset-react');
   const through = require('through-gulp');
-  const babel = require('babel-core');
-  const browserify = require('browserify');
-  const babelify = require('babelify');
+  
   const $ = require('gulp-load-plugins')();
 
   const path = require('../path.js');

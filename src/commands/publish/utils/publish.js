@@ -15,8 +15,6 @@
 
   // const work = require('../../../utils/efesWorkspace.js');
 
-  const epc = require('../../../utils/efesProjectConfigs.js');
-  const reqMatchToLocalPath = require('../../../utils/reqMatchToLocalPath.js');
   const buildResBody = require('../../../utils/buildResBody.js');
 
   const echoLog = function(file) {

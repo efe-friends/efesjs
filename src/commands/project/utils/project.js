@@ -66,8 +66,8 @@
             childProcess.exec('git branch', {
               cwd: repoPath
             }, function(err, stdout) {
-              console.log('\n');
-              console.log(chalk.green('更新 '), `${repoName}`);
+              global.efesecho.log('\n');
+              global.efesecho.log(chalk.green('更新 '), `${repoName}`);
 
               if (rBranch.test(stdout)) {
 
@@ -83,61 +83,30 @@
 
               } else {
 
-                console.log(chalk.yellow('Warnning'), repoName, '不是 ' + localBranch + ' 分支， 跳过更新。');
+                global.efesecho.log(chalk.yellow('Warnning'), repoName, '不是 ' + localBranch + ' 分支， 跳过更新。');
                 configRepo();
                 callback();
 
               }
             });
           } else {
-            console.log('\n');
-            console.log(chalk.green('克隆 '), `${repoName}`);
+            global.efesecho.log('\n');
+            global.efesecho.log(chalk.green('克隆 '), `${repoName}`);
 
-            /*let _clone = childProcess.exec(`git clone ${repoName} ${pj.localDir}`, function(err, stdout, stderr) {
-
-              if (err) {
-
-                console.log(chalk.bgRed('Error'), repoName, stderr);
-                callback();
-
-              } else if (branch !== 'master') {
-
-                console.log(`检出 ${repoName} ${branch}`);
-                childProcess.exec(`git checkout -b ${branch}`, {
-                  cwd: repoPath
-                }, function(err, stdout, stderr) {
-                  if (err) {
-                    console.log(chalk.bgRed('Error'), repoName, stderr);
-                  }
-                  callback();
-                });
-
-              } else {
-                callback();
-              }
-              configRepo();
-            });*/
+            
             let _clone = childProcess.spawn(`git`, ['clone', repoName, pj.git.repo], {
               stdio: 'inherit'
             });
 
-            /*_clone.stdout.on('data', function(data) {
-              console.log(data);
-            });
-
-            _clone.stderr.on('data', function(data) {
-              console.log(chalk.red('ERROR: '), data);
-            });*/
-
             _clone.on('exit', function(code) {
 
-              console.log('---',code);
+              global.efesecho.log('---',code);
 
               configRepo();
 
               if (localBranch !== 'master') {
 
-                console.log(chalk.green('检出 '), `${repoName} 分支：${localBranch} ${remoteBranch}`);
+                global.efesecho.log(chalk.green('检出 '), `${repoName} 分支：${localBranch} ${remoteBranch}`);
 
                 let _checkout = childProcess.exec(`git checkout -b ${localBranch} ${remoteBranch}`, {
                   cwd: repoPath,

@@ -52,7 +52,7 @@
     let matchLength = 0;
 
     if (!spaceInfo) {
-      console.log('未找到efes工作目录配置文件：efeproject.json');
+      global.efesecho.log('未找到efes工作目录配置文件：efeproject.json');
       return null;
     }
 
@@ -79,7 +79,7 @@
     }
 
     if (!info.rewrite) {
-      console.log(path.relative(dirname, dir), dir, dirname);
+      // console.log(path.relative(dirname, dir), dir, dirname);
       info.rewrite = {
         root: path.relative(dirname, dir),
         request: '/' + path.relative(dirname, dir)

@@ -8,5 +8,6 @@
     "flags":"-c, --color"
   }],
   "requires": [],
-  "packages": []
+  "packages": ["imagemin", "imagemin-webp", "spritesmith"],
+  "installed": false
 }

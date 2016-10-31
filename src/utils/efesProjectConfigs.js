@@ -35,14 +35,14 @@ const rLocalHost = /^localhost(:\d+)?$/i;
 
 // }
 
-export let tmpEfesProjectConfigs = [];
+// export let tmpSpaceProjectConfigs = [];
 
 // 查找efes工作空间下所有的 .efesconfig 文件
-function findAllEfesConfigs(efesSpaceDirname, callback) {
+function findAllEfesConfigs(spaceDirname, callback) {
   let regExcludes = [/node_modules/, /\.git/, /\.tmp/, /\.DS_Store/];
   let regIncludes = [/\.efesconfig$/i];
   // 查找到efes工作空间下面所有含有 .efesconfig 的目录
-  regexfiles(efesSpaceDirname, regExcludes, regIncludes, function(err, subfiles) {
+  regexfiles(spaceDirname, regExcludes, regIncludes, function(err, subfiles) {
     if (err) {
       global.efesecho.log(chalk.red(err.message));
       callback(subfiles);
@@ -53,9 +53,11 @@ function findAllEfesConfigs(efesSpaceDirname, callback) {
 }
 
 // 为所有的 efes 项目（含有 .efesconfig 的目录）补全配置信息。
-function scanfProjectConfigs(efesconfigPath, efesSpaceDirname, spaceProjectConfigs, efesSpaceGlobalConfig) {
+function scanfProjectConfigs(efesconfigPath, spaceInfo, spaceDirname, spaceProjectConfigs) {
 
-  let eDirname = path.relative(efesSpaceDirname, path.dirname(efesconfigPath));
+  let efesSpaceGlobalConfig = spaceInfo.global;
+
+  let eDirname = path.relative(spaceDirname, path.dirname(efesconfigPath));
 
   if (!fs.statSync(eDirname).isDirectory()) {
     return false;
@@ -93,7 +95,7 @@ function scanfProjectConfigs(efesconfigPath, efesSpaceDirname, spaceProjectConfi
     // } else if (_match && _match.index === 0) {
     } else {
 
-      let _config = fsp.readJSONSync(path.join(efesSpaceDirname, eDirname, ".efesconfig"));
+      let _config = fsp.readJSONSync(path.join(spaceDirname, eDirname, ".efesconfig"));
 
       let _subPath = path.relative(projectConfig.rewrite.root, eDirname);
       // let _subPath = _path.replace(new RegExp('^' + _dir.rewrite.root + '\/'), '');
@@ -102,7 +104,7 @@ function scanfProjectConfigs(efesconfigPath, efesSpaceDirname, spaceProjectConfi
 
         let _tmp = {
           config: _config,
-          concatfile: _config ? path.join(efesSpaceDirname, eDirname, 'concatfile.json') : null,
+          concatfile: _config ? path.join(spaceDirname, eDirname, 'concatfile.json') : null,
           domain: {
             publish: projectConfig.domain.publish,
             dev: projectConfig.domain.dev
@@ -126,11 +128,11 @@ function scanfProjectConfigs(efesconfigPath, efesSpaceDirname, spaceProjectConfi
 
   } else if (!matched) {
 
-    let _config = fsp.readJSONSync(path.join(efesSpaceDirname, eDirname, ".efesconfig"));
+    let _config = fsp.readJSONSync(path.join(spaceDirname, eDirname, ".efesconfig"));
 
     let _tmp = {
       config: _config,
-      concatfile: _config ? path.join(efesSpaceDirname, eDirname, 'concatfile.json') : null,
+      concatfile: _config ? path.join(spaceDirname, eDirname, 'concatfile.json') : null,
       domain: {
         publish: efesSpaceGlobalConfig.domain.publish,
         dev: efesSpaceGlobalConfig.domain.dev
@@ -151,7 +153,7 @@ function scanfProjectConfigs(efesconfigPath, efesSpaceDirname, spaceProjectConfi
 
 
 // 为所有的 efes 空间配置信息（efesproject.json）中的 project 补全配置信息。
-function scanfSpaceProjectConfigs(spaceInfo, efesSpaceDirname) {
+function scanfSpaceProjectConfigs(spaceInfo, spaceDirname) {
   
   let projectConfigs = [];
 
@@ -177,10 +179,10 @@ function scanfSpaceProjectConfigs(spaceInfo, efesSpaceDirname) {
     projectConfig.domain.publish = (_project.domain && _project.domain.publish) || efesSpaceGlobalConfig.domain.publish;
     projectConfig.domain.dev = (_project.domain && _project.domain.dev) || efesSpaceGlobalConfig.domain.dev;
 
-    let _config = fsp.readJSONSync(path.join(efesSpaceDirname, _project.rewrite.root, '.efesconfig'));
+    let _config = fsp.readJSONSync(path.join(spaceDirname, _project.rewrite.root, '.efesconfig'));
 
     projectConfig.config = _config;
-    projectConfig.concatfile = _config ? path.join(efesSpaceDirname, _project.rewrite.root, 'concatfile.json') : null;
+    projectConfig.concatfile = _config ? path.join(spaceDirname, _project.rewrite.root, 'concatfile.json') : null;
 
     projectConfig.rewrite.root = _project.rewrite.root;
     projectConfig.rewrite.request = _project.rewrite.request;
@@ -210,15 +212,14 @@ function scanfSpaceProjectConfigs(spaceInfo, efesSpaceDirname) {
 }
 
 
-export function find(spaceInfo, callback) {
-  let efesSpaceDirname = process.cwd();
+export function find(spaceInfo, spaceDirname, callback) {
 
-  let spaceProjectConfigs = scanfSpaceProjectConfigs(spaceInfo, efesSpaceDirname);
+  let spaceProjectConfigs = scanfSpaceProjectConfigs(spaceInfo, spaceDirname);
 
-  findAllEfesConfigs(efesSpaceDirname, function(efesconfigPaths){
+  findAllEfesConfigs(spaceDirname, function(efesconfigPaths){
 
     efesconfigPaths && efesconfigPaths.some(function(efesconfigPath){
-      scanfProjectConfigs(efesconfigPath, efesSpaceDirname, spaceProjectConfigs, spaceInfo.global);
+      scanfProjectConfigs(efesconfigPath, spaceInfo, spaceDirname, spaceProjectConfigs, );
     });
 
     // console.log(spaceProjectConfigs);
@@ -231,9 +232,9 @@ export function find(spaceInfo, callback) {
 }
 
 // 获取请求路径所匹配的项目配置文件
-export function getProjectConfig(requestHost, requestPath, spaceProjectConfigs, efesSpaceGlobalConfig) {
-  
-  let efesSpaceDirname = process.cwd();
+export function getProjectConfig(requestHost, requestPath, spaceInfo, spaceDirname, spaceProjectConfigs) {
+
+  let efesSpaceGlobalConfig = spaceInfo.global;
 
   let matched = false;
 
@@ -303,8 +304,8 @@ export function getProjectConfig(requestHost, requestPath, spaceProjectConfigs, 
       let _config = null;
       while(configDirname != '/' && !_config ) {
         // console.log(configDirname);
-        // console.log('========', configDirname, path.join(efesSpaceDirname, configDirname, ".efesconfig"));
-        _config = fsp.readJSONSync(path.join(efesSpaceDirname, configDirname, ".efesconfig"));
+        // console.log('========', configDirname, path.join(spaceDirname, configDirname, ".efesconfig"));
+        _config = fsp.readJSONSync(path.join(spaceDirname, configDirname, ".efesconfig"));
         if(!_config) {
           configDirname = path.join(configDirname, '..');
         }
@@ -312,7 +313,7 @@ export function getProjectConfig(requestHost, requestPath, spaceProjectConfigs, 
       if(_config) {
         let _tmp = {
           config: _config,
-          concatfile: _config ? path.join(efesSpaceDirname, configDirname, 'concatfile.json') : null,
+          concatfile: _config ? path.join(spaceDirname, configDirname, 'concatfile.json') : null,
           domain: {
             publish: efesSpaceGlobalConfig.domain.publish,
             dev: efesSpaceGlobalConfig.domain.dev
