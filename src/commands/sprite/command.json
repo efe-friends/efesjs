@@ -5,9 +5,13 @@
   "author": "eagle.h",
   "description": "将图片合并为精灵图。",
   "options": [{
-    "flags":"-c, --color"
+    "flags": "-c, --color"
+  }, {
+    "flags":"-f, --files [value]",
+    "description": "需要处理的文件，支持minimatch规则，默认为当前目录下所有图片文件"
+  }, {
+    "flags":"-d, --dist [value]",
+    "description": "发布目录，默认为 ./build"
   }],
-  "requires": [],
-  "packages": ["imagemin", "imagemin-webp", "spritesmith"],
-  "installed": false
+  "requires": []
 }

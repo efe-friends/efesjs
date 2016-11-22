@@ -33,7 +33,7 @@ global.efesecho = console;
         process.exit(1);
       }
 
-      if (_cmd.requires.length > 0) {
+      if (_cmd.requires && _cmd.requires.length > 0) {
 
         _cmd.requires.some(function(_repo) {
 

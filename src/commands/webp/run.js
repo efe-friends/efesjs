@@ -1,25 +1,24 @@
-"use strict";
+const gulp = require('gulp');
+const imageminWebp = require('imagemin-webp');
 
-(function() {
+module.exports = (options)=> {
+  console.log('开始处理图片...');
+  let file = options.file || "./*.{png,jpg,jpeg,gif}";
+  let dist = options.dist || "./build";
+  gulp.src(file)
+    .pipe(imageminWebp({
+      quality: 50
+    })())
+    .pipe(gulp.dest(dist));
+};
 
-  const Imagemin = require('imagemin');
-  const imageminWebp = require('imagemin-webp');
-
-  module.exports = (options) => {
-
-    let file = options.file;
-
-    console.log('开始处理 图片...');
-
-    new Imagemin()
-      .src(file)
-      .dest('build')
-      .use(imageminWebp({
-        quality: 50
-      }))
-      .run();
-
-
-  };
-
-})();
+// export default (options)=> {
+//   console.log('开始处理 图片...');
+//   let file = options.file;
+//   let dist = options.dist || "./";
+//   gulp.src(file)
+//     .pipe(imageminWebp({
+//       quality: 50
+//     })())
+//     .pipe(gulp.dest(dist));
+// }

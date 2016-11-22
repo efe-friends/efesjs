@@ -625,6 +625,48 @@ PS：经测试，ios9和Android有新的规则，现有代码只能在微信中�
 ##### options
 * -s [value] 自定义的版本号字符串。
 
+#### tinypng
+##### 运行：
+`efes tinypng [-f xxxx] [-d xxxx]` 或 `efes tp [-f xxxx] [-d xxxx]`
+##### 运行目录：
+`任意项目目录`
+##### 功能简介：
+```
+将目标图片进行压缩
+```
+##### options
+* -f, --file [value]  需要处理的文件，支持minimatch规则，默认为当面目录下所有图片文件。
+* -d, --dist [value]  发布目录，默认为 ./build
+
+
+#### webp
+##### 运行：
+`efes webp [-f xxxx] [-d xxxx]`
+##### 运行目录：
+`任意项目目录`
+##### 功能简介：
+```
+将目标图片文件转换为webp格式
+```
+##### options
+* -f, --file [value]  需要处理的文件，支持minimatch规则，默认为当面目录下所有图片文件。
+* -d, --dist [value]  发布目录，默认为 ./build
+
+#### sprite
+##### 运行：
+`efes sprite [-i xxxx] [-d xxxx]` 或 `efes sp [-i xxxx] [-d xxxx]`
+##### 运行目录：
+`任意项目目录`
+##### 功能简介：
+```
+将目标目录下的所有图片文件合并为精灵图，并生成相应的css文件，css中图片的宽高使用的是rem为长度单位。
+```
+##### options
+* -f, --files [value]  需要处理的文件，支持minimatch规则，默认为当前目录下所有图片文件。
+* -d, --dist  [value]  发布目录，默认为 ./build
+
+
+
 
 ### gulp自动化功能
 1. 自动编译coffee、es6、less、jade<br>
@@ -656,6 +698,9 @@ Sublim插件：
   core.quotepath设为false的话，就不会对0x80以上的字符进行quote。中文显示正常<br>
 
 ### 更新日志
+
+#### v0.1.40更新
+1. 补全 webp, tinypng, sprites三个图片处理命令。
 
 #### v0.1.39更新
 1. 优化新建项目自动检索不到的bug。

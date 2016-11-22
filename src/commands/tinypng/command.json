@@ -5,8 +5,13 @@
   "author": "eagle.h",
   "description": "压缩图片。",
   "options": [{
-    "flags":"-c, --color"
+    "flags": "-c, --color"
+  }, {
+    "flags":"-f, --file [value]",
+    "description": "需要处理的文件，支持minimatch规则，默认为当面目录下所有图片文件。"
+  }, {
+    "flags":"-d, --dist [value]",
+    "description": "发布目录，默认为 ./build"
   }],
-  "requires": [],
-  "packages": []
+  "requires": []
 }
