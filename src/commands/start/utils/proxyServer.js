@@ -2,6 +2,9 @@
 (function() {
   const chalk = require('chalk');
   const http = require('http');
+  const zlib = require('zlib');
+  const fs = require('fs');
+  const stream = require('stream');
   const mime = require('mime');
   const url = require('url');
   const assign = require('deep-assign');
@@ -32,12 +35,29 @@
     let output = function(code, data) {
       if (data) {
         if (!options.browsersync) {
-          response.writeHeader(code, {
-            'content-type': pathname.match(rType) ? mime.lookup(pathname) : mime.lookup('json'),
-          });
-        }
-        response.end(data);
+          let acceptEncoding = request.headers['accept-encoding'];
+          if(acceptEncoding && acceptEncoding.indexOf('gzip') != -1) {
+            response.writeHeader(code, {
+              'Content-Type': pathname.match(rType) ? mime.lookup(pathname) : mime.lookup('json'),
+              'Content-Encoding': 'gzip',
+              'Vary': 'Accept-Encoding'
+            });
 
+            var raw = new stream.PassThrough();
+            raw.end(data);
+            raw.pipe(zlib.createGzip()).pipe(response);
+          } else {
+            response.writeHeader(code, {
+              'Content-Type': pathname.match(rType) ? mime.lookup(pathname) : mime.lookup('json'),
+              'Content-Length': Buffer.byteLength(data, 'utf-8')
+            });
+            response.write(data);
+            response.end();
+          }
+        } else {
+          response.write(data);
+          response.end();
+        }
       } else {
         response.writeHeader(code);
         response.end();
