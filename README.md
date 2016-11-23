@@ -654,7 +654,7 @@ PS：经测试，ios9和Android有新的规则，现有代码只能在微信中�
 
 #### sprite
 ##### 运行：
-`efes sprite [-i xxxx] [-d xxxx]` 或 `efes sp [-i xxxx] [-d xxxx]`
+`efes sprite [-r] [-a xxxx] [-f 'xxxx'] [-d xxxx]` 或 `efes sp [-r] [-a xxxx] [-f 'xxxx'] [-d xxxx]`
 ##### 运行目录：
 `任意项目目录`
 ##### 功能简介：
@@ -662,8 +662,10 @@ PS：经测试，ios9和Android有新的规则，现有代码只能在微信中�
 将目标目录下的所有图片文件合并为精灵图，并生成相应的css文件，css中图片的宽高使用的是rem为长度单位。
 ```
 ##### options
-* -f, --files [value]  需要处理的文件，支持minimatch规则，默认为当前目录下所有图片文件。
-* -d, --dist  [value]  发布目录，默认为 ./build
+* -r, --rem                 使用rem作为长度单位。
+* -a, --algorithm  [value]  图片布局：top-down left-right diagonal alt-diagonal binary-tree，默认：binary-tree
+* -f, --files      [value]  需要处理的文件，支持minimatch规则，设定值需要用引号括起来，默认为当前目录下所有图片文件。
+* -d, --dist       [value]  发布目录，默认为 ./build
 
 
 

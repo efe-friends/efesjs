@@ -7,6 +7,12 @@
   "options": [{
     "flags": "-c, --color"
   }, {
+    "flags":"-r, --rem",
+    "description": "使用rem作为长度单位"
+  }, {
+    "flags":"-a, --algorithm [value]",
+    "description": "图片布局：top-down left-right diagonal alt-diagonal binary-tree，默认：binary-tree"
+  }, {
     "flags":"-f, --files [value]",
     "description": "需要处理的文件，支持minimatch规则，默认为当前目录下所有图片文件"
   }, {
